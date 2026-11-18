@@ -1,0 +1,21 @@
+{
+  "name": "Buscador de Legislação Tributária – SEFAZ-RR",
+  "short_name": "Legislação RR",
+  "description": "Legislação tributária (ICMS, ST, CONFAZ, Roraima, Reforma Tributária), tabelas de códigos fiscais e ferramentas de auditoria.",
+  "lang": "pt-BR",
+  "start_url": "./index.html#legislacao",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f2ee",
+  "theme_color": "#14284b",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Tabelas e códigos", "url": "./index.html#tabelas"},
+    {"name": "Ferramentas do auditor", "url": "./index.html#ferramentas"},
+    {"name": "Fontes oficiais", "url": "./index.html#fontes"}
+  ]
+}

@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buscador de Legislação Tributária – SEFAZ-RR</title>
+<meta name="description" content="Legislação tributária, tabelas de códigos fiscais (CFOP, CEST, NCM, CST) e ferramentas de auditoria para a SEFAZ-RR.">
+<meta name="theme-color" content="#14284b">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script>window.APP_STANDALONE=true;</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f2ee; --panel:#ffffff; --ink:#1b2333; --ink2:#4a5468; --ink3:#7a8396;
+  --line:#e2ded6; --line2:#d3cec4; --navy:#14284b; --navy2:#1f3a68;
+  --gold:#b07a1f; --gold-bg:#fbf3e2; --ok:#2f7a4f; --ok-bg:#e8f4ec;
+  --warn:#9a5b12; --warn-bg:#fcefdc; --bad:#a03a2e; --bad-bg:#f8e6e3;
+  --mark:#ffe58a; --radius:10px;
+  --shadow:0 1px 2px rgba(20,40,75,.06),0 4px 14px rgba(20,40,75,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#10141c;--panel:#181e2a;--ink:#e8ebf1;--ink2:#b3bccc;--ink3:#8590a3;--line:#262f3f;--line2:#334055;
+  --navy:#9fb8e6;--navy2:#c3d3f0;--gold:#e2b35c;--gold-bg:#2c2416;--ok:#7fcf9c;--ok-bg:#16291f;--warn:#e9b06a;--warn-bg:#2d2214;
+  --bad:#ef9488;--bad-bg:#2f1a18;--mark:#6b5a12;--shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25)}
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "IBM Plex Sans",system-ui,sans-serif}
+a{color:var(--navy2)}
+button{font:inherit;cursor:pointer}
+mark{background:var(--mark);color:inherit;border-radius:2px;padding:0 1px}
+.wrap{max-width:1320px;margin:0 auto;padding:0 22px}
+
+/* Header */
+header.top{background:var(--navy);color:#fff}
+@media (prefers-color-scheme:dark){header.top{background:#0b1830}}
+header.top .wrap{display:flex;align-items:center;gap:14px;padding:16px 22px}
+.seal{width:38px;height:38px;border-radius:8px;background:rgba(255,255,255,.1);display:grid;place-items:center;flex:none}
+.brand h1{font:600 19px/1.2 "Source Serif 4",serif;margin:0;letter-spacing:.2px}
+.brand p{margin:2px 0 0;font-size:12.5px;opacity:.75}
+.top .stats{margin-left:auto;display:flex;gap:18px;font-size:12px;opacity:.85}
+.top .stats b{display:block;font-size:17px;font-weight:600}
+
+/* Search */
+.searchbar{background:var(--navy);padding:0 0 26px}
+@media (prefers-color-scheme:dark){.searchbar{background:#0b1830}}
+.sbox{background:var(--panel);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.18);padding:14px}
+.modes{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.mode{border:1px solid var(--line2);background:transparent;color:var(--ink2);padding:5px 12px;border-radius:999px;font-size:13px}
+.mode[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+@media (prefers-color-scheme:dark){.mode[aria-pressed=true]{color:#0b1830}}
+.qrow{display:flex;gap:10px}
+.qinput{flex:1;position:relative}
+.qinput svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink3)}
+#q{width:100%;border:1.5px solid var(--line2);border-radius:9px;padding:13px 40px 13px 44px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink);outline:none}
+#q:focus{border-color:var(--navy2);background:var(--panel)}
+#clearQ{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--ink3);font-size:20px;display:none;padding:4px 8px}
+.btn{border:1px solid var(--line2);background:var(--panel);color:var(--ink);border-radius:8px;padding:8px 14px;font-size:13.5px;font-weight:500;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--navy2)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+@media (prefers-color-scheme:dark){.btn.primary{color:#0b1830}}
+.btn.gold{background:var(--gold-bg);border-color:var(--gold);color:var(--gold)}
+.btn:disabled{opacity:.5;cursor:default}
+.hint{margin-top:9px;font-size:12.5px;color:var(--ink3)}
+.hint code{font-family:"IBM Plex Mono",monospace;background:var(--bg);border:1px solid var(--line);padding:0 5px;border-radius:4px;color:var(--ink2);cursor:pointer}
+.hint code:hover{border-color:var(--navy2)}
+.parsed{margin-top:8px;font-size:12.5px;color:var(--ink2);display:none}
+.parsed .tag{display:inline-block;background:var(--gold-bg);color:var(--gold);border-radius:4px;padding:0 6px;margin-right:4px;font-weight:500}
+
+/* Layout */
+main{display:grid;grid-template-columns:240px minmax(0,1fr) minmax(0,1.15fr);gap:18px;padding:20px 0 40px}
+@media (max-width:1100px){main{grid-template-columns:220px minmax(0,1fr)} #detail{grid-column:1/-1}}
+@media (max-width:720px){main{grid-template-columns:1fr} .top .stats{display:none}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+aside .card{padding:14px;position:sticky;top:14px}
+.fgroup{margin-bottom:16px}
+.fgroup h3{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--ink3);margin:0 0 7px;font-weight:600}
+.fopt{display:flex;align-items:center;gap:8px;font-size:13.5px;padding:3px 0;cursor:pointer;color:var(--ink2)}
+.fopt input{accent-color:var(--navy)}
+.fopt .n{margin-left:auto;font-size:11.5px;color:var(--ink3);font-family:"IBM Plex Mono",monospace}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{border:1px solid var(--line2);background:transparent;color:var(--ink2);border-radius:999px;padding:2px 9px;font-size:12px}
+.chip[aria-pressed=true]{background:var(--gold-bg);border-color:var(--gold);color:var(--gold);font-weight:500}
+.linkbtn{border:0;background:none;color:var(--navy2);font-size:12.5px;padding:0;text-decoration:underline}
+
+/* Results */
+.rhead{display:flex;align-items:baseline;justify-content:space-between;margin:0 2px 10px}
+.rhead h2{font:600 16px "Source Serif 4",serif;margin:0}
+.rhead select{font:inherit;font-size:12.5px;border:1px solid var(--line2);border-radius:6px;padding:3px 6px;background:var(--panel);color:var(--ink)}
+.res{padding:13px 15px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);margin-bottom:9px;cursor:pointer;transition:border-color .12s, box-shadow .12s;outline:none}
+.res:hover,.res:focus-visible{border-color:var(--navy2)}
+.res.active{border-color:var(--navy);box-shadow:0 0 0 2px color-mix(in srgb,var(--navy) 18%,transparent)}
+.res .meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:4px}
+.badge{font-size:11px;font-weight:600;border-radius:4px;padding:1px 6px;letter-spacing:.2px}
+.b-fed{background:#e5ecf8;color:#1f3a68}.b-conf{background:#efe6f6;color:#5b2f7f}.b-rr{background:#e3f1ec;color:#1f5e47}
+@media (prefers-color-scheme:dark){.b-fed{background:#1c2a44;color:#a9c1ec}.b-conf{background:#2a1e36;color:#d1b2ea}.b-rr{background:#15291f;color:#94d6b8}}
+.s-vig{background:var(--ok-bg);color:var(--ok)}.s-alt{background:var(--warn-bg);color:var(--warn)}.s-rev{background:var(--bad-bg);color:var(--bad)}
+.res h4{margin:0;font:600 15.5px/1.3 "Source Serif 4",serif;color:var(--navy)}
+.res .em{margin:4px 0 0;font-size:13.3px;color:var(--ink2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.res .hit{margin-top:7px;font-size:12.5px;color:var(--ink2);background:var(--bg);border-left:3px solid var(--gold);padding:5px 8px;border-radius:0 6px 6px 0}
+.res .hit b{font-family:"IBM Plex Mono",monospace;font-weight:500;color:var(--gold)}
+.score{margin-left:auto;font-size:11px;color:var(--ink3);font-family:"IBM Plex Mono",monospace}
+.empty{padding:26px 18px;text-align:center;color:var(--ink2)}
+.empty h3{font:600 16px "Source Serif 4",serif;color:var(--ink);margin:0 0 6px}
+
+/* Detail */
+#detail .card{position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto}
+.dhead{padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+.dhead .kicker{font-size:12px;color:var(--ink3);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+.dhead h2{font:700 22px/1.25 "Source Serif 4",serif;margin:5px 0 8px;color:var(--navy)}
+.dhead .ementa{font-style:italic;color:var(--ink2);font-size:14px;margin:0;border-left:3px solid var(--line2);padding-left:10px}
+.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+.dsec{padding:15px 20px;border-bottom:1px solid var(--line)}
+.dsec:last-child{border-bottom:0}
+.dsec h3{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--ink3);margin:0 0 9px;font-weight:600;display:flex;align-items:center;gap:8px}
+.resumo p{margin:0 0 9px}
+.resumo ul{margin:0;padding-left:18px}
+.resumo li{margin-bottom:4px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.fact{background:var(--bg);border-radius:8px;padding:8px 10px}
+.fact small{display:block;font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px}
+.fact span{font-size:13.5px;font-weight:500}
+.disp{display:flex;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}
+.disp:first-of-type{border-top:0}
+.disp .ref{flex:none;width:92px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--gold);font-weight:500}
+.disp .tx{font-size:13.8px}
+.disp.match{background:color-mix(in srgb,var(--mark) 25%,transparent);border-radius:6px;padding-left:6px;padding-right:6px}
+#dispFilter{width:100%;border:1px solid var(--line2);border-radius:7px;padding:6px 10px;font:inherit;font-size:13px;margin-bottom:8px;background:var(--bg);color:var(--ink)}
+.rel{display:flex;flex-wrap:wrap;gap:6px}
+.rel button{border:1px solid var(--line2);background:var(--bg);color:var(--navy2);border-radius:6px;padding:3px 9px;font-size:12.5px}
+.rel button:hover{border-color:var(--navy2)}
+.note{font-size:12px;color:var(--ink3);margin-top:8px}
+
+/* AI */
+.ai{background:var(--gold-bg);border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);border-radius:9px;padding:12px 14px;font-size:14px}
+.ai .aih{display:flex;align-items:center;gap:7px;font-weight:600;color:var(--gold);font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.ai .out h4{font:600 14.5px "Source Serif 4",serif;margin:10px 0 4px;color:var(--ink)}
+.ai .out p{margin:0 0 7px}
+.ai .out ul{margin:0 0 7px;padding-left:18px}
+.ai .warnline{font-size:11.5px;color:var(--warn);margin-top:6px}
+.askrow{display:flex;gap:7px;margin-top:9px}
+.askrow input{flex:1;border:1px solid var(--line2);border-radius:7px;padding:7px 10px;font:inherit;font-size:13.5px;background:var(--panel);color:var(--ink)}
+.spin{width:13px;height:13px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(30px);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:8px;font-size:13px;opacity:0;transition:.2s;pointer-events:none;z-index:9}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.placeholder{padding:40px 24px;text-align:center;color:var(--ink3)}
+.placeholder svg{opacity:.5;margin-bottom:10px}
+kbd{font-family:"IBM Plex Mono",monospace;font-size:11px;border:1px solid var(--line2);border-bottom-width:2px;border-radius:4px;padding:0 4px;background:var(--panel)}
+footer{color:var(--ink3);font-size:12px;text-align:center;padding:0 0 30px}
+.recent{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--ink3)}
+.recent button{border:0;background:var(--bg);color:var(--ink2);border-radius:5px;padding:2px 8px;font-size:12px}
+
+.tabs{display:flex;gap:4px;padding:0 22px;margin-top:-4px}
+.tab{color:rgba(255,255,255,.75);text-decoration:none;padding:9px 14px 10px;font-size:14px;font-weight:500;border-radius:8px 8px 0 0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.on{color:#fff;background:rgba(255,255,255,.12);box-shadow:inset 0 -3px 0 var(--gold)}
+#view-legislacao .searchbar{padding-top:18px}
+.vwrap{max-width:1320px;margin:0 auto;padding:20px 22px 40px}
+.tgrid{display:grid;grid-template-columns:250px minmax(0,1fr) minmax(0,.9fr);gap:18px}
+@media (max-width:1100px){.tgrid{grid-template-columns:220px minmax(0,1fr)} #tdet{grid-column:1/-1}}
+@media (max-width:720px){.tgrid{grid-template-columns:1fr}}
+.tlist{padding:10px;position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto}
+.tlist h4{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--ink3);margin:12px 6px 5px;font-weight:600}
+.tlist h4:first-child{margin-top:4px}
+.tl{display:flex;align-items:center;gap:6px;width:100%;text-align:left;border:0;background:none;color:var(--ink2);padding:6px 8px;border-radius:6px;font-size:13.5px}
+.tl:hover{background:var(--bg)}
+.tl.on{background:var(--navy);color:#fff}
+@media (prefers-color-scheme:dark){.tl.on{color:#0b1830}}
+.tl .n{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;opacity:.7}
+.tsearch{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.tsearch input[type=search]{flex:1;min-width:220px;border:1.5px solid var(--line2);border-radius:9px;padding:11px 14px;font:inherit;font-size:15px;background:var(--panel);color:var(--ink);outline:none}
+.tsearch input:focus{border-color:var(--navy2)}
+.tsearch label{font-size:13px;color:var(--ink2);display:flex;gap:5px;align-items:center}
+.ttitle{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 2px 8px}
+.ttitle h2{font:600 17px "Source Serif 4",serif;margin:0}
+.ttitle .src{font-size:11.5px;color:var(--ink3)}
+.tdesc{font-size:13px;color:var(--ink2);margin:0 2px 10px}
+table.codes{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;font-size:13.5px}
+table.codes th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink3);background:var(--bg);padding:8px 10px;border-bottom:1px solid var(--line);font-weight:600;position:sticky;top:0}
+table.codes td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+table.codes tr:last-child td{border-bottom:0}
+table.codes tbody tr{cursor:pointer}
+table.codes tbody tr:hover td{background:color-mix(in srgb,var(--navy) 5%,transparent)}
+table.codes tbody tr.on td{background:color-mix(in srgb,var(--gold) 14%,transparent)}
+td.code{font-family:"IBM Plex Mono",monospace;font-weight:500;color:var(--navy);white-space:nowrap}
+tr.hdr td{background:var(--bg);font-weight:600;color:var(--ink2);font-size:12.5px;cursor:default}
+.tg{display:inline-block;font-size:10.5px;font-weight:600;border-radius:4px;padding:0 5px;margin:1px 3px 1px 0;background:var(--bg);color:var(--ink2);border:1px solid var(--line)}
+.tg.gold{background:var(--gold-bg);color:var(--gold);border-color:transparent}
+.grpchip{font-size:11px;color:var(--ink3)}
+.more{display:block;margin:10px auto;}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:6px 12px;font-size:13.5px}
+.kv dt{color:var(--ink3);font-size:12px;text-transform:uppercase;letter-spacing:.4px;padding-top:2px}
+.kv dd{margin:0}
+.linkish{border:0;background:none;color:var(--navy2);text-decoration:underline;padding:0;font:inherit;font-family:"IBM Plex Mono",monospace;font-size:12.5px;cursor:pointer;margin-right:6px}
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px}
+.tool{padding:16px 18px}
+.tool h3{font:600 16px "Source Serif 4",serif;margin:0 0 3px;color:var(--navy)}
+.tool .sub{font-size:12.5px;color:var(--ink3);margin:0 0 12px}
+.frm{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}
+.frm label{font-size:12px;color:var(--ink2);display:flex;flex-direction:column;gap:3px}
+.frm label.full{grid-column:1/-1}
+.frm label{min-width:0}
+.frm input,.frm select{width:100%;min-width:0;box-sizing:border-box;border:1px solid var(--line2);border-radius:7px;padding:7px 9px;font:inherit;font-size:14px;background:var(--bg);color:var(--ink)}
+.frm .chk{flex-direction:row;align-items:center;gap:6px;grid-column:1/-1}
+.res2{margin-top:12px;background:var(--bg);border-radius:8px;padding:10px 12px;font-size:13.5px}
+.res2 table{width:100%;border-collapse:collapse}
+.res2 td{padding:3px 0;border-bottom:1px dashed var(--line)}
+.res2 td:last-child{text-align:right;font-family:"IBM Plex Mono",monospace}
+.res2 tr.tot td{font-weight:700;color:var(--navy);border-bottom:0;font-size:14.5px}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}
+.formula{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink2);background:var(--panel);border:1px dashed var(--line2);border-radius:6px;padding:6px 8px;margin-top:8px;white-space:pre-wrap}
+.guide{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:16px}
+.gcard{padding:16px 18px}
+.gcard h3{font:600 16px "Source Serif 4",serif;margin:0 0 10px;color:var(--navy)}
+.gcard ul{margin:0;padding-left:18px;font-size:13.8px}
+.gcard li{margin-bottom:6px}
+.gcard .ref{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--gold);font-weight:500}
+.jur{border-top:1px dashed var(--line);padding:8px 0;font-size:13.5px}
+.jur:first-of-type{border-top:0}
+.jur b{color:var(--navy)}
+.timeline{display:grid;grid-template-columns:70px 1fr;gap:0}
+.timeline div{padding:6px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+.timeline .y{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--gold)}
+.gsearch{margin-bottom:14px}
+.gsearch input{width:100%;max-width:520px;border:1.5px solid var(--line2);border-radius:9px;padding:10px 14px;font:inherit;background:var(--panel);color:var(--ink)}
+
+.upd{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:6px;font-size:11.5px;color:rgba(255,255,255,.72)}
+.upd b{color:#fff;font-weight:600}
+.upd small{opacity:.75}
+.eqbadge{display:inline-block;font-size:11.5px;background:var(--gold-bg);color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);border-radius:6px;padding:3px 8px;margin-bottom:8px}
+.rhead{gap:8px}
+.mback{position:fixed;inset:0;background:rgba(10,18,32,.55);display:flex;align-items:flex-start;justify-content:center;z-index:20;padding:5vh 14px;overflow:auto}
+.mback[hidden]{display:none}
+.modal{width:100%;max-width:760px;background:var(--panel)}
+.mhead{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line)}
+.mhead h2{font:600 18px "Source Serif 4",serif;margin:0;color:var(--navy)}
+.mx{border:0;background:none;font-size:24px;color:var(--ink3);padding:0 6px}
+.mbody{padding:14px 18px}
+.mbody textarea{width:100%;box-sizing:border-box;border:1px solid var(--line2);border-radius:7px;padding:7px 9px;font:inherit;font-size:13.5px;background:var(--bg);color:var(--ink);resize:vertical}
+.mbody code{font-family:"IBM Plex Mono",monospace;font-size:11.5px}
+.mstatus{margin-top:10px;font-size:13px;min-height:18px}
+.mfoot{display:flex;gap:8px;align-items:center;padding:12px 18px;border-top:1px solid var(--line)}
+
+.ofic{margin-top:10px;border-top:1px dashed var(--line2);padding-top:9px}
+.ofh{font-size:12.8px;color:var(--ink2)}
+.ofh a{margin-left:6px}
+.ofl{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.ofa{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--bg);color:var(--ink);text-decoration:none;border-radius:999px;padding:4px 11px 4px 4px;font-size:12.5px}
+.ofa:hover{border-color:var(--navy2);color:var(--navy2)}
+.ofi{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:9.5px;font-weight:700;letter-spacing:.2px}
+@media (prefers-color-scheme:dark){.ofi{color:#0b1830}}
+.fsrc{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;padding:9px 0;border-top:1px dashed var(--line)}
+.fsrc:first-of-type{border-top:0}
+.fsrc a{color:var(--navy2);text-decoration:none}
+.fsrc a:hover{text-decoration:underline}
+.furl{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink3);margin-top:2px;word-break:break-all}
+
+.cfz{padding:14px 16px;margin-bottom:10px;border-color:color-mix(in srgb,var(--gold) 45%,var(--line));background:linear-gradient(0deg,var(--panel),var(--panel)),var(--panel)}
+.cfzh{display:flex;gap:10px;align-items:flex-start}
+.cfzlogo{flex:none;font:700 10.5px "IBM Plex Mono",monospace;letter-spacing:.5px;background:var(--navy);color:#fff;border-radius:6px;padding:5px 7px}
+@media (prefers-color-scheme:dark){.cfzlogo{color:#0b1830}}
+.cfzl{display:flex;flex-direction:column;gap:5px;font-size:13.3px}
+.cfzl a{color:var(--navy2);text-decoration:none}
+.cfzl a:hover{text-decoration:underline}
+.jlink{text-decoration:none}
+.jlink:hover b{text-decoration:underline}
+
+/* Versão app: recursos de IA ficam ocultos (dependem do Claude) */
+#aiLookupBtn,#aiSec,#askc,#aiC,#mia,.empty .btn.gold{display:none!important}
+
+.pdfimp{background:var(--bg);border:1px dashed var(--line2);border-radius:9px;padding:10px 12px;margin-bottom:12px}
+.pdfbox{margin-top:10px;font-size:13px;background:var(--bg);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:3px}
+.pdfbox a{color:var(--navy2);word-break:break-all}
+.pvmodal{max-width:1000px;width:100%;height:92vh;display:flex;flex-direction:column}
+.pvmodal .mhead{flex-wrap:wrap;gap:8px}
+.pvpages{flex:1;overflow:auto;background:#525659;padding:14px;display:flex;flex-direction:column;align-items:center;gap:12px;border-radius:0 0 10px 10px}
+.pvpage{position:relative;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.pvpage canvas{display:block;max-width:100%}
+.pvnum{position:absolute;top:-2px;right:-58px;font-size:11px;color:#ddd}
+#pvback{padding:2vh 10px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="seal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v18M5 7h14M7 7l-3 7a3 3 0 0 0 6 0L7 7zm10 0-3 7a3 3 0 0 0 6 0l-3-7zM8 21h8"/></svg></div>
+    <div class="brand">
+      <h1>Buscador de Legislação Tributária</h1>
+      <p>ICMS · Substituição Tributária · Áreas de Livre Comércio · Reforma Tributária · Legislação de Roraima</p>
+      <div class="upd" id="upd"></div>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+  <nav class="wrap tabs" role="tablist">
+    <a href="#legislacao" data-view="legislacao" class="tab">Legislação</a>
+    <a href="#tabelas" data-view="tabelas" class="tab">Tabelas e códigos</a>
+    <a href="#ferramentas" data-view="ferramentas" class="tab">Ferramentas do auditor</a>
+    <a href="#guia" data-view="guia" class="tab">Guia de referência</a>
+  </nav>
+</header>
+<div id="view-legislacao" class="view">
+
+<section class="searchbar">
+  <div class="wrap">
+    <div class="sbox">
+      <div class="modes" role="group" aria-label="Modo de busca">
+        <button class="mode" data-mode="auto" aria-pressed="true">Busca inteligente</button>
+        <button class="mode" data-mode="numero" aria-pressed="false">Por número</button>
+        <button class="mode" data-mode="assunto" aria-pressed="false">Por assunto</button>
+        <button class="mode" data-mode="trecho" aria-pressed="false">Por trecho / dispositivo</button>
+      </div>
+      <div class="qrow">
+        <div class="qinput">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="q" type="search" autocomplete="off" placeholder="Ex.: 142/18 · LC 87 art. 8 · substituição tributária combustíveis · decadência" aria-label="Buscar legislação">
+          <button id="clearQ" aria-label="Limpar">×</button>
+        </div>
+        <button class="btn gold" id="aiLookupBtn" title="Pedir à IA um resumo de qualquer norma, mesmo fora da base">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>Resumir com IA
+        </button>
+      </div>
+      <div class="parsed" id="parsed"></div>
+      <div class="hint">Experimente:
+        <code>142/18</code> <code>LC 87/96 art. 8</code> <code>DIFAL não contribuinte</code> <code>monofásico diesel</code> <code>responsabilidade solidária</code> <code>RICMS-RR</code> <code>eletropostos</code> <code>cosméticos</code> <code>alíquota Roraima</code> <code>Simples Nacional ST</code>
+        · <kbd>/</kbd> foca a busca · <kbd>↑</kbd><kbd>↓</kbd> navegam nos resultados
+      </div>
+      <div class="recent" id="recent"></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+<main>
+  <aside>
+    <div class="card" id="filters">
+      <div class="fgroup"><h3>Esfera</h3><div id="fEsfera"></div></div>
+      <div class="fgroup"><h3>Tipo de norma</h3><div id="fTipo"></div></div>
+      <div class="fgroup"><h3>Situação</h3><div id="fSit"></div></div>
+      <div class="fgroup"><h3>Temas</h3><div class="chips" id="fTemas"></div></div>
+      <button class="linkbtn" id="resetF">Limpar filtros</button>
+    </div>
+  </aside>
+
+  <section>
+    <div class="rhead">
+      <h2 id="rcount">Resultados</h2>
+      <select id="sort" aria-label="Ordenar">
+        <option value="rel">Relevância</option>
+        <option value="new">Mais recentes</option>
+        <option value="old">Mais antigas</option>
+        <option value="num">Tipo e número</option>
+      </select>
+    </div>
+    <div id="results"></div>
+  </section>
+
+  <section id="detail">
+    <div class="card" id="dcard">
+      <div class="placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h6"/></svg>
+        <div>Selecione uma norma para ver o resumo, os dispositivos principais e as normas relacionadas.</div>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+</div><!-- /view-legislacao -->
+<div id="view-tabelas" class="view" hidden></div>
+<div id="view-ferramentas" class="view" hidden></div>
+<div id="view-guia" class="view" hidden></div>
+<footer>Versão web do Buscador de Legislação Tributária · uso interno SEFAZ-RR · A base traz resumos interpretativos para consulta rápida e não substitui o texto oficial. Confira sempre a redação vigente nas fontes oficiais (Planalto, CONFAZ, SEFAZ-RR).</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ======================= BASE DE NORMAS ======================= */
+/* Data da última revisão da base de normas (atualizar a cada revisão) */
+const LEG_ATUALIZADO = "2026-11-18";
+const PLANALTO = "https://www.planalto.gov.br/ccivil_03/";
+const CONFAZ = "https://www.confaz.fazenda.gov.br/legislacao";
+const SEFAZRR = "https://www.sefaz.rr.gov.br/";
+const LW = "https://www.legisweb.com.br/legislacao/?id=";
+
+const NORMAS = [
+/* ---------- CONSTITUCIONAL ---------- */
+{id:"cf88-155",tipo:"Constituição",sigla:"CF/1988",numero:"",ano:1988,data:"05/10/1988",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Constituição Federal – art. 155 (ICMS)",
+ ementa:"Atribui aos Estados e ao Distrito Federal a competência para instituir o ICMS e fixa os seus princípios constitucionais.",
+ resumo:["O art. 155, II, dá aos Estados e ao DF a competência para instituir o imposto sobre circulação de mercadorias e sobre prestações de serviços de transporte interestadual e intermunicipal e de comunicação.","O § 2º fixa o regime do imposto: não cumulatividade, seletividade facultativa, alíquotas interestaduais definidas pelo Senado, DIFAL, imunidades e reserva de lei complementar para as normas gerais.","Com a EC 132/2023, o ICMS será extinto gradualmente e substituído pelo IBS (art. 156-A), com transição entre 2029 e 2032."],
+ dispositivos:[
+  ["Art. 155, II","Competência estadual para instituir o ICMS, ainda que as operações e prestações se iniciem no exterior."],
+  ["§ 2º, I","Não cumulatividade: compensa-se o imposto devido em cada operação com o montante cobrado nas anteriores."],
+  ["§ 2º, III","Seletividade facultativa em função da essencialidade das mercadorias e serviços."],
+  ["§ 2º, IV","Resolução do Senado fixa as alíquotas interestaduais e de exportação."],
+  ["§ 2º, VII e VIII","Diferencial de alíquotas (DIFAL) nas operações destinadas a consumidor final de outro Estado, contribuinte ou não (redação da EC 87/2015)."],
+  ["§ 2º, X","Não incidência sobre exportações, ouro como ativo financeiro e serviços de comunicação por radiodifusão livre e gratuita."],
+  ["§ 2º, XII","Reserva de lei complementar: contribuintes, substituição tributária, compensação, local da operação, base de cálculo e regulação dos benefícios fiscais por deliberação dos Estados."],
+  ["§ 2º, XII, h","Incidência monofásica sobre combustíveis e lubrificantes definidos em LC (base da LC 192/2022)."],
+  ["§ 7º (art. 150)","Autoriza a substituição tributária para frente, com restituição se o fato gerador presumido não ocorrer."]],
+ temas:["ICMS","Competência","Não cumulatividade","DIFAL","Substituição tributária"],
+ rel:["ec87-2015","ec132-2023","lc87-1996"],
+ link:PLANALTO+"constituicao/constituicao.htm"},
+
+{id:"ec87-2015",tipo:"Emenda Constitucional",sigla:"EC",numero:"87",ano:2015,data:"16/04/2015",esfera:"Federal",situacao:"Vigente",
+ titulo:"Emenda Constitucional nº 87/2015",
+ ementa:"Altera o § 2º do art. 155 da CF e acrescenta artigo ao ADCT para tratar da sistemática de cobrança do ICMS nas operações e prestações destinadas a consumidor final não contribuinte localizado em outro Estado.",
+ resumo:["Estende o DIFAL às operações e prestações interestaduais destinadas a consumidor final não contribuinte do ICMS, situação típica do comércio eletrônico.","Nesses casos, o recolhimento do DIFAL cabe ao remetente. Quando o destinatário é contribuinte, cabe a ele.","O ADCT estabeleceu partilha gradual entre origem e destino de 2015 a 2018. Desde 2019, 100% do DIFAL pertence ao Estado de destino."],
+ dispositivos:[
+  ["Art. 155, § 2º, VII","Adota-se a alíquota interestadual e cabe ao Estado de destino a diferença entre a alíquota interna e a interestadual."],
+  ["Art. 155, § 2º, VIII","Responsável pelo DIFAL: o destinatário, se contribuinte; o remetente, se o destinatário não for contribuinte."],
+  ["ADCT, art. 99","Partilha transitória do DIFAL: 20% ao destino em 2015, 40% em 2016, 60% em 2017, 80% em 2018 e 100% a partir de 2019."]],
+ temas:["DIFAL","Comércio eletrônico","ICMS"],
+ rel:["lc190-2022","conv236-2021","conv93-2015","prot21-2011"],
+ link:PLANALTO+"constituicao/emendas/emc/emc87.htm"},
+
+{id:"ec132-2023",tipo:"Emenda Constitucional",sigla:"EC",numero:"132",ano:2023,data:"20/12/2023",esfera:"Federal",situacao:"Vigente",
+ titulo:"Emenda Constitucional nº 132/2023 – Reforma Tributária",
+ ementa:"Altera o Sistema Tributário Nacional, instituindo o IBS, a CBS e o Imposto Seletivo.",
+ resumo:["Cria o IVA dual sobre o consumo: o IBS (de Estados, DF e Municípios), que substitui ICMS e ISS, e a CBS (federal), que substitui PIS e Cofins. Cria também o Imposto Seletivo (IS) sobre bens e serviços prejudiciais à saúde ou ao meio ambiente.","Prevê tributação no destino, não cumulatividade ampla, cobrança 'por fora', cashback e regimes diferenciados e específicos.","Transição: fase de teste em 2026, com CBS de 0,9% e IBS de 0,1% compensáveis; CBS plena a partir de 2027; redução gradual de ICMS e ISS entre 2029 e 2032; extinção de ambos em 2033.","Institui o Comitê Gestor do IBS e fundos de compensação de benefícios fiscais e de desenvolvimento regional. Mantém o tratamento diferenciado da Zona Franca de Manaus e das Áreas de Livre Comércio."],
+ dispositivos:[
+  ["Art. 156-A","Institui o IBS, de competência compartilhada entre Estados, DF e Municípios."],
+  ["Art. 195, V","Institui a CBS, contribuição sobre bens e serviços de competência da União."],
+  ["Art. 153, VIII","Institui o Imposto Seletivo sobre bens e serviços prejudiciais à saúde ou ao meio ambiente."],
+  ["Art. 156-B","Comitê Gestor do IBS: arrecadação, compensação e distribuição do produto."],
+  ["ADCT, arts. 125–133","Regras de transição: testes em 2026, redução progressiva do ICMS e do ISS entre 2029 e 2032 e extinção em 2033."],
+  ["ADCT, art. 92-B","Manutenção do diferencial competitivo da ZFM e das Áreas de Livre Comércio."]],
+ temas:["Reforma tributária","IBS","CBS","Imposto Seletivo","Transição"],
+ rel:["lc214-2025","cf88-155"],
+ link:PLANALTO+"constituicao/emendas/emc/emc132.htm"},
+
+/* ---------- LEIS COMPLEMENTARES ---------- */
+{id:"lc87-1996",tipo:"Lei Complementar",sigla:"LC",numero:"87",ano:1996,data:"13/09/1996",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei Complementar nº 87/1996 – Lei Kandir",
+ ementa:"Dispõe sobre o imposto dos Estados e do Distrito Federal sobre operações relativas à circulação de mercadorias e sobre prestações de serviços de transporte interestadual e intermunicipal e de comunicação, e dá outras providências.",
+ resumo:["É a lei geral nacional do ICMS. Define fato gerador, contribuintes, base de cálculo, local da operação, substituição tributária, não cumulatividade e regime de créditos.","Desonera as exportações de mercadorias e serviços, com manutenção dos créditos.","Disciplina a substituição tributária (arts. 6º a 10): a base de cálculo da ST para frente é formada pelo preço praticado acrescido da MVA ou é fixada por preço final (PMPF), e há restituição quando o fato gerador presumido não se realiza.","Após a EC 132/2023, segue aplicável até a extinção do ICMS em 2033."],
+ dispositivos:[
+  ["Art. 2º","Hipóteses de incidência do ICMS: circulação de mercadorias, transporte, comunicação e importação."],
+  ["Art. 3º","Não incidência, inclusive sobre operações e prestações que destinem mercadorias e serviços ao exterior (inciso II)."],
+  ["Art. 4º","Contribuinte: quem realiza operações com habitualidade ou em volume que caracterize intuito comercial."],
+  ["Art. 5º","Responsabilidade de terceiros que contribuam para o não recolhimento do imposto."],
+  ["Art. 6º","Lei estadual pode atribuir a responsabilidade a contribuinte ou depositário, que passa à condição de substituto tributário."],
+  ["Art. 7º","A ST alcança também a entrada de mercadoria destinada a uso, consumo ou ativo fixo."],
+  ["Art. 8º","Base de cálculo da ST: preço praticado + encargos + MVA (inciso II, 'c'). Admite preço final a consumidor fixado por órgão público ou PMPF (§§ 2º a 6º)."],
+  ["Art. 9º","ST em operações interestaduais depende de acordo entre os Estados (convênio ou protocolo)."],
+  ["Art. 10","Restituição do imposto pago por ST quando o fato gerador presumido não se realizar (cf. STF, Tema 201: também quando a base efetiva for inferior à presumida)."],
+  ["Art. 12","Momento da ocorrência do fato gerador: saída do estabelecimento, desembaraço aduaneiro e demais hipóteses."],
+  ["Art. 13","Base de cálculo, com o imposto integrando a própria base (cálculo 'por dentro', § 1º, I)."],
+  ["Art. 11","Local da operação e estabelecimento responsável, com autonomia de cada estabelecimento (§ 3º, II)."],
+  ["Arts. 19 a 26","Não cumulatividade, direito a crédito, estorno e apuração periódica."],
+  ["Art. 33","Restrições e prazos para crédito de uso e consumo, energia elétrica e comunicação."]],
+ temas:["ICMS","Substituição tributária","MVA","PMPF","Base de cálculo","Não cumulatividade","Crédito","Exportação","Restituição"],
+ rel:["cf88-155","conv142-2018","lc190-2022","lc192-2022","lei59-1993-rr"],
+ link:PLANALTO+"leis/lcp/lcp87.htm"},
+
+{id:"lc24-1975",tipo:"Lei Complementar",sigla:"LC",numero:"24",ano:1975,data:"07/01/1975",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei Complementar nº 24/1975",
+ ementa:"Dispõe sobre os convênios para a concessão de isenções do imposto sobre operações relativas à circulação de mercadorias, e dá outras providências.",
+ resumo:["Isenções, reduções de base, créditos presumidos e demais benefícios fiscais de ICMS só podem ser concedidos por convênio celebrado pelos Estados no CONFAZ.","A concessão exige decisão unânime dos Estados presentes, e a revogação exige quatro quintos.","Benefícios concedidos sem convênio são nulos, com as sanções previstas no art. 8º."],
+ dispositivos:[
+  ["Art. 1º","Isenções e demais benefícios de ICMS dependem de convênio entre os Estados."],
+  ["Art. 2º","Quórum: reunião com maioria dos Estados; concessão por unanimidade; revogação por 4/5."],
+  ["Art. 4º","Ratificação dos convênios pelo Poder Executivo de cada Estado em até 15 dias da publicação."],
+  ["Art. 8º","Inobservância: nulidade do ato, ineficácia do crédito fiscal e exigibilidade do imposto não pago ou devolvido."]],
+ temas:["Benefícios fiscais","CONFAZ","Isenção","Guerra fiscal"],
+ rel:["lc160-2017","conv190-2017"],
+ link:PLANALTO+"leis/lcp/lcp24.htm"},
+
+{id:"lc160-2017",tipo:"Lei Complementar",sigla:"LC",numero:"160",ano:2017,data:"07/08/2017",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei Complementar nº 160/2017",
+ ementa:"Dispõe sobre convênio que permite aos Estados e ao Distrito Federal deliberar sobre a remissão dos créditos tributários decorrentes de isenções, incentivos e benefícios fiscais instituídos em desacordo com a CF, e a reinstituição desses benefícios.",
+ resumo:["Encaminha a solução da 'guerra fiscal': autoriza convênio, com quórum reduzido, para remitir créditos e convalidar benefícios concedidos sem aprovação do CONFAZ.","Exige que os Estados publiquem e registrem os atos concessivos.","Fixa prazos máximos de fruição dos benefícios reinstituídos, conforme o setor (até 15 anos para indústria e infraestrutura)."],
+ dispositivos:[
+  ["Art. 1º","Convênio pode remitir créditos e reinstituir benefícios irregulares."],
+  ["Art. 2º","Quórum especial: 2/3 das unidades federadas e 1/3 das de cada região."],
+  ["Art. 3º","Condições: publicação dos atos concessivos e registro e depósito na Secretaria Executiva do CONFAZ; prazos máximos de fruição."],
+  ["Art. 9º","Subvenções para investimento: tratamento na apuração do IRPJ e da CSLL (dispositivo posteriormente afetado pela Lei 14.789/2023)."]],
+ temas:["Benefícios fiscais","Guerra fiscal","Convalidação","CONFAZ"],
+ rel:["lc24-1975","conv190-2017"],
+ link:PLANALTO+"leis/lcp/lcp160.htm"},
+
+{id:"lc190-2022",tipo:"Lei Complementar",sigla:"LC",numero:"190",ano:2022,data:"04/01/2022",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei Complementar nº 190/2022 – DIFAL",
+ ementa:"Altera a Lei Complementar nº 87/1996 para regulamentar a cobrança do ICMS nas operações e prestações interestaduais destinadas a consumidor final não contribuinte do imposto.",
+ resumo:["Atende ao STF (Tema 1093 e ADI 5469), que exigiu lei complementar para a cobrança do DIFAL instituído pela EC 87/2015.","Define o local da operação, o sujeito passivo e a base de cálculo do DIFAL e obriga os Estados a manter portal com as informações necessárias ao cumprimento das obrigações.","O STF (ADIs 7066, 7070 e 7078) admitiu a cobrança após a anterioridade nonagesimal, ou seja, a partir de abril de 2022."],
+ dispositivos:[
+  ["LC 87, art. 4º, § 2º","Contribuinte do DIFAL: o destinatário contribuinte ou o remetente, quando o destinatário não for contribuinte."],
+  ["LC 87, art. 11, V","Local da operação para efeito de cobrança do DIFAL."],
+  ["LC 87, art. 13, § 1º e § 3º","Base de cálculo do DIFAL, com o imposto 'por dentro' (base única)."],
+  ["LC 87, art. 24-A","Portal estadual com legislação, alíquotas, benefícios e obrigações do DIFAL."],
+  ["Art. 3º","Vigência condicionada ao art. 150, III, 'c', da CF (noventena)."]],
+ temas:["DIFAL","Comércio eletrônico","ICMS","Não contribuinte"],
+ rel:["ec87-2015","conv236-2021","lc87-1996"],
+ link:PLANALTO+"leis/lcp/lcp190.htm"},
+
+{id:"lc192-2022",tipo:"Lei Complementar",sigla:"LC",numero:"192",ano:2022,data:"11/03/2022",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei Complementar nº 192/2022 – ICMS monofásico de combustíveis",
+ ementa:"Define os combustíveis sobre os quais incidirá uma única vez o ICMS, ainda que as operações se iniciem no exterior, e dá outras providências.",
+ resumo:["Institui a incidência monofásica do ICMS sobre gasolina e etanol anidro combustível, diesel e biodiesel e GLP, inclusive o derivado do gás natural.","A alíquota é ad rem (valor fixo por unidade de medida), uniforme em todo o território nacional, e definida por deliberação dos Estados no CONFAZ.","Afasta a substituição tributária para esses produtos e prevê repartição do imposto entre origem e destino.","Foi implementada pelos Convênios ICMS 199/2022 (diesel, biodiesel e GLP) e 15/2023 (gasolina e EAC)."],
+ dispositivos:[
+  ["Art. 2º","Combustíveis sujeitos à monofasia: gasolina e EAC, diesel e biodiesel, GLP e GLGN."],
+  ["Art. 3º","Contribuintes: produtor, importador e demais definidos pelos Estados."],
+  ["Art. 4º","Alíquotas ad rem uniformes, definidas mediante deliberação do CONFAZ, com reajuste periódico."],
+  ["Art. 5º","Não se aplicam as regras de ST e de diferencial de alíquotas a esses combustíveis."],
+  ["Art. 6º","Repartição do imposto nas operações interestaduais."]],
+ temas:["Combustíveis","Monofásico","Ad rem","ICMS"],
+ rel:["conv199-2022","conv15-2023","conv110-2007","lc194-2022"],
+ link:PLANALTO+"leis/lcp/lcp192.htm"},
+
+{id:"lc194-2022",tipo:"Lei Complementar",sigla:"LC",numero:"194",ano:2022,data:"23/06/2022",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei Complementar nº 194/2022 – Essencialidade",
+ ementa:"Altera o CTN e a LC 87/1996 para considerar bens e serviços essenciais os relativos aos combustíveis, à energia elétrica, às comunicações e ao transporte coletivo, e dá outras providências.",
+ resumo:["Classifica combustíveis, gás natural, energia elétrica, comunicações e transporte coletivo como essenciais e indispensáveis, o que impede alíquotas acima da alíquota modal (geral) do Estado.","Previu compensação da União aos Estados por perdas de arrecadação, depois objeto de acordo no STF.","Afetou diretamente a arrecadação estadual de combustíveis e energia a partir de 2022."],
+ dispositivos:[
+  ["CTN, art. 18-A","Bens e serviços essenciais não podem ser tratados como supérfluos para fins de alíquota."],
+  ["LC 87, art. 32-A","Alíquotas sobre combustíveis, energia, comunicações e transporte coletivo não podem superar a alíquota das operações em geral."],
+  ["Art. 3º","Compensação de perdas aos Estados por dedução de dívidas com a União (regra transitória)."]],
+ temas:["Combustíveis","Energia elétrica","Comunicação","Essencialidade","Alíquota"],
+ rel:["lc192-2022","lc87-1996"],
+ link:PLANALTO+"leis/lcp/lcp194.htm"},
+
+{id:"lc123-2006",tipo:"Lei Complementar",sigla:"LC",numero:"123",ano:2006,data:"14/12/2006",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei Complementar nº 123/2006 – Simples Nacional",
+ ementa:"Institui o Estatuto Nacional da Microempresa e da Empresa de Pequeno Porte.",
+ resumo:["Institui o Simples Nacional, regime unificado de arrecadação que inclui o ICMS no DAS para ME e EPP.","Algumas hipóteses de ICMS ficam fora do DAS e são recolhidas à parte: substituição tributária, antecipação com ou sem encerramento de tributação, DIFAL e importação, entre outras.","Prevê sublimites estaduais de receita bruta para recolhimento do ICMS e do ISS no regime."],
+ dispositivos:[
+  ["Art. 3º","Conceitos de ME (até R$ 360 mil) e EPP (até R$ 4,8 milhões) de receita bruta anual."],
+  ["Art. 13, VII","Inclusão do ICMS no regime unificado."],
+  ["Art. 13, § 1º, XIII","ICMS devido fora do Simples: ST, antecipação, DIFAL, importação, energia, combustíveis, entre outros."],
+  ["Art. 13, § 1º, XIII, 'g'","Antecipação nas aquisições interestaduais e DIFAL de uso e consumo e ativo imobilizado."],
+  ["Art. 18, § 4º-A","Segregação das receitas sujeitas a ST e antecipação para não haver dupla tributação."],
+  ["Art. 19","Sublimites estaduais de receita bruta para o ICMS."],
+  ["Art. 23","Vedação à transferência de créditos, salvo a hipótese do § 1º."]],
+ temas:["Simples Nacional","Substituição tributária","Antecipação","DIFAL","Microempresa"],
+ rel:["lc87-1996","conv142-2018"],
+ link:PLANALTO+"leis/lcp/lcp123.htm"},
+
+{id:"lc214-2025",tipo:"Lei Complementar",sigla:"LC",numero:"214",ano:2025,data:"16/01/2025",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei Complementar nº 214/2025 – IBS, CBS e Imposto Seletivo",
+ ementa:"Institui o Imposto sobre Bens e Serviços (IBS), a Contribuição Social sobre Bens e Serviços (CBS) e o Imposto Seletivo (IS); cria o Comitê Gestor do IBS e altera a legislação tributária.",
+ resumo:["Regulamenta a EC 132/2023, com fato gerador, base de cálculo, sujeição passiva, não cumulatividade e apuração do IBS e da CBS.","Disciplina o split payment, o cashback, a cesta básica nacional com alíquota zero e os regimes diferenciados (reduções de 30% e 60%) e específicos (combustíveis, serviços financeiros, imóveis, entre outros).","Trata da transição: em 2026, o destaque de CBS (0,9%) e IBS (0,1%) em documentos fiscais tem caráter de teste.","Contém regras para a Zona Franca de Manaus e as Áreas de Livre Comércio, que interessam diretamente a Roraima (ALC de Boa Vista e Bonfim)."],
+ dispositivos:[
+  ["Livro I","Normas gerais do IBS e da CBS: incidência, sujeição passiva, não cumulatividade e apuração."],
+  ["Split payment","Recolhimento na liquidação financeira, com segregação automática dos tributos."],
+  ["Cashback","Devolução a famílias de baixa renda inscritas no CadÚnico."],
+  ["Cesta Básica Nacional","Produtos com alíquota zero de IBS e CBS."],
+  ["Regimes diferenciados","Reduções de 30% e 60% da alíquota para setores como saúde, educação e insumos agropecuários."],
+  ["Regimes específicos","Combustíveis (monofásico), serviços financeiros, planos de saúde, bens imóveis e cooperativas."],
+  ["ZFM e ALC","Tratamento favorecido para a Zona Franca de Manaus e as Áreas de Livre Comércio."],
+  ["Livro II","Imposto Seletivo sobre bens e serviços prejudiciais à saúde ou ao meio ambiente."],
+  ["Transição","Fase de teste em 2026 e implantação gradual até 2033."]],
+ temas:["Reforma tributária","IBS","CBS","Imposto Seletivo","Split payment","Zona Franca","Área de Livre Comércio"],
+ rel:["ec132-2023","lei11732-2008"],
+ link:PLANALTO+"leis/lcp/lcp214.htm"},
+
+/* ---------- LEIS ORDINÁRIAS FEDERAIS ---------- */
+{id:"ctn-1966",tipo:"Lei",sigla:"Lei",numero:"5.172",ano:1966,data:"25/10/1966",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Código Tributário Nacional – Lei nº 5.172/1966",
+ ementa:"Dispõe sobre o Sistema Tributário Nacional e institui normas gerais de direito tributário aplicáveis à União, Estados e Municípios.",
+ resumo:["Lei com status de lei complementar que fixa as normas gerais de direito tributário: obrigação, crédito, lançamento, responsabilidade, suspensão, extinção, exclusão e garantias do crédito.","É central para a atividade fiscal: lançamento de ofício, decadência e prescrição, responsabilidade de sócios e terceiros e denúncia espontânea.","Disciplina também a administração tributária: fiscalização, dívida ativa e certidões."],
+ dispositivos:[
+  ["Art. 3º","Conceito de tributo."],
+  ["Art. 113","Obrigação principal e acessória; o descumprimento da acessória converte-se em principal quanto à penalidade."],
+  ["Art. 116, par. único","Norma geral antielisiva: desconsideração de atos ou negócios dissimulados."],
+  ["Art. 121","Sujeito passivo: contribuinte e responsável."],
+  ["Art. 124","Solidariedade: pessoas com interesse comum na situação que constitua o fato gerador."],
+  ["Art. 128","Atribuição de responsabilidade a terceiro vinculado ao fato gerador (base da ST)."],
+  ["Art. 134","Responsabilidade de terceiros, como pais, tutores, administradores e sócios de sociedades de pessoas."],
+  ["Art. 135","Responsabilidade pessoal de diretores, gerentes e representantes por atos com excesso de poderes ou infração de lei."],
+  ["Art. 136","Responsabilidade por infrações independe da intenção do agente."],
+  ["Art. 138","Denúncia espontânea, que exclui a multa."],
+  ["Art. 142","Lançamento: atividade administrativa vinculada e obrigatória."],
+  ["Art. 149","Lançamento de ofício e revisão do lançamento."],
+  ["Art. 150, § 4º","Decadência no lançamento por homologação: 5 anos do fato gerador, salvo dolo, fraude ou simulação."],
+  ["Art. 151","Suspensão da exigibilidade do crédito: moratória, depósito, recursos, liminar e parcelamento."],
+  ["Art. 156","Modalidades de extinção do crédito tributário."],
+  ["Art. 173","Decadência: 5 anos contados do 1º dia do exercício seguinte àquele em que o lançamento poderia ter sido efetuado."],
+  ["Art. 174","Prescrição: 5 anos da constituição definitiva do crédito para a ação de cobrança."],
+  ["Art. 185","Presunção de fraude na alienação de bens após a inscrição em dívida ativa."],
+  ["Arts. 194 a 200","Fiscalização: livros, documentos e dever de informação de terceiros."],
+  ["Arts. 201 a 204","Dívida ativa: inscrição, requisitos do termo e presunção de certeza e liquidez."]],
+ temas:["Normas gerais","Lançamento","Decadência","Prescrição","Responsabilidade tributária","Responsabilidade solidária","Fiscalização","Dívida ativa","Denúncia espontânea"],
+ rel:["lei6830-1980","lei8137-1990"],
+ link:PLANALTO+"leis/l5172compilado.htm"},
+
+{id:"lei8137-1990",tipo:"Lei",sigla:"Lei",numero:"8.137",ano:1990,data:"27/12/1990",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei nº 8.137/1990 – Crimes contra a ordem tributária",
+ ementa:"Define crimes contra a ordem tributária, econômica e contra as relações de consumo, e dá outras providências.",
+ resumo:["Tipifica a sonegação fiscal (art. 1º, crimes materiais) e condutas formais (art. 2º), entre elas deixar de recolher tributo descontado ou cobrado na qualidade de sujeito passivo.","O STF (RHC 163.334) decidiu que o não recolhimento contumaz e com dolo de apropriação do ICMS declarado se enquadra no art. 2º, II.","Pela Súmula Vinculante 24, o crime material do art. 1º só se tipifica após o lançamento definitivo do tributo."],
+ dispositivos:[
+  ["Art. 1º","Suprimir ou reduzir tributo mediante omissão de informação, fraude, falsificação ou omissão de nota fiscal. Pena: reclusão de 2 a 5 anos."],
+  ["Art. 1º, V","Negar ou deixar de fornecer nota fiscal relativa a venda de mercadoria ou prestação de serviço."],
+  ["Art. 2º, I","Fazer declaração falsa ou omitir declaração para se eximir do pagamento de tributo."],
+  ["Art. 2º, II","Deixar de recolher, no prazo legal, tributo descontado ou cobrado, na qualidade de sujeito passivo."],
+  ["Art. 3º","Crimes funcionais praticados por servidor público."],
+  ["Art. 16","Delação e representação: qualquer pessoa pode provocar o Ministério Público."]],
+ temas:["Crime tributário","Sonegação","Apropriação indébita","Representação fiscal"],
+ rel:["ctn-1966"],
+ link:PLANALTO+"leis/l8137.htm"},
+
+{id:"lei6830-1980",tipo:"Lei",sigla:"Lei",numero:"6.830",ano:1980,data:"22/09/1980",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei nº 6.830/1980 – Lei de Execução Fiscal",
+ ementa:"Dispõe sobre a cobrança judicial da Dívida Ativa da Fazenda Pública, e dá outras providências.",
+ resumo:["Rege a execução fiscal da dívida ativa tributária e não tributária da União, dos Estados, do DF e dos Municípios.","Trata da Certidão de Dívida Ativa (CDA) como título executivo, da citação, da penhora e garantia do juízo, dos embargos e da prescrição intercorrente.","O CPC aplica-se de forma subsidiária."],
+ dispositivos:[
+  ["Art. 2º","Conceito de dívida ativa e requisitos do termo de inscrição e da CDA."],
+  ["Art. 3º","Presunção relativa de certeza e liquidez da dívida ativa regularmente inscrita."],
+  ["Art. 8º","Citação do executado para pagar em 5 dias ou garantir a execução."],
+  ["Art. 9º","Formas de garantia: depósito, fiança, seguro-garantia e penhora."],
+  ["Art. 16","Embargos à execução em 30 dias, contados da garantia."],
+  ["Art. 40","Suspensão do curso e prescrição intercorrente (cf. STJ, Tema 566)."]],
+ temas:["Execução fiscal","Dívida ativa","Cobrança","Prescrição"],
+ rel:["ctn-1966"],
+ link:PLANALTO+"leis/l6830.htm"},
+
+{id:"lei11732-2008",tipo:"Lei",sigla:"Lei",numero:"11.732",ano:2008,data:"30/06/2008",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei nº 11.732/2008 – Áreas de Livre Comércio de Boa Vista e Bonfim",
+ ementa:"Altera as Leis nº 11.508/2007 (ZPE) e nº 8.256/1991 (Áreas de Livre Comércio de Roraima), entre outras providências.",
+ resumo:["Altera a Lei nº 8.256/1991 e transforma a antiga ALC de Pacaraima em Área de Livre Comércio de Boa Vista (ALCBV), mantida a ALC de Bonfim (ALCB). Pacaraima foi reincluída na ALCBV pela Lei nº 15.273/2025.","As ALCs de Roraima passam a ter um regime aproximado ao da Zona Franca de Manaus, com suspensão e isenção de tributos federais na entrada de mercadorias, conforme a destinação.","No ICMS, a isenção nas remessas de industrializados nacionais às ALCs vem do Convênio ICMS 52/1992, que estende o Convênio ICM 65/1988. A extensão a Boa Vista veio pelo Convênio ICMS 25/2008.","A EC 132/2023 e a LC 214/2025 mantêm tratamento diferenciado para as ALCs na transição para o IBS e a CBS."],
+ dispositivos:[
+  ["Alteração da Lei 8.256/1991","Transformação da ALC de Pacaraima em ALC de Boa Vista; manutenção da ALC de Bonfim."],
+  ["Lei 8.256/1991","Regime original das ALCs de Roraima, alterado por esta lei."],
+  ["Regime fiscal","Suspensão e isenção de tributos federais na entrada de mercadorias estrangeiras e nacionais, conforme a destinação."],
+  ["ICMS","Isenção estendida pelo Convênio ICMS 52/1992; crédito presumido estadual pela Lei RR nº 25/1992."]],
+ temas:["Área de Livre Comércio","Zona Franca","Roraima","Benefícios fiscais"],
+ rel:["lei8256-1991","conv52-1992","conv65-1988","lei25-1992-rr","lc214-2025"],
+ link:PLANALTO+"_ato2007-2010/2008/lei/l11732.htm"},
+
+{id:"lc204-2023",tipo:"Lei Complementar",sigla:"LC",numero:"204",ano:2023,data:"28/12/2023",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei Complementar nº 204/2023 – Transferências entre estabelecimentos",
+ ementa:"Altera a Lei Complementar nº 87/1996 para vedar a incidência do ICMS sobre a saída de mercadoria para estabelecimento localizado em outra unidade da Federação pertencente ao mesmo titular.",
+ resumo:["Adapta a Lei Kandir à decisão do STF na ADC 49: o deslocamento de mercadorias entre estabelecimentos do mesmo titular não é fato gerador do ICMS.","Assegura a manutenção dos créditos e a transferência do crédito relativo às operações anteriores para o estabelecimento de destino.","Os procedimentos de transferência de crédito foram detalhados pelo CONFAZ (Convênio ICMS 109/2024)."],
+ dispositivos:[["LC 87, art. 12, I","Não incidência na transferência para estabelecimento do mesmo titular."],["LC 87, art. 12, § 4º","Transferência do crédito do ICMS das operações e prestações anteriores ao estabelecimento de destino."]],
+ temas:["Transferência","ICMS","Crédito","Fato gerador"],rel:["lc87-1996"],link:PLANALTO+"leis/lcp/lcp204.htm"},
+
+{id:"lei10637-2002",tipo:"Lei",sigla:"Lei",numero:"10.637",ano:2002,data:"30/12/2002",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 10.637/2002 – PIS/Pasep não cumulativo",
+ ementa:"Dispõe sobre a não cumulatividade na cobrança da contribuição para os Programas de Integração Social (PIS) e de Formação do Patrimônio do Servidor Público (Pasep), e dá outras providências.",
+ resumo:["Institui o regime não cumulativo do PIS/Pasep, com alíquota de 1,65% sobre a receita bruta e desconto de créditos sobre insumos, bens para revenda, energia, aluguéis, depreciação e outros itens.","Exclui do regime as pessoas jurídicas do lucro presumido ou arbitrado, do Simples Nacional e outras hipóteses do art. 8º.","Com a Reforma Tributária, o PIS/Pasep será extinto em 2027 e substituído pela CBS."],
+ dispositivos:[["Art. 1º","Fato gerador: receitas auferidas pela pessoa jurídica."],["Art. 2º","Alíquota de 1,65%."],["Art. 3º","Créditos: bens para revenda, insumos (STJ, Tema 779: essencialidade e relevância), energia, aluguéis, depreciação."],["Art. 8º","Pessoas jurídicas e receitas excluídas do regime não cumulativo."]],
+ temas:["PIS/Cofins","Federal","Não cumulatividade","Crédito"],rel:["lei10833-2003","lei9718-1998","lc214-2025"],link:PLANALTO+"leis/2002/l10637.htm"},
+
+{id:"lei10833-2003",tipo:"Lei",sigla:"Lei",numero:"10.833",ano:2003,data:"29/12/2003",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 10.833/2003 – Cofins não cumulativa",
+ ementa:"Altera a Legislação Tributária Federal e dá outras providências (institui a Cofins não cumulativa).",
+ resumo:["Institui a Cofins não cumulativa, com alíquota de 7,6% e regras de crédito análogas às do PIS (Lei 10.637/2002).","Disciplina a retenção na fonte de CSLL, PIS e Cofins sobre pagamentos por serviços entre pessoas jurídicas (arts. 30 a 36).","Com a Reforma Tributária, a Cofins será extinta em 2027 e substituída pela CBS."],
+ dispositivos:[["Art. 1º","Fato gerador: receitas auferidas."],["Art. 2º","Alíquota de 7,6%."],["Art. 3º","Créditos admitidos."],["Arts. 30 a 36","Retenção na fonte de CSLL, PIS e Cofins (CSRF)."]],
+ temas:["PIS/Cofins","Federal","Não cumulatividade","Retenção"],rel:["lei10637-2002","lei9718-1998"],link:PLANALTO+"leis/2003/l10.833.htm"},
+
+{id:"lei9718-1998",tipo:"Lei",sigla:"Lei",numero:"9.718",ano:1998,data:"27/11/1998",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 9.718/1998 – PIS/Cofins cumulativos",
+ ementa:"Altera a Legislação Tributária Federal.",
+ resumo:["Rege o PIS e a Cofins no regime cumulativo (0,65% e 3%), aplicável sobretudo às empresas do lucro presumido.","A base de cálculo é o faturamento: receita bruta conforme o art. 12 do Decreto-Lei 1.598/77. O STF declarou inconstitucional a ampliação da base (RE 390.840).","Prevê regimes específicos para combustíveis e para instituições financeiras."],
+ dispositivos:[["Art. 2º","Contribuições calculadas com base no faturamento."],["Art. 3º","Faturamento = receita bruta; exclusões da base."],["Art. 4º","Regime de combustíveis (alíquotas concentradas)."],["Art. 8º","Alíquota da Cofins no regime cumulativo (3%)."]],
+ temas:["PIS/Cofins","Federal","Cumulatividade"],rel:["lei10637-2002","lei10833-2003"],link:PLANALTO+"leis/l9718compilada.htm"},
+
+{id:"ripi-2010",tipo:"Decreto",sigla:"Decreto",numero:"7.212",ano:2010,data:"15/06/2010",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Decreto nº 7.212/2010 – Regulamento do IPI (RIPI)",
+ ementa:"Regulamenta a cobrança, fiscalização, arrecadação e administração do Imposto sobre Produtos Industrializados – IPI.",
+ resumo:["Consolida as regras do IPI: conceito de industrialização (transformação, beneficiamento, montagem, acondicionamento, renovação), contribuintes, estabelecimentos equiparados a industrial, base de cálculo, créditos e obrigações acessórias.","As alíquotas estão na TIPI (Decreto 11.158/2022 e alterações).","Com a Reforma Tributária, o IPI será reduzido a zero em 2027, exceto para produtos que tenham industrialização incentivada na Zona Franca de Manaus."],
+ dispositivos:[["Art. 4º","Caracterização de industrialização (5 modalidades)."],["Art. 5º","Exclusões do conceito de industrialização."],["Arts. 9º e 10","Estabelecimentos equiparados a industrial."],["Art. 35","Fato gerador: desembaraço aduaneiro e saída do estabelecimento industrial."],["Arts. 190 e seguintes","Base de cálculo."],["Arts. 225 e seguintes","Não cumulatividade e créditos."]],
+ temas:["IPI","Federal","Industrialização","TIPI"],rel:["ec132-2023"],link:PLANALTO+"_ato2007-2010/2010/decreto/d7212.htm"},
+
+{id:"dec70235-1972",tipo:"Decreto",sigla:"Decreto",numero:"70.235",ano:1972,data:"06/03/1972",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Decreto nº 70.235/1972 – Processo Administrativo Fiscal federal (PAF)",
+ ementa:"Dispõe sobre o processo administrativo fiscal, e dá outras providências.",
+ resumo:["Rege o processo administrativo de determinação e exigência dos créditos tributários da União: procedimento fiscal, auto de infração, notificação de lançamento, impugnação, julgamento em 1ª instância (DRJ) e recursos ao CARF.","Fixa os requisitos do auto de infração e as hipóteses de nulidade, como ato lavrado por autoridade incompetente ou com preterição do direito de defesa.","É referência para os PAFs estaduais, que seguem estrutura semelhante."],
+ dispositivos:[["Art. 7º","Início do procedimento fiscal e exclusão da espontaneidade."],["Art. 10","Requisitos do auto de infração."],["Art. 14","A impugnação instaura a fase litigiosa."],["Art. 15","Prazo de 30 dias para impugnação."],["Art. 59","Nulidades."]],
+ temas:["Processo administrativo","Federal","Auto de infração","Lançamento"],rel:["ctn-1966"],link:PLANALTO+"decreto/d70235cons.htm"},
+
+{id:"lei9430-1996",tipo:"Lei",sigla:"Lei",numero:"9.430",ano:1996,data:"27/12/1996",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 9.430/1996",
+ ementa:"Dispõe sobre a legislação tributária federal, as contribuições para a seguridade social, o processo administrativo de consulta e dá outras providências.",
+ resumo:["Trata da apuração do IRPJ e da CSLL, de preços de transferência (regime anterior à Lei 14.596/2023), de compensação de tributos (art. 74) e das multas de ofício.","O art. 42 presume omissão de receita a partir de depósitos bancários de origem não comprovada, instrumento importante na fiscalização.","O art. 44 fixa a multa de ofício de 75%, duplicada nos casos de sonegação, fraude ou conluio."],
+ dispositivos:[["Art. 42","Omissão de receita: depósitos bancários sem comprovação de origem."],["Art. 44","Multa de ofício de 75%; qualificada nos casos dos arts. 71 a 73 da Lei 4.502/64."],["Art. 61","Multa e juros de mora (Selic)."],["Art. 74","Compensação de tributos administrados pela RFB (PER/DCOMP)."],["Art. 83","Representação fiscal para fins penais."]],
+ temas:["Federal","Omissão de receita","Multa","Compensação","Representação fiscal"],rel:["ctn-1966","lei8137-1990","lc105-2001"],link:PLANALTO+"leis/l9430.htm"},
+
+{id:"lc105-2001",tipo:"Lei Complementar",sigla:"LC",numero:"105",ano:2001,data:"10/01/2001",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei Complementar nº 105/2001 – Sigilo bancário",
+ ementa:"Dispõe sobre o sigilo das operações de instituições financeiras e dá outras providências.",
+ resumo:["Permite às autoridades e aos agentes fiscais tributários da União, dos Estados, do DF e dos Municípios examinar documentos, livros e registros de instituições financeiras quando houver processo ou procedimento fiscal em curso e o exame for indispensável (art. 6º).","O STF declarou a constitucionalidade dessa transferência de sigilo ao Fisco (ADIs 2390, 2386, 2397 e 2859 e RE 601.314, Tema 225).","No âmbito estadual, depende de regulamentação própria e da instauração de procedimento fiscal."],
+ dispositivos:[["Art. 1º, § 3º","Hipóteses que não constituem violação do sigilo."],["Art. 5º","Informações periódicas à administração tributária da União (e-Financeira)."],["Art. 6º","Acesso a dados bancários com procedimento fiscal em curso."]],
+ temas:["Sigilo bancário","Fiscalização","Federal"],rel:["ctn-1966","lei9430-1996"],link:PLANALTO+"leis/lcp/lcp105.htm"},
+
+{id:"lc116-2003",tipo:"Lei Complementar",sigla:"LC",numero:"116",ano:2003,data:"31/07/2003",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei Complementar nº 116/2003 – ISS",
+ ementa:"Dispõe sobre o Imposto Sobre Serviços de Qualquer Natureza, de competência dos Municípios e do Distrito Federal, e dá outras providências.",
+ resumo:["Lei geral do ISS, com a lista de serviços anexa (veja a aba Tabelas e códigos).","É central nos conflitos de competência ICMS × ISS, como fornecimento de alimentação, softwares, industrialização por encomenda e serviços com fornecimento de mercadorias (itens com ressalva de incidência do ICMS).","Será substituída pelo IBS na transição de 2029 a 2032."],
+ dispositivos:[["Art. 1º, § 2º","Serviços da lista não ficam sujeitos ao ICMS, salvo as exceções expressas."],["Art. 3º","Local da prestação e exceções."],["Art. 8º-A","Alíquota mínima de 2%."],["Lista anexa","Itens e subitens de serviços tributáveis."]],
+ temas:["ISS","Conflito ICMS × ISS","Federal","Serviços"],rel:["cf88-155","ec132-2023"],link:PLANALTO+"leis/lcp/lcp116.htm"},
+
+{id:"dec6759-2009",tipo:"Decreto",sigla:"Decreto",numero:"6.759",ano:2009,data:"05/02/2009",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Decreto nº 6.759/2009 – Regulamento Aduaneiro",
+ ementa:"Regulamenta a administração das atividades aduaneiras, e a fiscalização, o controle e a tributação das operações de comércio exterior.",
+ resumo:["Consolida a legislação aduaneira: jurisdição, controle de mercadorias, tributos na importação (II, IPI, PIS/Cofins-Importação), regimes aduaneiros especiais, Zona Franca de Manaus e Áreas de Livre Comércio, infrações e penalidades.","Interessa ao ICMS-Importação (fato gerador no desembaraço) e à fiscalização das ALCs de Roraima (internamento e regimes especiais)."],
+ dispositivos:[["Livro I","Jurisdição aduaneira e controle aduaneiro."],["Livro II","Tributos na importação e na exportação."],["Livro IV","Regimes aduaneiros especiais e aplicados em áreas especiais (ZFM e ALC)."],["Livro V","Infrações e penalidades."]],
+ temas:["Aduaneiro","Importação","Zona Franca","Área de Livre Comércio","Federal"],rel:["lei8256-1991","lei11732-2008"],link:PLANALTO+"_ato2007-2010/2009/decreto/d6759.htm"},
+
+/* ---------- CONFAZ ---------- */
+{id:"conv142-2018",tipo:"Convênio ICMS",sigla:"Convênio ICMS",numero:"142",ano:2018,data:"14/12/2018",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Convênio ICMS nº 142/2018 – Normas gerais da ST",
+ ementa:"Dispõe sobre os regimes de substituição tributária e de antecipação de recolhimento do ICMS com encerramento de tributação, relativos ao imposto retido ou antecipado nas operações subsequentes.",
+ resumo:["É a norma geral nacional da ST e da antecipação com encerramento de tributação. Substituiu o Convênio ICMS 52/2017.","Define o alcance da ST, a responsabilidade do remetente e do destinatário, a base de cálculo (preço final, PMPF ou MVA, com MVA ajustada nas operações interestaduais), o ressarcimento e as obrigações acessórias.","Obriga a indicação do CEST nos documentos fiscais das mercadorias sujeitas a ST.","Seus Anexos listam os segmentos de mercadorias passíveis de ST, com CEST, NCM/SH e descrição, como autopeças, bebidas, cosméticos, materiais de construção e medicamentos."],
+ dispositivos:[
+  ["Cláusula primeira","Objeto: regimes de ST e de antecipação com encerramento de tributação."],
+  ["Cláusula segunda","Aplica-se a ST às operações interestaduais quando houver acordo específico (convênio ou protocolo)."],
+  ["Cláusula terceira","Somente bens e mercadorias listados nos Anexos podem ser submetidos aos regimes de ST ou antecipação."],
+  ["Cláusula oitava","Hipóteses de não aplicação da ST, como transferências para outro estabelecimento atacadista do mesmo titular e operações com industrial fabricante da mesma mercadoria."],
+  ["Cláusula nona","Responsabilidade do remetente substituto e do destinatário."],
+  ["Cláusulas 11ª a 13ª","Base de cálculo da ST: preço fixado ou sugerido, PMPF e MVA."],
+  ["Cláusula décima terceira","MVA ajustada nas operações interestaduais para neutralizar a diferença de alíquotas."],
+  ["Cláusula 14ª","Imposto retido: diferença entre o ICMS da base ST e o ICMS próprio do remetente."],
+  ["Cláusulas 15ª e 16ª","Prazos de recolhimento e documento de arrecadação (GNRE)."],
+  ["Cláusula 22ª","Ressarcimento do imposto retido em operação subsequente interestadual ou isenta."],
+  ["Cláusula 23ª","Informações obrigatórias na NF-e, com destaque do imposto retido e indicação do CEST."],
+  ["Anexo I","Relação dos segmentos de mercadorias sujeitos a ST, com o código do segmento."],
+  ["Anexo III","Bebidas alcoólicas, exceto cerveja e chope (CEST 02.xxx.xx)."],
+  ["Anexo IV","Cervejas, chopes, refrigerantes, águas e outras bebidas (CEST 03.xxx.xx)."],
+  ["Anexo VII","Combustíveis e lubrificantes (CEST 06.xxx.xx)."],
+  ["Anexo XIX","Produtos de perfumaria e de higiene pessoal e cosméticos (CEST 20.xxx.xx)."],
+  ["Demais anexos","Outros segmentos, como autopeças, cimentos, materiais de construção, medicamentos e pneumáticos, com CEST, NCM/SH e descrição."]],
+ temas:["Substituição tributária","Antecipação","MVA","PMPF","CEST","Ressarcimento","NF-e","Bebidas","Cosméticos"],
+ rel:["lc87-1996","conv52-2017","conv110-2007","prot54-2017","prot11-1991","lc123-2006","ricms-rr"],
+ link:CONFAZ+"/convenios/2018/CV142_18"},
+
+{id:"conv52-2017",tipo:"Convênio ICMS",sigla:"Convênio ICMS",numero:"52",ano:2017,data:"07/04/2017",esfera:"CONFAZ",situacao:"Revogado",
+ titulo:"Convênio ICMS nº 52/2017",
+ ementa:"Dispunha sobre as normas gerais a serem aplicadas aos regimes de substituição tributária e de antecipação do ICMS com encerramento de tributação.",
+ resumo:["Primeira tentativa de consolidar as normas gerais de ST com os segmentos e o CEST, substituindo o Convênio ICMS 81/1993.","Teve cláusulas suspensas por medida cautelar do STF (ADI 5866), em ação proposta pela CNI.","Foi revogado e substituído pelo Convênio ICMS 142/2018."],
+ dispositivos:[
+  ["Situação","Revogado pelo Convênio ICMS 142/2018."],
+  ["ADI 5866","Cautelar do STF suspendeu cláusulas sobre a base de cálculo e o ressarcimento."]],
+ temas:["Substituição tributária","CEST","Histórico"],
+ rel:["conv142-2018"],
+ link:CONFAZ+"/convenios/2017/CV052_17"},
+
+{id:"conv110-2007",tipo:"Convênio ICMS",sigla:"Convênio ICMS",numero:"110",ano:2007,data:"28/09/2007",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Convênio ICMS nº 110/2007 – ST de combustíveis e lubrificantes",
+ ementa:"Dispõe sobre o regime de substituição tributária nas operações com combustíveis e lubrificantes, derivados ou não de petróleo, e outros produtos.",
+ resumo:["Disciplina a ST nas operações com combustíveis e lubrificantes, com a refinaria, o importador ou a distribuidora como substitutos.","Regula o repasse do ICMS entre as unidades federadas nas operações interestaduais com combustíveis derivados de petróleo (art. 155, § 2º, X, 'b', CF), por meio dos anexos e do sistema SCANC.","Com a monofasia, gasolina, EAC, diesel, biodiesel e GLP passaram aos Convênios 199/2022 e 15/2023. O 110/2007 continua a reger os demais produtos, como etanol hidratado, lubrificantes, querosene e óleo combustível, e os procedimentos de controle."],
+ dispositivos:[
+  ["Cláusula primeira","Atribuição da responsabilidade por ST à refinaria e aos demais remetentes indicados."],
+  ["Cláusula oitava","Base de cálculo: PMPF ou preço praticado + MVA, conforme os anexos."],
+  ["Cláusulas 21ª e seguintes","Repasse do ICMS retido entre as UFs e relatórios (Anexos do SCANC)."],
+  ["Anexo XIII","Regras do sistema SCANC e da programação de repasses."]],
+ temas:["Combustíveis","Substituição tributária","PMPF","SCANC","Repasse"],
+ rel:["lc192-2022","conv199-2022","conv15-2023","conv142-2018"],
+ link:CONFAZ+"/convenios/2007/CV110_07"},
+
+{id:"conv199-2022",tipo:"Convênio ICMS",sigla:"Convênio ICMS",numero:"199",ano:2022,data:"22/12/2022",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Convênio ICMS nº 199/2022 – Monofásico de diesel, biodiesel e GLP",
+ ementa:"Dispõe sobre o regime de tributação monofásica do ICMS a ser aplicado nas operações com diesel, biodiesel e gás liquefeito de petróleo, inclusive o derivado do gás natural, nos termos da LC 192/2022.",
+ resumo:["Implementa a LC 192/2022 para diesel, biodiesel, GLP e GLGN, com ICMS incidindo uma única vez, geralmente no produtor ou importador.","Fixa alíquotas ad rem uniformes nacionais por litro ou quilo, reajustadas periodicamente por novo convênio.","Disciplina o destaque nos documentos fiscais, a mistura obrigatória de biodiesel ao diesel e a repartição entre UFs."],
+ dispositivos:[
+  ["Cláusula primeira","Produtos alcançados: diesel, biodiesel, GLP e GLGN."],
+  ["Cláusula quarta","Alíquotas ad rem uniformes, em R$ por litro ou por kg."],
+  ["Cláusulas seguintes","Sujeitos passivos, recolhimento, repartição interestadual e obrigações acessórias."]],
+ temas:["Combustíveis","Monofásico","Ad rem","Diesel","GLP"],
+ rel:["lc192-2022","conv15-2023","conv110-2007"],
+ link:CONFAZ+"/convenios/2022/CV199_22"},
+
+{id:"conv15-2023",tipo:"Convênio ICMS",sigla:"Convênio ICMS",numero:"15",ano:2023,data:"31/03/2023",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Convênio ICMS nº 15/2023 – Monofásico de gasolina e EAC",
+ ementa:"Dispõe sobre o regime de tributação monofásica do ICMS a ser aplicado nas operações com gasolina e etanol anidro combustível, nos termos da LC 192/2022.",
+ resumo:["Estende a monofasia à gasolina e ao etanol anidro combustível (EAC), com efeitos a partir de junho de 2023.","Fixa alíquota ad rem uniforme por litro de gasolina, com tratamento do EAC misturado à gasolina C.","Na prática, substitui a ST com PMPF para a gasolina."],
+ dispositivos:[
+  ["Cláusula primeira","Produtos alcançados: gasolina e EAC."],
+  ["Alíquota","Ad rem uniforme em R$ por litro, atualizada por convênio."],
+  ["EAC","Diferimento ou suspensão na mistura, com o imposto recolhido no momento da gasolina C."]],
+ temas:["Combustíveis","Monofásico","Ad rem","Gasolina","Etanol"],
+ rel:["lc192-2022","conv199-2022","conv110-2007"],
+ link:CONFAZ+"/convenios/2023/CV015_23"},
+
+{id:"conv236-2021",tipo:"Convênio ICMS",sigla:"Convênio ICMS",numero:"236",ano:2021,data:"27/12/2021",esfera:"CONFAZ",situacao:"Vigente",
+ titulo:"Convênio ICMS nº 236/2021 – DIFAL a não contribuinte",
+ ementa:"Dispõe sobre os procedimentos a serem observados nas operações e prestações que destinem bens e serviços a consumidor final não contribuinte do ICMS, localizado em outra unidade federada.",
+ resumo:["Substituiu o Convênio ICMS 93/2015 depois que o STF (ADI 5469) declarou inconstitucionais cláusulas daquele convênio.","Disciplina o cálculo do DIFAL, a responsabilidade do remetente, o recolhimento por GNRE e a inscrição estadual do remetente na UF de destino.","Funciona em conjunto com a LC 190/2022."],
+ dispositivos:[
+  ["Cláusula segunda","Fórmula de cálculo do DIFAL com base única ('por dentro')."],
+  ["Cláusula terceira","Recolhimento pelo remetente, por operação ou por inscrição estadual na UF de destino."],
+  ["Cláusulas seguintes","Obrigações acessórias e tratamento do Simples Nacional."]],
+ temas:["DIFAL","Comércio eletrônico","Não contribuinte"],
+ rel:["lc190-2022","ec87-2015","conv93-2015"],
+ link:CONFAZ+"/convenios/2021/CV236_21"},
+
+{id:"conv93-2015",tipo:"Convênio ICMS",sigla:"Convênio ICMS",numero:"93",ano:2015,data:"17/09/2015",esfera:"CONFAZ",situacao:"Revogado",
+ titulo:"Convênio ICMS nº 93/2015",
+ ementa:"Dispunha sobre os procedimentos a serem observados nas operações e prestações que destinem bens e serviços a consumidor final não contribuinte do ICMS, localizado em outra unidade federada.",
+ resumo:["Primeira regulamentação do DIFAL instituído pela EC 87/2015.","O STF (Tema 1093 e ADI 5469) considerou inválida a cobrança sem lei complementar e, especificamente, a aplicação da cláusula nona ao Simples Nacional.","Foi substituído pelo Convênio ICMS 236/2021, em conjunto com a LC 190/2022."],
+ dispositivos:[
+  ["Situação","Substituído pelo Convênio ICMS 236/2021."],
+  ["Tema 1093 – STF","A cobrança do DIFAL a não contribuinte exige lei complementar."]],
+ temas:["DIFAL","Histórico"],
+ rel:["conv236-2021","lc190-2022","ec87-2015"],
+ link:CONFAZ+"/convenios/2015/CV093_15"},
+
+{id:"conv190-2017",tipo:"Convênio ICMS",sigla:"Convênio ICMS",numero:"190",ano:2017,data:"15/12/2017",esfera:"CONFAZ",situacao:"Vigente",
+ titulo:"Convênio ICMS nº 190/2017 – Convalidação de benefícios",
+ ementa:"Dispõe, nos termos autorizados na LC 160/2017, sobre a remissão dos créditos tributários decorrentes das isenções, dos incentivos e dos benefícios fiscais ou financeiro-fiscais instituídos em desacordo com a CF, bem como sobre as correspondentes reinstituições.",
+ resumo:["Operacionaliza a LC 160/2017: os Estados publicam a relação de seus atos concessivos e os registram e depositam no CONFAZ.","Permite remitir os créditos tributários e reinstituir os benefícios dentro dos prazos máximos.","Autoriza a adesão a benefícios concedidos por outra UF da mesma região ('cola')."],
+ dispositivos:[
+  ["Cláusula segunda","Publicação e registro dos atos concessivos."],
+  ["Cláusula nona","Prazos de fruição dos benefícios reinstituídos, conforme o setor."],
+  ["Cláusula décima terceira","Adesão a benefícios vigentes em outra UF da mesma região."]],
+ temas:["Benefícios fiscais","Guerra fiscal","Convalidação"],
+ rel:["lc160-2017","lc24-1975"],
+ link:CONFAZ+"/convenios/2017/CV190_17"},
+
+{id:"conv65-1988",tipo:"Convênio ICMS",sigla:"Convênio ICM",numero:"65",ano:1988,data:"06/12/1988",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Convênio ICM nº 65/1988 – Remessas à Zona Franca de Manaus",
+ ementa:"Isenta do ICM as saídas de produtos industrializados de origem nacional para comercialização ou industrialização na Zona Franca de Manaus.",
+ resumo:["Concede isenção do ICMS nas remessas de produtos industrializados nacionais destinados à comercialização ou industrialização na ZFM, com manutenção do crédito pelo remetente.","O valor da isenção deve ser abatido do preço e indicado na nota fiscal.","O benefício depende de comprovação do ingresso (internamento) junto à SUFRAMA e ao fisco de destino.","Convênios posteriores estendem esse tratamento às Áreas de Livre Comércio, inclusive as de Roraima."],
+ dispositivos:[
+  ["Cláusula primeira","Isenção nas saídas de industrializados nacionais para a ZFM. Exclui armas e munições, perfumes, fumo, bebidas alcoólicas, automóveis de passageiros e açúcar de cana."],
+  ["Cláusula segunda","Abatimento do valor da isenção do preço, com indicação na nota fiscal."],
+  ["Cláusula terceira","Manutenção do crédito pelo estabelecimento remetente."],
+  ["Comprovação","Internamento da mercadoria, com vistoria da SUFRAMA."]],
+ temas:["Zona Franca","Área de Livre Comércio","Isenção","Benefícios fiscais"],
+ rel:["conv52-1992","lei11732-2008","lc24-1975"],
+ link:CONFAZ+"/convenios/1988/CV065_88"},
+
+{id:"prot21-2011",tipo:"Protocolo ICMS",sigla:"Protocolo ICMS",numero:"21",ano:2011,data:"01/04/2011",esfera:"CONFAZ",situacao:"Inconstitucional",
+ titulo:"Protocolo ICMS nº 21/2011",
+ ementa:"Estabelecia a exigência de parcela do ICMS em favor da UF de destino nas operações interestaduais não presenciais destinadas a consumidor final.",
+ resumo:["Firmado por Estados consumidores, entre eles Roraima, para cobrar ICMS no destino nas vendas pela internet antes da EC 87/2015.","O STF declarou o Protocolo inconstitucional (ADIs 4628 e 4713 e RE 680.089), por violar o art. 155, § 2º, VII, 'b', da CF em sua redação original.","Tem relevância histórica: a demanda que o motivou levou à EC 87/2015."],
+ dispositivos:[
+  ["Situação","Declarado inconstitucional pelo STF, com modulação de efeitos."]],
+ temas:["Comércio eletrônico","DIFAL","Histórico"],
+ rel:["ec87-2015"],
+ link:CONFAZ+"/protocolos/2011/PT021_11"},
+
+{id:"sinief-1970",tipo:"Convênio SINIEF",sigla:"Convênio SINIEF",numero:"s/nº",ano:1970,data:"15/12/1970",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Convênio SINIEF s/nº de 1970",
+ ementa:"Institui o Sistema Nacional Integrado de Informações Econômico-Fiscais (SINIEF).",
+ resumo:["Base das obrigações acessórias do ICMS: documentos fiscais, livros, inscrição cadastral e códigos.","Seu anexo contém o Código Fiscal de Operações e Prestações (CFOP), atualizado por ajustes SINIEF.","Os documentos eletrônicos, como NF-e, NFC-e e CT-e, foram criados por ajustes SINIEF posteriores."],
+ dispositivos:[
+  ["Arts. 1º e seguintes","Objetivos do SINIEF e cadastro de contribuintes."],
+  ["Documentos fiscais","Modelos de notas fiscais e de documentos de transporte."],
+  ["Anexo – CFOP","Tabela de Códigos Fiscais de Operações e Prestações (1xxx, 2xxx e 3xxx para entradas; 5xxx, 6xxx e 7xxx para saídas)."]],
+ temas:["Obrigações acessórias","CFOP","Documentos fiscais"],
+ rel:["ajsinief07-2005","ajsinief02-2009"],
+ link:CONFAZ+"/convenios/1970/CV_SN_70"},
+
+{id:"ajsinief07-2005",tipo:"Ajuste SINIEF",sigla:"Ajuste SINIEF",numero:"07",ano:2005,data:"30/09/2005",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Ajuste SINIEF nº 07/2005 – Nota Fiscal Eletrônica",
+ ementa:"Institui a Nota Fiscal Eletrônica (NF-e, modelo 55) e o Documento Auxiliar da Nota Fiscal Eletrônica (DANFE).",
+ resumo:["Cria a NF-e, modelo 55, documento de existência exclusivamente digital, com validade jurídica dada pela assinatura digital e pela autorização de uso da SEFAZ.","Define o DANFE como representação gráfica simplificada que acompanha a mercadoria em trânsito.","Disciplina autorização, cancelamento, carta de correção, inutilização, contingência e eventos, como a manifestação do destinatário.","Os leiautes estão no Manual de Orientação do Contribuinte (MOC) e nas Notas Técnicas do Portal Nacional da NF-e."],
+ dispositivos:[
+  ["Cláusula primeira","Institui a NF-e e o DANFE."],
+  ["Cláusula quarta","Arquivo digital em XML, assinatura digital e chave de acesso de 44 dígitos."],
+  ["Cláusula quinta","Autorização de uso pela administração tributária."],
+  ["Cláusula nona","DANFE: representação gráfica que acompanha o trânsito da mercadoria."],
+  ["Cláusula décima","Guarda do XML pelo emitente e pelo destinatário pelo prazo decadencial."],
+  ["Cláusula décima segunda","Cancelamento, no prazo regulamentar."],
+  ["Cláusula décima quarta-A","Carta de Correção Eletrônica (CC-e), sem alterar valores ou dados cadastrais."],
+  ["Cláusula décima quinta-A","Eventos da NF-e, entre eles a manifestação do destinatário."]],
+ temas:["NF-e","DANFE","Documentos fiscais","Obrigações acessórias","Documento eletrônico"],
+ rel:["sinief-1970","ajsinief19-2016","ajsinief02-2009"],
+ link:CONFAZ+"/ajustes/2005/AJ_007_05"},
+
+{id:"ajsinief19-2016",tipo:"Ajuste SINIEF",sigla:"Ajuste SINIEF",numero:"19",ano:2016,data:"09/12/2016",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Ajuste SINIEF nº 19/2016 – NFC-e",
+ ementa:"Dispõe sobre a Nota Fiscal de Consumidor Eletrônica (NFC-e, modelo 65) e o Documento Auxiliar da NFC-e (DANFE NFC-e).",
+ resumo:["Institui nacionalmente a NFC-e, modelo 65, para vendas presenciais ou entregas a domicílio a consumidor final.","Prevê DANFE NFC-e simplificado com QR Code, emissão em contingência offline e identificação do consumidor em hipóteses específicas.","É a fonte de dados das vendas no varejo, usada em estudos de preço médio (PMPF) e em cruzamentos fiscais."],
+ dispositivos:[
+  ["Cláusula primeira","Institui a NFC-e, modelo 65."],
+  ["DANFE NFC-e","Representação simplificada com QR Code para consulta."],
+  ["Contingência","Emissão offline com transmissão posterior."]],
+ temas:["NFC-e","Documentos fiscais","Varejo","Documento eletrônico"],
+ rel:["ajsinief07-2005"],
+ link:CONFAZ+"/ajustes/2016/AJ_019_16"},
+
+{id:"ajsinief02-2009",tipo:"Ajuste SINIEF",sigla:"Ajuste SINIEF",numero:"02",ano:2009,data:"03/04/2009",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Ajuste SINIEF nº 02/2009 – EFD ICMS/IPI",
+ ementa:"Dispõe sobre a Escrituração Fiscal Digital – EFD.",
+ resumo:["Institui a EFD ICMS/IPI no âmbito do SPED, arquivo digital com os registros de documentos fiscais, apuração do ICMS e do IPI e controle de estoque (Bloco K).","Os leiautes estão no Ato COTEPE/ICMS e no Guia Prático da EFD.","É fonte essencial para auditoria eletrônica e para cruzamentos com NF-e."],
+ dispositivos:[
+  ["Cláusula primeira","Institui a EFD."],
+  ["Cláusula terceira","Obrigatoriedade, conforme a UF e a Receita Federal."],
+  ["Cláusula décima","Prazo de transmissão e retificação."]],
+ temas:["EFD","SPED","Obrigações acessórias","Escrituração"],
+ rel:["sinief-1970","ajsinief07-2005"],
+ link:CONFAZ+"/ajustes/2009/AJ_002_09"},
+
+
+{id:"conv182-2025",tipo:"Convênio ICMS",sigla:"Convênio ICMS",numero:"182",ano:2025,data:"05/12/2025",esfera:"CONFAZ",situacao:"Vigente",
+ titulo:"Convênio ICMS nº 182/2025 – Energia elétrica para eletropostos",
+ ementa:"Dispõe sobre as operações com energia elétrica destinada ao consumo por estação de recarga de veículos elétricos.",
+ resumo:["Autoriza os Estados e o DF a atribuir à distribuidora de energia elétrica a condição de substituta tributária do ICMS devido até a última operação que destine a energia ao consumo por estação de recarga de veículos elétricos (eletroposto).","É um convênio autorizativo: cada UF decide se adere e como internaliza. Santa Catarina, por exemplo, regulamentou o tema pelo Decreto nº 1.524/2026 como regime facultativo.","Alcança estabelecimentos que operem exclusivamente como estação de recarga e estações instaladas em estabelecimentos de outros segmentos econômicos, nas condições do convênio.","A base de cálculo do imposto retido fica a cargo da legislação de cada UF (cláusula segunda).","Publicado no DOU em 11/12/2025. Antes do convênio, consultas da SEFAZ-SP já entendiam que a recarga comercial em eletropostos está sujeita ao ICMS sobre o valor cobrado. Confira se Roraima internalizou o convênio."],
+ dispositivos:[
+  ["Cláusula primeira","Autoriza atribuir à distribuidora de energia a responsabilidade por ST nas operações destinadas a estações de recarga."],
+  ["Cl. 1ª, I","Estabelecimentos que operem exclusivamente como estação de recarga de veículos elétricos."],
+  ["Cl. 1ª, II","Estações de recarga instaladas em estabelecimentos de outros segmentos econômicos, nas condições previstas."],
+  ["Cláusula segunda","A base de cálculo do imposto retido é definida pela legislação de cada unidade federada."],
+  ["Internalização","Depende de ato de cada UF (ex.: SC, Decreto 1.524/2026, art. 263 do Anexo 3 do RICMS/SC)."]],
+ temas:["Eletropostos","Energia elétrica","Veículos elétricos","Substituição tributária"],
+ rel:["conv142-2018","lc194-2022","lc87-1996"],
+ link:LW+"487692"},
+
+{id:"conv52-1992",tipo:"Convênio ICMS",sigla:"Convênio ICMS",numero:"52",ano:1992,data:"25/06/1992",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Convênio ICMS nº 52/1992 – Extensão às Áreas de Livre Comércio",
+ ementa:"Estende às Áreas de Livre Comércio dos Estados do Acre, Amapá, Amazonas, Rondônia e Roraima os benefícios do Convênio ICM nº 65, de 6 de dezembro de 1988 (redação dada pelo Convênio ICMS 9/2026).",
+ resumo:["Estende às ALCs a isenção do Convênio ICM 65/1988 nas remessas de produtos industrializados de origem nacional para comercialização ou industrialização, com manutenção do crédito pelo remetente.","Em Roraima, alcança as ALCs de Bonfim e de Boa Vista. A extensão a Boa Vista veio pelo Convênio ICMS 25/2008, com efeitos a partir da comunicação da SUFRAMA ao CONFAZ.","O Convênio ICMS 9/2026 incluiu o § 2º na cláusula primeira: integram a ALC de Boa Vista as superfícies territoriais dos Municípios de Boa Vista e Pacaraima, em linha com a Lei federal 15.273/2025.","Ficam excluídos, como no 65/88, armas e munições, perfumes, fumo, bebidas alcoólicas e automóveis de passageiros. Isso importa diretamente para os segmentos de cosméticos e bebidas.","Cada Estado de origem aplica o benefício nos termos de sua própria legislação, inclusive quanto a prazos. Confira a regra do remetente (CFOP 6.109/6.110)."],
+ dispositivos:[
+  ["Cláusula primeira","Extensão às ALCs dos benefícios e condições do Convênio ICM 65/1988."],
+  ["Cl. 1ª, § 2º","Abrangência da ALC de Boa Vista: Municípios de Boa Vista e Pacaraima (Conv. ICMS 9/2026)."],
+  ["Conv. ICMS 25/2008","Alterou a cláusula primeira para incluir a ALC de Boa Vista."],
+  ["Conv. ICMS 37/1997","Regulamenta procedimentos do 52/92 (internamento e comprovação)."],
+  ["Exclusões","Armas e munições, perfumes, fumo, bebidas alcoólicas e automóveis de passageiros."]],
+ temas:["Área de Livre Comércio","Zona Franca","Isenção","Roraima","Benefícios fiscais"],
+ rel:["conv65-1988","lei8256-1991","lei11732-2008","lei25-1992-rr"],
+ link:LW+"14053"},
+
+{id:"prot54-2017",tipo:"Protocolo ICMS",sigla:"Protocolo ICMS",numero:"54",ano:2017,data:"29/12/2017",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Protocolo ICMS nº 54/2017 – ST de perfumaria, higiene pessoal e cosméticos",
+ ementa:"Dispõe sobre a substituição tributária nas operações com produtos de perfumaria e de higiene pessoal e cosméticos relacionados no Anexo XIX do Convênio ICMS 142/18.",
+ resumo:["Acordo entre os Estados signatários para aplicar a ST nas operações interestaduais com perfumaria, higiene pessoal e cosméticos (segmento 20, CEST 20.xxx.xx).","A relação de mercadorias segue o Anexo XIX do Convênio ICMS 142/2018. A base de cálculo segue as regras do 142/18 (MVA original, MVA ajustada ou preço sugerido).","Nas operações entre Estados não signatários, a ST depende de regra interna (antecipação na entrada).","O RS denunciou o Protocolo, com efeitos a partir de 01/01/2027 (Despacho CONFAZ 37/2026). Confira a relação atual de signatários, inclusive a posição de Roraima."],
+ dispositivos:[
+  ["Cláusula primeira","ST nas operações interestaduais com os produtos do Anexo XIX do Conv. 142/18, entre os signatários."],
+  ["Base de cálculo","Regras do Convênio ICMS 142/18: MVA ajustada nas operações interestaduais."],
+  ["Denúncias","RS: efeitos a partir de 01/01/2027 (Despacho CONFAZ 37/2026)."]],
+ temas:["Cosméticos","Perfumaria","Substituição tributária","MVA","CEST"],
+ rel:["conv142-2018","conv52-1992","ricms-rr"],
+ link:CONFAZ+"/protocolos/2017/PT054_17"},
+
+{id:"prot11-1991",tipo:"Protocolo ICMS",sigla:"Protocolo ICMS",numero:"11",ano:1991,data:"21/05/1991",esfera:"CONFAZ",situacao:"Vigente (alterada)",
+ titulo:"Protocolo ICMS nº 11/1991 – ST de cervejas, refrigerantes e águas",
+ ementa:"Dispõe sobre a substituição tributária nas operações com cerveja, chope, refrigerante, água mineral ou potável e gelo.",
+ resumo:["Um dos protocolos mais antigos de ST interestadual. Atribui ao fabricante, importador ou remetente a retenção do ICMS das operações subsequentes com cervejas, chopes, refrigerantes, águas e gelo.","Os produtos correspondem ao segmento 03 (CEST 03.xxx.xx), listado no Anexo IV do Convênio ICMS 142/2018.","Bebidas alcoólicas, exceto cerveja e chope, formam o segmento 02 (Anexo III do 142/18) e têm acordos próprios. No varejo, o PMPF apurado a partir de NFC-e pode servir de base de cálculo quando previsto na legislação estadual.","A data e a lista de signatários vêm de fonte secundária. Confira no portal do CONFAZ."],
+ dispositivos:[
+  ["Cláusula primeira","Atribuição da responsabilidade por ST ao remetente nas operações interestaduais com os produtos indicados."],
+  ["Base de cálculo","Preço máximo ou único de venda, PMPF ou valor da operação + MVA, conforme a legislação do destino."],
+  ["Segmento","Cervejas, chopes, refrigerantes, águas e outras bebidas (Anexo IV do Conv. 142/18)."]],
+ temas:["Bebidas","Substituição tributária","PMPF","MVA","CEST"],
+ rel:["conv142-2018","ajsinief19-2016"],
+ link:CONFAZ+"/protocolos/1991/PT011_91"},
+
+{id:"lei8256-1991",tipo:"Lei",sigla:"Lei",numero:"8.256",ano:1991,data:"25/11/1991",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 8.256/1991 – Áreas de Livre Comércio de Roraima",
+ ementa:"Cria áreas de livre comércio nos Municípios de Pacaraima e Bonfim, no Estado de Roraima, e dá outras providências.",
+ resumo:["Lei-base das ALCs de Roraima, com regime fiscal especial (suspensão e isenção de tributos federais) para estimular o desenvolvimento da região de fronteira.","Foi alterada pela Lei 11.732/2008, que transformou a ALC de Pacaraima em ALC de Boa Vista (ALCBV), mantida a de Bonfim (ALCB).","A Lei 15.273/2025 reincluiu Pacaraima: os territórios de Boa Vista e Pacaraima integram a ALCBV (art. 2º, § 1º). No ICMS, a mudança foi refletida no Convênio ICMS 52/92 pelo Convênio 9/2026.","A administração das ALCs cabe à SUFRAMA."],
+ dispositivos:[
+  ["Art. 1º","Criação e finalidade das Áreas de Livre Comércio em Roraima."],
+  ["Art. 2º, § 1º","Integram a ALCBV as superfícies territoriais de Boa Vista e Pacaraima (redação da Lei 15.273/2025)."],
+  ["Regime fiscal","Suspensão e isenção do IPI e do II na entrada de mercadorias, conforme a destinação."],
+  ["SUFRAMA","Administração, controle de internamento e fiscalização das ALCs."]],
+ temas:["Área de Livre Comércio","Roraima","Zona Franca","Benefícios fiscais"],
+ rel:["lei11732-2008","conv52-1992","lei25-1992-rr","lc214-2025"],
+ link:PLANALTO+"leis/l8256.htm"},
+
+/* ---------- RORAIMA ---------- */
+{id:"lei59-1993-rr",tipo:"Lei Estadual",sigla:"Lei",numero:"59",ano:1993,data:"28/12/1993",esfera:"Roraima",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 59/1993 – Sistema Tributário do Estado de Roraima",
+ ementa:"Dispõe sobre o Sistema Tributário Estadual e dá outras providências.",
+ resumo:["É a lei-base dos tributos estaduais de Roraima, como o ICMS, o IPVA e o ITCMD, e das normas gerais de sua administração.","No ICMS, institui o imposto no Estado e trata de incidência, contribuintes, responsabilidade e substituição tributária, base de cálculo, alíquotas, infrações e penalidades.","É regulamentada pelo RICMS-RR (Decreto nº 4.335-E/2001) e por atos da SEFAZ-RR.","Foi alterada por diversas leis estaduais. Confira sempre o texto consolidado."],
+ dispositivos:[
+  ["ICMS","Instituição, incidência, contribuintes, responsáveis e substituição tributária."],
+  ["Art. 32","Alíquotas do ICMS. O inciso I, 'c', trata de gasolina, álcool anidro e hidratado (redação da Lei 1.653/2022)."],
+  ["Art. 32, I, 'd'","Alíquota geral de 20% para as demais mercadorias e serviços (Lei 1.767/2022, com efeitos a partir de 30/03/2023)."],
+  ["Art. 32-A","Incidência monofásica de combustíveis, com alíquotas e regras fixadas pelos Convênios ICMS 199/2022 e 15/2023."],
+  ["Art. 33, § 3º","Contribuinte do DIFAL nas operações destinadas a consumidor final de outro Estado (Lei 1.608/2021)."],
+  ["Infrações e penalidades","Multas por descumprimento das obrigações principal e acessórias."],
+  ["IPVA e ITCMD","Disciplina dos demais impostos estaduais."]],
+ temas:["Roraima","ICMS","Legislação estadual","Penalidades","Substituição tributária"],
+ rel:["ricms-rr","lei1767-2022-rr","lei1653-2022-rr","lei1608-2021-rr","lc87-1996"],
+ link:SEFAZRR},
+
+{id:"ricms-rr",tipo:"Decreto Estadual",sigla:"Decreto",numero:"4.335-E",ano:2001,data:"03/08/2001",esfera:"Roraima",situacao:"Vigente (alterada)",
+ titulo:"RICMS-RR – Decreto nº 4.335-E/2001",
+ ementa:"Aprova o Regulamento do Imposto sobre Operações Relativas à Circulação de Mercadorias e sobre Prestações de Serviços de Transporte Interestadual e Intermunicipal e de Comunicação do Estado de Roraima.",
+ resumo:["Regulamento do ICMS em Roraima. Detalha a Lei nº 59/1993 e internaliza convênios e protocolos do CONFAZ.","Trata de isenções, reduções de base, diferimento, crédito presumido, ST e antecipação, documentos e livros fiscais, apuração, recolhimento e fiscalização.","Seus anexos reúnem benefícios fiscais e os regimes de ST por segmento, com as respectivas MVAs, em alinhamento ao Convênio ICMS 142/2018.","Em constante atualização por decretos. Confira a versão consolidada no portal da SEFAZ-RR."],
+ dispositivos:[
+  ["Parte geral","Incidência, não incidência, fato gerador, contribuintes, base de cálculo e alíquotas."],
+  ["Benefícios","Isenções, reduções de base de cálculo, créditos presumidos e diferimento, organizados em anexos."],
+  ["ST e antecipação","Regras de responsabilidade, base de cálculo (MVA e PMPF), recolhimento e ressarcimento."],
+  ["Obrigações acessórias","Inscrição estadual, documentos fiscais eletrônicos, EFD e GIA-ST."],
+  ["Fiscalização","Procedimentos de fiscalização, trânsito de mercadorias e passe fiscal."]],
+ temas:["Roraima","ICMS","Regulamento","Substituição tributária","Benefícios fiscais","MVA","GIA-ST","Diferimento"],
+ rel:["lei59-1993-rr","dec35562-2024-rr","conv142-2018","lc87-1996","lei11732-2008"],
+ link:SEFAZRR},
+{id:"lei25-1992-rr",tipo:"Lei Estadual",sigla:"Lei",numero:"25",ano:1992,data:"21/12/1992",esfera:"Roraima",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 25/1992 – Incentivos fiscais nas ALCs de Boa Vista e Bonfim",
+ ementa:"Dispõe sobre a concessão de incentivos fiscais nas operações de internação de mercadorias industrializadas, nas áreas de livre comércio de Bonfim e Boa Vista e dá outras providências.",
+ resumo:["Concede crédito presumido do ICMS sobre mercadorias adquiridas com isenção em outras UFs (Conv. 65/88 e 52/92) por contribuintes estabelecidos nas ALCs de Boa Vista e Bonfim.","Estende o crédito aos industrializados que entram nas ALCs vindos de outras localidades de Roraima.","Afasta o benefício quando houver oferta de mercadoria similar à adquirida (art. 1º, § 8º).","Trata também do ICMS na importação de mercadorias pelas ALCs (art. 2º)."],
+ dispositivos:[
+  ["Art. 1º","Crédito presumido do ICMS sobre mercadorias adquiridas com isenção de outras UFs por contribuintes das ALCs."],
+  ["Art. 1º, § 2º","Aplicação também a industrializados oriundos de outras localidades de Roraima."],
+  ["Art. 1º, § 8º","Inaplicabilidade quando houver oferta de mercadoria similar."],
+  ["Art. 2º","Tratamento do ICMS incidente sobre importações pelas ALCs."]],
+ temas:["Área de Livre Comércio","Roraima","Crédito presumido","Benefícios fiscais"],
+ rel:["conv52-1992","lei8256-1991","ricms-rr"],
+ link:LW+"161283"},
+
+{id:"lei1767-2022-rr",tipo:"Lei Estadual",sigla:"Lei",numero:"1.767",ano:2022,data:"30/12/2022",esfera:"Roraima",situacao:"Vigente",
+ titulo:"Lei nº 1.767/2022 – Alíquota geral do ICMS de 20% em Roraima",
+ ementa:"Altera o art. 32 da Lei nº 59/1993 para fixar em 20% a alíquota do ICMS aplicável às demais mercadorias e serviços.",
+ resumo:["Eleva a alíquota interna geral (modal) do ICMS em Roraima de 17% para 20% (art. 32, I, 'd', da Lei 59/1993).","Pela noventena, entrou em vigor 90 dias após a publicação (DOE de 30/12/2022), com efeitos a partir de 30/03/2023.","Revoga os itens 4 e 5 da alínea 'c' do inciso I do art. 32, sobre a escala de redução das alíquotas de gasolina e álcool.","A alíquota modal é o teto para combustíveis, energia e comunicações pela LC 194/2022 e a referência no cálculo do DIFAL e da ST."],
+ dispositivos:[
+  ["Art. 1º","Nova redação do art. 32, I, 'd': 20% para as demais mercadorias e serviços."],
+  ["Art. 2º","Revoga os itens 4 e 5 da alínea 'c' do inciso I do art. 32."],
+  ["Art. 3º","Vigência 90 dias após a publicação."]],
+ temas:["Roraima","Alíquota","ICMS","Legislação estadual"],
+ rel:["lei59-1993-rr","lei1653-2022-rr","lc194-2022"],
+ link:SEFAZRR},
+
+{id:"lei1653-2022-rr",tipo:"Lei Estadual",sigla:"Lei",numero:"1.653",ano:2022,data:"04/03/2022",esfera:"Roraima",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 1.653/2022 – Redução da alíquota de gasolina e álcool em Roraima",
+ ementa:"Altera a Lei nº 59/1993 (Código Tributário Estadual) para reduzir gradualmente a alíquota do ICMS sobre gasolina, álcool anidro e hidratado para fins combustíveis.",
+ resumo:["Reduziu a alíquota de gasolina e álcool de 25% para 23% em 2022 e previa queda gradual: 21,5% (2023), 20% (2024), 18,5% (2025) e 17% (2026). É a redação vigente do art. 32, I, 'c', da Lei 59/93.","Depois da LC 194/2022, o Decreto 32.806-E/2022 fixou 17% para gasolina e álcool, e a escala foi alterada pela legislação seguinte (a Lei 1.767/2022 revogou itens da alínea 'c').","Desde 2023, gasolina e EAC estão sob monofasia com alíquota ad rem (Conv. 15/2023), e a alíquota ad valorem segue relevante para o etanol hidratado. A Consulta SEFAZ-RR 2/2024 analisa a relação entre a Lei 59/93, a LC 194/2022 e o Decreto 32.806-E/2022."],
+ dispositivos:[
+  ["Art. 32, I, 'c'","Alíquotas de gasolina, álcool anidro e hidratado para fins combustíveis (redação da Lei 1.653/2022)."],
+  ["Decreto 32.806-E/2022","Ajuste das alíquotas de gasolina e álcool para 17% após a LC 194/2022."]],
+ temas:["Roraima","Combustíveis","Alíquota","Gasolina","Etanol"],
+ rel:["lei59-1993-rr","lei1767-2022-rr","lc194-2022","conv15-2023"],
+ link:SEFAZRR},
+
+{id:"lei1608-2021-rr",tipo:"Lei Estadual",sigla:"Lei",numero:"1.608",ano:2021,data:"30/12/2021",esfera:"Roraima",situacao:"Vigente",
+ titulo:"Lei nº 1.608/2021 – DIFAL em Roraima",
+ ementa:"Altera a Lei nº 59/1993 para regulamentar a cobrança do ICMS nas operações e prestações interestaduais destinadas a consumidor final não contribuinte do imposto.",
+ resumo:["Internaliza em Roraima o DIFAL das operações destinadas a consumidor final localizado em outro Estado, contribuinte ou não, em linha com a EC 87/2015 e a LC 190/2022.","Inclui o § 3º no art. 33 da Lei 59/1993 para definir o contribuinte do DIFAL. Inclui também regras sobre a base de cálculo e o local da operação: o imposto cabe ao Estado da entrada física da mercadoria ou do fim da prestação.","Ajusta o art. 5º da Lei 59/1993 quanto ao momento do fato gerador nessas operações."],
+ dispositivos:[
+  ["Art. 33, § 3º","Contribuinte do DIFAL nas operações e prestações destinadas a consumidor final de outro Estado."],
+  ["Local da operação","DIFAL devido ao Estado da entrada física da mercadoria ou do fim da prestação do serviço."],
+  ["Art. 5º","Fato gerador nas operações interestaduais destinadas a consumidor final."]],
+ temas:["Roraima","DIFAL","Comércio eletrônico","Legislação estadual"],
+ rel:["lc190-2022","conv236-2021","lei59-1993-rr"],
+ link:LW+"425761"},
+
+{id:"dec35562-2024-rr",tipo:"Decreto Estadual",sigla:"Decreto",numero:"35.562-E",ano:2024,data:"26/02/2024",esfera:"Roraima",situacao:"Vigente",
+ titulo:"Decreto nº 35.562-E/2024 – Monofásico de combustíveis no RICMS-RR",
+ ementa:"Incorpora à legislação tributária estadual Convênios ICMS e altera o Regulamento do ICMS, aprovado pelo Decreto nº 4.335-E, de 03 de agosto de 2001.",
+ resumo:["Incorpora à legislação de Roraima os Convênios ICMS 172/2023 e 173/2023, que alteram os Convênios 199/2022 (diesel, biodiesel e GLP) e 15/2023 (gasolina e EAC).","Ajusta o RICMS-RR à monofasia de combustíveis: diesel, biodiesel e GLP a partir de 01/05/2023 e gasolina e EAC nos termos do Conv. 15/2023.","Os convênios fixam as alíquotas ad rem e as regras de apuração e recolhimento, conforme o art. 32-A da Lei 59/1993."],
+ dispositivos:[
+  ["Art. 1º, I","Convênio ICMS 172/2023 (altera o Conv. 199/22)."],
+  ["Art. 1º, II","Convênio ICMS 173/2023 (altera o Conv. 15/23)."],
+  ["RICMS-RR","Diesel, biodiesel e GLP sob monofasia a partir de 01/05/2023, nos termos do Conv. 199/22."]],
+ temas:["Roraima","Combustíveis","Monofásico","Ad rem","Regulamento"],
+ rel:["ricms-rr","conv199-2022","conv15-2023","lei59-1993-rr"],
+ link:LW+"456135"}
+];
+
+/* ======================= UTIL ======================= */
+const $ = s => document.querySelector(s);
+const norm = s => (s||"").toString().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+const esc = s => (s||"").toString().replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const STOP = new Set("a o e de da do das dos em no na nos nas para por com sem que se um uma ao aos as os sobre ou como entre ate apos".split(" "));
+const SYN = {
+  "st":["substituicao tributaria"],"substituicao":["st"],"difal":["diferencial de aliquotas","diferencial"],
+  "kandir":["lc 87"],"nfe":["nf-e","nota fiscal eletronica"],"nfce":["nfc-e"],"danfe":["nf-e"],
+  "simples":["simples nacional"],"reforma":["reforma tributaria","ibs","cbs"],"ibs":["reforma tributaria"],"cbs":["reforma tributaria"],
+  "monofasico":["monofasica","ad rem"],"monofasia":["monofasico"],"combustivel":["combustiveis"],"gasolina":["combustiveis"],
+  "diesel":["combustiveis"],"glp":["combustiveis"],"decadencia":["prazo decadencial"],"zfm":["zona franca"],"alc":["area de livre comercio"],
+  "ricms":["regulamento"],"rr":["roraima"],"ctn":["codigo tributario nacional"],"sonegacao":["crime tributario"],"lef":["execucao fiscal"],
+  "efd":["sped"],"pis":["pis/cofins"],"cofins":["pis/cofins"],"ipi":["industrializacao"],"iss":["servicos"],"sigilo":["sigilo bancario"],"aduaneiro":["importacao"],"eletroposto":["eletropostos","recarga"],"eletropostos":["recarga"],"recarga":["eletropostos"],"cosmeticos":["perfumaria"],"cosmetico":["cosmeticos"],"perfumaria":["cosmeticos"],"perfume":["perfumaria","perfumes"],"bebida":["bebidas"],"cerveja":["cervejas"],"refrigerante":["refrigerantes"],"aliquota":["aliquotas"],"cfop":["sinief"],"pmpf":["preco medio ponderado"],"mva":["margem de valor agregado"]
+};
+const TIPO_ALIAS = [
+  [/\b(lc|lcp|lei complementar)\b/,"Lei Complementar"],[/\b(ec|emenda)\b/,"Emenda Constitucional"],
+  [/\b(conv|convenio|cv)\b/,"Convênio"],[/\b(prot|protocolo)\b/,"Protocolo ICMS"],
+  [/\b(ajuste|aj)\b/,"Ajuste SINIEF"],[/\b(decreto|dec)\b/,"Decreto"],[/\b(ricms)\b/,"RICMS"],[/\b(cf|constituicao)\b/,"Constituição"],[/\b(lei)\b/,"Lei"]
+];
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),1800)}
+function y2(yy){yy=+yy;return yy<100?(yy>30?1900+yy:2000+yy):yy}
+function numKey(n){return norm(n).replace(/[.\s]/g,"").replace(/^0+/,"")}
+
+/* Pré-processamento */
+NORMAS.forEach(n=>{
+  n._num = numKey(n.numero);
+  n._idx = {
+    titulo:norm(n.titulo+" "+n.sigla+" "+n.numero+"/"+n.ano),
+    ementa:norm(n.ementa),
+    resumo:norm(n.resumo.join(" ")),
+    temas:norm(n.temas.join(" | ")),
+    disp:n.dispositivos.map(d=>norm(d[0]+" "+d[1]))
+  };
+});
+const BYID = Object.fromEntries(NORMAS.map(n=>[n.id,n]));
+
+/* ======================= PARSER ======================= */
+function parseQuery(raw){
+  const q = norm(raw).trim();
+  const out = {raw, q, numero:null, ano:null, tipo:null, artigo:null, terms:[]};
+  if(!q) return out;
+  let rest = q;
+  // artigo / cláusula
+  const art = rest.match(/\b(art\.?|artigo|clausula|cl\.?|§|paragrafo)\s*([\w\-ºª°]+)/);
+  if(art){ out.artigo = art[2].replace(/[ºª°]/g,""); out.artigoLabel = art[0]; rest = rest.replace(art[0]," "); }
+  const par = rest.match(/(§|paragrafo)\s*(\d+)/);
+  if(par){ out.par = par[2]; out.artigoLabel = (out.artigoLabel||"")+" "+par[0]; rest = rest.replace(par[0]," "); }
+  // tipo
+  for(const [re,t] of TIPO_ALIAS){ if(re.test(rest)){ out.tipo=t; rest=rest.replace(re," "); break; } }
+  // número/ano
+  const na = rest.match(/\b(\d{1,2}\.?\d{0,3}(?:-e)?)\s*\/\s*(\d{2,4})\b/);
+  if(na){ out.numero=numKey(na[1]); out.ano=y2(na[2]); rest=rest.replace(na[0]," "); }
+  else {
+    const n1 = rest.match(/\b(?:n[º°o.]?\s*)?(\d{1,2}\.\d{3}(?:-e)?|\d{1,4}(?:-e)?)\b/);
+    if(n1 && (out.tipo || /^\s*\d/.test(rest) || /^n/.test(n1[0]))){
+      const v = n1[1];
+      if(!(+v>=1960 && +v<=2035 && !out.tipo)){ out.numero=numKey(v); rest=rest.replace(n1[0]," "); }
+    }
+    const yr = rest.match(/\b(19[6-9]\d|20[0-3]\d)\b/);
+    if(yr){ out.ano=+yr[1]; rest=rest.replace(yr[0]," "); }
+  }
+  out.terms = rest.split(/[^a-z0-9\-]+/).map(t=>t.replace(/^-+|-+$/g,"")).filter(t=>t && t.length>1 && !STOP.has(t));
+  return out;
+}
+
+/* ======================= BUSCA ======================= */
+let state = {mode:"auto", sort:"rel", esfera:new Set(), tipo:new Set(), sit:new Set(), temas:new Set(), sel:null, list:[]};
+
+const _reC={};
+function has(text,t){ if(t.length>5) return text.includes(t); const re=_reC[t]||(_reC[t]=new RegExp("(^|[^a-z0-9])"+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+(t.length<=4?"(?![a-z0-9])":""))); return re.test(text); }
+function expandTerms(terms){
+  return terms.map(t=>{ const alts=[t]; (SYN[t]||[]).forEach(a=>alts.push(a)); if(t.length>4 && t.endsWith("s")) alts.push(t.slice(0,-1)); return alts; });
+}
+function scoreNorma(n, P){
+  let s = 0, hits = [], matchedAll = true;
+  const mode = state.mode;
+  // número
+  if(P.numero && mode!=="assunto" && mode!=="trecho"){
+    if(n._num===P.numero || n._num.replace(/-e$/,"")===P.numero.replace(/-e$/,"")){ s+=100; if(P.ano && P.ano===n.ano) s+=60; else if(P.ano) s-=70; }
+    else if(mode==="numero" || (!P.terms.length)) return null;
+    else s-=10;
+  } else if(P.ano && mode!=="trecho"){ if(n.ano===P.ano) s+=25; }
+  if(P.tipo){
+    const t = norm(n.tipo+" "+n.sigla+" "+n.titulo);
+    if(t.includes(norm(P.tipo))) s+=30; else if(P.numero) s-=40;
+  }
+  // artigo / dispositivo
+  if(P.artigo){
+    const a = norm(P.artigo);
+    const re = new RegExp("(art\\.?\\s*|clausula\\s*|§\\s*)"+a.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?![0-9])");
+    n.dispositivos.forEach((d,i)=>{ if(re.test(norm(d[0])) || norm(d[0]).startsWith(a)) { s+=40; hits.push(i); } });
+  }
+  if(P.par){ n.dispositivos.forEach((d,i)=>{ const r=norm(d[0]); if(new RegExp("§\\s*"+P.par+"(?![0-9])").test(r) && (!P.artigo || r.includes(norm(P.artigo)))){ s+=35; if(!hits.includes(i)) hits.unshift(i);} }); }
+  // termos
+  const groups = expandTerms(P.terms);
+  const X = n._idx;
+  for(const alts of groups){
+    let g = 0;
+    for(const t of alts){
+      if(mode!=="trecho"){
+        if(has(X.titulo,t)) g=Math.max(g,28);
+        if(has(X.temas,t)) g=Math.max(g,24);
+        if(has(X.ementa,t)) g=Math.max(g,14);
+        if(has(X.resumo,t)) g=Math.max(g,9);
+      }
+      if(mode!=="numero" && mode!=="assunto"){
+        X.disp.forEach((d,i)=>{ if(has(d,t)){ g=Math.max(g, mode==="trecho"?22:7); if(!hits.includes(i)) hits.push(i); } });
+      } else if(mode==="assunto"){
+        X.disp.forEach((d,i)=>{ if(has(d,t)) g=Math.max(g,4); });
+      }
+    }
+    if(g===0) matchedAll=false;
+    s+=g;
+  }
+  if(groups.length && !matchedAll){
+    // exige todos os termos; tolera 1 faltante se 3+ termos
+    const got = groups.filter(alts=>alts.some(t=>has(X.titulo,t)||has(X.temas,t)||has(X.ementa,t)||has(X.resumo,t)||X.disp.some(d=>has(d,t)))).length;
+    if(got < groups.length - (groups.length>=3?1:0)) return null;
+    s*=0.7;
+  }
+  // frase exata
+  if(P.terms.length>1){ const ph=P.terms.join(" "); if(has(X.titulo,ph)||has(X.temas,ph)) s+=20; else if(has(X.resumo,ph)||has(X.ementa,ph)) s+=10; }
+  if(P.artigo && !hits.length && !P.terms.length && !P.numero) return null;
+  if(s<=0) return null;
+  if(/revogad|inconstitucional/i.test(n.situacao)) s*=0.85;
+  return {n, s:Math.round(s), hits};
+}
+function passFilters(n){
+  if(state.esfera.size && !state.esfera.has(n.esfera)) return false;
+  if(state.tipo.size && !state.tipo.has(groupTipo(n))) return false;
+  if(state.sit.size && !state.sit.has(groupSit(n))) return false;
+  if(state.temas.size && ![...state.temas].every(t=>n.temas.includes(t))) return false;
+  return true;
+}
+function groupTipo(n){ return /Convênio|Protocolo|Ajuste/.test(n.tipo) ? "Convênios/Ajustes/Protocolos" : n.tipo.replace(" Estadual",""); }
+function groupSit(n){ return /Revogad|Inconstitucional/.test(n.situacao) ? "Revogada / inválida" : "Vigente"; }
+
+function run(){
+  const raw = $("#q").value;
+  const P = parseQuery(raw);
+  showParsed(P);
+  let list;
+  if(!P.q){ list = NORMAS.filter(passFilters).map(n=>({n,s:0,hits:[]})); }
+  else { list = NORMAS.map(n=>scoreNorma(n,P)).filter(Boolean).filter(r=>passFilters(r.n)); }
+  const so = state.sort;
+  list.sort((a,b)=> so==="new"? b.n.ano-a.n.ano : so==="old"? a.n.ano-b.n.ano : so==="num"? (a.n.tipo.localeCompare(b.n.tipo)|| (+a.n._num||0)-(+b.n._num||0)) : (b.s-a.s || b.n.ano-a.n.ano));
+  state.list = list; state.P = P;
+  renderResults(list,P);
+  renderFacets(P);
+  $("#clearQ").style.display = raw ? "block":"none";
+}
+function showParsed(P){
+  const el=$("#parsed"); const parts=[];
+  if(P.tipo) parts.push(`<span class="tag">tipo: ${esc(P.tipo)}</span>`);
+  if(P.numero) parts.push(`<span class="tag">nº ${esc(P.numero)}</span>`);
+  if(P.ano) parts.push(`<span class="tag">ano ${P.ano}</span>`);
+  if(P.artigo) parts.push(`<span class="tag">dispositivo: ${esc(P.artigoLabel)}</span>`);
+  if(P.terms.length) parts.push(`<span class="tag">termos: ${esc(P.terms.join(", "))}</span>`);
+  el.innerHTML = parts.length? "Interpretação da consulta: "+parts.join(""):""; el.style.display=parts.length?"block":"none";
+}
+function hl(text, P){
+  let t = esc(text);
+  if(!P || !P.q) return t;
+  const words = new Set();
+  expandTerms(P.terms).flat().forEach(w=>{ if(w.length>2) words.add(w); });
+  if(P.numero) words.add(P.numero);
+  if(!words.size) return t;
+  // destaque insensível a acento: mapeia índices
+  const plain = norm(t);
+  const marks = [];
+  words.forEach(w=>{ let i=0; while((i=plain.indexOf(w,i))>-1){ marks.push([i,i+w.length]); i+=w.length; } });
+  if(!marks.length) return t;
+  marks.sort((a,b)=>a[0]-b[0]);
+  const merged=[]; for(const m of marks){ const l=merged[merged.length-1]; if(l && m[0]<=l[1]) l[1]=Math.max(l[1],m[1]); else merged.push([...m]); }
+  let out="",last=0;
+  for(const [a,b] of merged){ out+=t.slice(last,a)+"<mark>"+t.slice(a,b)+"</mark>"; last=b; }
+  return out+t.slice(last);
+}
+function esfBadge(n){ return n.esfera==="Federal"?'<span class="badge b-fed">Federal</span>':n.esfera==="CONFAZ"?'<span class="badge b-conf">CONFAZ</span>':'<span class="badge b-rr">Roraima</span>'; }
+function sitBadge(n){ const c=/Revogad|Inconstitucional/.test(n.situacao)?"s-rev":/alterada/.test(n.situacao)?"s-alt":"s-vig"; return `<span class="badge ${c}">${esc(n.situacao)}</span>`; }
+
+function renderResults(list,P){
+  const box=$("#results");
+  $("#rcount").textContent = P.q ? `${list.length} resultado${list.length!==1?"s":""}` : `Todas as normas (${list.length})`;
+  if(!list.length){
+    box.innerHTML = `<div class="card empty"><h3>Nenhuma norma encontrada na base</h3>
+      <p>${window.APP_STANDALONE?`A base reúne as normas tributárias mais usadas. Use os atalhos de <b>fontes oficiais</b> acima para pesquisar “${esc(P.raw)}” no Portal da Legislação, CONFAZ, SEFAZ-RR e outros órgãos.`:`A base local reúne as normas tributárias mais usadas. A IA pode trazer um resumo de “${esc(P.raw)}”, com indicação para conferir o texto oficial.`}</p>
+      <button class="btn gold" onclick="aiLookup()">✦ Resumir “${esc(P.raw.slice(0,40))}” com IA</button>
+      <p class="note">Ou ajuste a consulta: use o modo “Por assunto” ou limpe os filtros.</p></div>`;
+    return;
+  }
+  box.innerHTML = list.map((r,i)=>{
+    const n=r.n;
+    const hit = r.hits.length ? `<div class="hit"><b>${esc(n.dispositivos[r.hits[0]][0])}</b> — ${hl(n.dispositivos[r.hits[0]][1],P)}${r.hits.length>1?` <span style="color:var(--ink3)">(+${r.hits.length-1} dispositivo${r.hits.length>2?"s":""})</span>`:""}</div>` : "";
+    return `<div class="res ${state.sel===n.id?"active":""}" tabindex="0" data-id="${n.id}" data-i="${i}">
+      <div class="meta">${esfBadge(n)}${sitBadge(n)}<span style="font-size:12px;color:var(--ink3)">${esc(n.data)}</span>${P.q&&state.sort==="rel"?`<span class="score">${r.s} pts</span>`:""}</div>
+      <h4>${hl(n.titulo,P)}</h4>
+      <p class="em">${hl(n.ementa,P)}</p>${hit}</div>`;
+  }).join("");
+  box.querySelectorAll(".res").forEach(el=>{
+    el.onclick=()=>select(el.dataset.id);
+    el.onkeydown=e=>{ if(e.key==="Enter") select(el.dataset.id); };
+  });
+  if(list.length && (!state.sel || !list.some(r=>r.n.id===state.sel)) && P.q) select(list[0].n.id,true);
+}
+
+/* ======================= FACETAS ======================= */
+const TEMAS_TOP = (()=>{ const c={}; NORMAS.forEach(n=>n.temas.forEach(t=>c[t]=(c[t]||0)+1)); return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,22).map(x=>x[0]); })();
+function renderFacets(){
+  const base = NORMAS;
+  const mk = (el,key,fn,values)=>{
+    const cnt={}; base.forEach(n=>{const v=fn(n);cnt[v]=(cnt[v]||0)+1});
+    $(el).innerHTML = values.map(v=>`<label class="fopt"><input type="checkbox" data-k="${key}" value="${esc(v)}" ${state[key].has(v)?"checked":""}>${esc(v)}<span class="n">${cnt[v]||0}</span></label>`).join("");
+  };
+  mk("#fEsfera","esfera",n=>n.esfera,["Federal","CONFAZ","Roraima"]);
+  mk("#fTipo","tipo",groupTipo,["Constituição","Emenda Constitucional","Lei Complementar","Lei","Convênios/Ajustes/Protocolos","Decreto"]);
+  mk("#fSit","sit",groupSit,["Vigente","Revogada / inválida"]);
+  $("#fTemas").innerHTML = TEMAS_TOP.map(t=>`<button class="chip" data-t="${esc(t)}" aria-pressed="${state.temas.has(t)}">${esc(t)}</button>`).join("");
+  document.querySelectorAll("#filters input").forEach(i=>i.onchange=()=>{ const s=state[i.dataset.k]; i.checked?s.add(i.value):s.delete(i.value); run(); });
+  document.querySelectorAll("#fTemas .chip").forEach(b=>b.onclick=()=>{ const t=b.dataset.t; state.temas.has(t)?state.temas.delete(t):state.temas.add(t); run(); });
+}
+
+/* ======================= DETALHE ======================= */
+function select(id, silent){
+  state.sel=id; const n=BYID[id]; if(!n) return;
+  document.querySelectorAll(".res").forEach(el=>el.classList.toggle("active",el.dataset.id===id));
+  const P = state.P||{};
+  const r = (state.list||[]).find(x=>x.n.id===id);
+  const hits = new Set(r?r.hits:[]);
+  const cit = citacao(n);
+  const gq = encodeURIComponent(`${n.sigla} ${n.numero} ${n.ano} ${n.esfera==="Roraima"?"Roraima":""} texto integral`);
+  $("#dcard").innerHTML = `
+  <div class="dhead">
+    <div class="kicker">${esc(n.tipo)} · ${esc(n.esfera==="CONFAZ"?"CONFAZ (nacional)":n.esfera)}</div>
+    <h2>${esc(n.titulo)}</h2>
+    <p class="ementa">${esc(n.ementa)}</p>
+    <div class="actions">
+      <a class="btn primary" href="${n.link}" target="_blank" rel="noopener">Texto oficial ↗</a>
+      <a class="btn" href="https://www.google.com/search?q=${gq}" target="_blank" rel="noopener">Pesquisar texto integral ↗</a>
+      <button class="btn" id="copyCit">Copiar citação</button>
+      <button class="btn" id="copyRes">Copiar resumo</button>
+    </div>
+  </div>
+  <div class="dsec">
+    <div class="facts">
+      <div class="fact"><small>Data</small><span>${esc(n.data)}</span></div>
+      <div class="fact"><small>Situação</small><span>${esc(n.situacao)}</span></div>
+      <div class="fact"><small>Esfera</small><span>${esc(n.esfera)}</span></div>
+      <div class="fact"><small>Dispositivos-chave</small><span>${n.dispositivos.length}</span></div>
+    </div>
+  </div>
+  <div class="dsec resumo">
+    <h3>Resumo</h3>
+    <ul>${n.resumo.map(p=>`<li>${hl(p,P)}</li>`).join("")}</ul>
+  </div>
+  <div class="dsec" id="aiSec">
+    <h3>Análise com IA</h3>
+    <div class="ai" id="aiBox">
+      <div class="aih">✦ Assistente de legislação</div>
+      <div class="out" id="aiOut" style="color:var(--ink2);font-size:13.5px">Gere um resumo aprofundado ou faça uma pergunta sobre esta norma: aplicação prática, pontos de atenção para a fiscalização, jurisprudência relevante.</div>
+      <div class="actions" style="margin-top:9px">
+        <button class="btn gold" id="aiDeep">Resumo aprofundado</button>
+        <button class="btn" id="aiAudit">Pontos de auditoria</button>
+        <button class="btn" id="aiJuris">Jurisprudência</button>
+      </div>
+      <div class="askrow"><input id="aiAsk" placeholder="Pergunte sobre esta norma…"><button class="btn" id="aiAskBtn">Perguntar</button></div>
+    </div>
+  </div>
+  <div class="dsec">
+    <h3>Dispositivos principais <span style="font-weight:400;text-transform:none;letter-spacing:0">— busca por parte</span></h3>
+    <input id="dispFilter" placeholder="Filtrar dispositivos (ex.: art. 8, base de cálculo, CEST)…">
+    <div id="dispList"></div>
+  </div>
+  <div class="dsec">
+    <h3>Temas</h3>
+    <div class="chips">${n.temas.map(t=>`<button class="chip" data-tema="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+    ${n.rel&&n.rel.length?`<h3 style="margin-top:14px">Normas relacionadas</h3><div class="rel">${n.rel.filter(x=>BYID[x]).map(x=>`<button data-rel="${x}">${esc(shortName(BYID[x]))}</button>`).join("")}</div>`:""}
+    <p class="note">Os resumos e a lista de dispositivos são interpretativos e não substituem o texto oficial. A numeração de artigos e cláusulas pode mudar com alterações posteriores. Confira sempre o texto consolidado.</p>
+  </div>`;
+  const renderDisp = f=>{
+    const ff=norm(f);
+    $("#dispList").innerHTML = n.dispositivos.map((d,i)=>({d,i})).filter(({d})=>!ff||norm(d[0]+" "+d[1]).includes(ff))
+      .map(({d,i})=>`<div class="disp ${hits.has(i)&&!ff?"match":""}"><div class="ref">${esc(d[0])}</div><div class="tx">${ff?hlSimple(d[1],ff):hl(d[1],P)}</div></div>`).join("") || `<div class="note">Nenhum dispositivo corresponde ao filtro. Tente a IA para buscar no texto completo.</div>`;
+  };
+  renderDisp("");
+  $("#dispFilter").oninput=e=>renderDisp(e.target.value);
+  $("#copyCit").onclick=()=>copy(cit,"Citação copiada");
+  $("#copyRes").onclick=()=>copy(`${n.titulo}\n${n.ementa}\n\nResumo:\n- ${n.resumo.join("\n- ")}\n\nDispositivos:\n${n.dispositivos.map(d=>`• ${d[0]}: ${d[1]}`).join("\n")}\n\nFonte: ${n.link}`,"Resumo copiado");
+  document.querySelectorAll("[data-rel]").forEach(b=>b.onclick=()=>{ ensureVisible(b.dataset.rel); select(b.dataset.rel); });
+  document.querySelectorAll("[data-tema]").forEach(b=>b.onclick=()=>{ state.temas=new Set([b.dataset.tema]); $("#q").value=""; run(); });
+  wireAI(n);
+  if(!silent && innerWidth<1100) $("#detail").scrollIntoView({behavior:"smooth"});
+}
+function hlSimple(t,ff){ const tt=esc(t), p=norm(tt), i=p.indexOf(ff); return i<0?tt:tt.slice(0,i)+"<mark>"+tt.slice(i,i+ff.length)+"</mark>"+tt.slice(i+ff.length); }
+function shortName(n){ return n.tipo==="Constituição"?"CF/1988 art. 155": `${n.sigla} ${n.numero}/${n.ano}`; }
+function citacao(n){
+  if(n.tipo==="Constituição") return "BRASIL. Constituição da República Federativa do Brasil de 1988. Art. 155.";
+  const ente = n.esfera==="Roraima"?"RORAIMA":n.esfera==="CONFAZ"?"CONSELHO NACIONAL DE POLÍTICA FAZENDÁRIA (CONFAZ)":"BRASIL";
+  return `${ente}. ${n.tipo==="Lei Estadual"?"Lei":n.tipo==="Decreto Estadual"?"Decreto":n.tipo} nº ${n.numero}, de ${n.data}. ${n.ementa} Disponível em: ${n.link}.`;
+}
+function ensureVisible(id){ if(!state.list.some(r=>r.n.id===id)){ /* mantém lista, só seleciona */ } }
+async function copy(t,msg){ try{ await navigator.clipboard.writeText(t); toast(msg);}catch(e){ toast("Não foi possível copiar"); } }
+
+/* ======================= IA (sample) ======================= */
+let samplePromise = null, aiCtl = null;
+function getSample(){ if(!samplePromise){ samplePromise = (window.claude && claude.use) ? claude.use("sample").catch(()=>null) : Promise.resolve(null); } return samplePromise; }
+const SYS = `Você é um assistente especializado em legislação tributária brasileira, com foco em ICMS, substituição tributária, normas do CONFAZ, Reforma Tributária (EC 132/2023, LC 214/2025) e legislação do Estado de Roraima. O usuário é auditor fiscal da SEFAZ-RR.
+Regras:
+- Responda em português do Brasil, de forma técnica, objetiva e organizada.
+- Use títulos curtos com "## " e listas com "- ". Use **negrito** com moderação.
+- NÃO invente números de artigos, cláusulas, datas ou ementas. Quando não tiver certeza de um dado específico, diga isso explicitamente.
+- Se a norma consultada não existir ou você não a reconhecer com segurança, diga isso claramente em vez de supor.
+- Indique se a norma pode ter sido alterada ou revogada e recomende a conferência do texto consolidado na fonte oficial (Planalto, CONFAZ, SEFAZ-RR).
+- Seu conhecimento tem data de corte; mencione isso quando o tema for recente.`;
+function md(s){
+  const lines = esc(s).split("\n"); let html="", inList=false;
+  for(let l of lines){
+    l = l.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>");
+    if(/^\s*#{1,4}\s+/.test(l)){ if(inList){html+="</ul>";inList=false;} html+=`<h4>${l.replace(/^\s*#{1,4}\s+/,"")}</h4>`; }
+    else if(/^\s*[-*•]\s+/.test(l)){ if(!inList){html+="<ul>";inList=true;} html+=`<li>${l.replace(/^\s*[-*•]\s+/,"")}</li>`; }
+    else if(/^\s*\d+[.)]\s+/.test(l)){ if(!inList){html+="<ul>";inList=true;} html+=`<li>${l.replace(/^\s*/,"")}</li>`; }
+    else if(l.trim()){ if(inList){html+="</ul>";inList=false;} html+=`<p>${l}</p>`; }
+  }
+  if(inList) html+="</ul>"; return html;
+}
+async function askAI(prompt, outEl, btns){
+  const sample = await getSample();
+  if(!sample){ outEl.innerHTML = `<p>O assistente de IA não está disponível nesta visualização. Abra a página no claude.ai para usar este recurso.</p>`; return; }
+  if(aiCtl) aiCtl.abort(); aiCtl = new AbortController();
+  btns.forEach(b=>b&&(b.disabled=true));
+  outEl.innerHTML = `<p style="color:var(--ink3)"><span class="spin"></span> Consultando…</p>`;
+  try{
+    const r = await sample([{role:"user",content:SYS+"\n\n"+prompt}], {signal:aiCtl.signal, modelTier:"default", cache:true,
+      onText:({text})=>{ outEl.innerHTML = md(text); }});
+    outEl.innerHTML = md(r.text) + `<div class="warnline">⚠ Conteúdo gerado por IA. Confira no texto oficial antes de usar em ato administrativo.</div>`;
+  }catch(e){
+    if(e && e.name==="AbortError") return;
+    const msg = e&&e.code==="rate_limited" ? "Limite de uso atingido. Tente novamente em alguns instantes." : e&&e.code==="not_granted" ? "Permissão para usar a IA não concedida." : "Não foi possível obter a resposta ("+esc(e&&e.message||"erro")+").";
+    outEl.innerHTML = (e&&e.text? md(e.text):"") + `<p class="warnline">${msg}</p>`;
+  }finally{ btns.forEach(b=>b&&(b.disabled=false)); }
+}
+function normaCtx(n){ return `Norma: ${n.titulo} (${n.tipo}, ${n.data}, esfera ${n.esfera}, situação: ${n.situacao}).\nEmenta: ${n.ementa}\nResumo de referência:\n- ${n.resumo.join("\n- ")}\nDispositivos de referência:\n${n.dispositivos.map(d=>`- ${d[0]}: ${d[1]}`).join("\n")}`; }
+function wireAI(n){
+  const out=$("#aiOut"), b1=$("#aiDeep"), b2=$("#aiAudit"), b3=$("#aiJuris"), b4=$("#aiAskBtn");
+  const all=[b1,b2,b3,b4];
+  b1.onclick=()=>askAI(`${normaCtx(n)}\n\nTarefa: elabore um RESUMO APROFUNDADO desta norma com as seções: ## Objeto e alcance; ## Principais regras; ## Alterações relevantes e situação atual; ## Relação com outras normas; ## Impacto em Roraima (se houver). Máximo de 400 palavras.`,out,all);
+  b2.onclick=()=>askAI(`${normaCtx(n)}\n\nTarefa: liste os principais PONTOS DE ATENÇÃO PARA AUDITORIA FISCAL do ICMS relacionados a esta norma: irregularidades frequentes, cruzamentos de dados úteis (NF-e, EFD, GIA-ST) e cuidados na lavratura do auto de infração. Use as seções ## Riscos e irregularidades típicas; ## Verificações e cruzamentos; ## Cuidados no lançamento. Máximo de 350 palavras.`,out,all);
+  b3.onclick=()=>askAI(`${normaCtx(n)}\n\nTarefa: indique a JURISPRUDÊNCIA mais relevante (STF, STJ, temas de repercussão geral e repetitivos) relacionada a esta norma, com o número do tema ou processo e a tese em uma frase. Só cite precedentes que você conheça com segurança. Se não souber o número exato, diga isso. Máximo de 300 palavras.`,out,all);
+  const ask=()=>{ const q=$("#aiAsk").value.trim(); if(!q) return; askAI(`${normaCtx(n)}\n\nPergunta do usuário: ${q}\nResponda de forma direta e fundamentada (máximo de 300 palavras).`,out,all); };
+  b4.onclick=ask; $("#aiAsk").onkeydown=e=>{ if(e.key==="Enter") ask(); };
+}
+async function aiLookup(){
+  const raw = $("#q").value.trim();
+  if(!raw){ toast("Digite o número, nome ou assunto da norma"); $("#q").focus(); return; }
+  state.sel=null; document.querySelectorAll(".res").forEach(el=>el.classList.remove("active"));
+  $("#dcard").innerHTML = `<div class="dhead"><div class="kicker">Consulta com IA</div><h2>${esc(raw)}</h2><p class="ementa">Resumo gerado por IA a partir do conhecimento geral do modelo. Confira no texto oficial.</p></div>
+   <div class="dsec"><div class="ai"><div class="aih">✦ Assistente de legislação</div><div class="out" id="aiOut2"></div>
+   <div class="askrow"><input id="aiAsk2" placeholder="Pergunta complementar…"><button class="btn" id="aiAskBtn2">Perguntar</button></div></div></div>`;
+  const out=$("#aiOut2");
+  const base = `Consulta do usuário (pode ser número de norma, nome, assunto ou trecho): "${raw}".`;
+  askAI(`${base}\n\nTarefa: identifique a(s) norma(s) tributária(s) brasileira(s) correspondente(s) e traga um RESUMO estruturado com as seções: ## Identificação (tipo, número, data, órgão, ementa resumida); ## Resumo; ## Principais dispositivos; ## Situação (vigente, alterada ou revogada, até onde você sabe); ## Normas relacionadas. Se a consulta for um assunto, indique as principais normas que o regem e resuma cada uma brevemente. Máximo de 450 palavras.`,out,[$("#aiLookupBtn")]);
+  const ask=()=>{ const q=$("#aiAsk2").value.trim(); if(!q) return; askAI(`${base}\nPergunta complementar: ${q}\nResponda de forma direta (máximo de 300 palavras).`,out,[$("#aiAskBtn2")]); };
+  $("#aiAskBtn2").onclick=ask; $("#aiAsk2").onkeydown=e=>{ if(e.key==="Enter") ask(); };
+  if(innerWidth<1100) $("#detail").scrollIntoView({behavior:"smooth"});
+}
+window.aiLookup = aiLookup;
+
+/* ======================= RECENTES ======================= */
+function getRecent(){ try{ return JSON.parse(localStorage.getItem("bl_recent")||"[]"); }catch(e){ return []; } }
+function pushRecent(q){ if(!q||q.length<2) return; try{ let r=getRecent().filter(x=>x!==q); r.unshift(q); localStorage.setItem("bl_recent",JSON.stringify(r.slice(0,6))); }catch(e){} renderRecent(); }
+function renderRecent(){ const r=getRecent(); $("#recent").innerHTML = r.length? "Recentes: "+r.map(x=>`<button>${esc(x)}</button>`).join(""):""; $("#recent").querySelectorAll("button").forEach(b=>b.onclick=()=>{ $("#q").value=b.textContent; run(); }); }
+
+/* ======================= EVENTOS ======================= */
+let deb; $("#q").addEventListener("input",()=>{ clearTimeout(deb); deb=setTimeout(run,140); });
+$("#q").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){ pushRecent($("#q").value.trim()); if(!state.list.length && !window.APP_STANDALONE) aiLookup(); }
+  if(e.key==="ArrowDown"){ e.preventDefault(); const f=document.querySelector(".res"); f&&f.focus(); }
+});
+$("#clearQ").onclick=()=>{ $("#q").value=""; run(); $("#q").focus(); };
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{ document.querySelectorAll(".mode").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); state.mode=b.dataset.mode;
+  $("#q").placeholder = {auto:"Ex.: 142/18 · LC 87 art. 8 · substituição tributária combustíveis · decadência",numero:"Ex.: 87/96 · LC 190 · Convênio 142/2018 · Ajuste SINIEF 07/05",assunto:"Ex.: DIFAL · monofásico · Simples Nacional · zona franca",trecho:"Ex.: art. 150 § 4º · ressarcimento · CEST · carta de correção"}[state.mode];
+  run(); $("#q").focus(); });
+$("#sort").onchange=e=>{ state.sort=e.target.value; run(); };
+$("#resetF").onclick=()=>{ ["esfera","tipo","sit","temas"].forEach(k=>state[k].clear()); run(); };
+$("#aiLookupBtn").onclick=()=>{ pushRecent($("#q").value.trim()); aiLookup(); };
+document.querySelectorAll(".hint code").forEach(c=>c.onclick=()=>{ $("#q").value=c.textContent; run(); pushRecent(c.textContent); });
+document.addEventListener("keydown",e=>{
+  if(e.key==="/" && document.activeElement.tagName!=="INPUT" && !$("#view-legislacao").hidden){ e.preventDefault(); $("#q").focus(); }
+  const a=document.activeElement;
+  if(a && a.classList.contains("res")){
+    if(e.key==="ArrowDown"){ e.preventDefault(); (a.nextElementSibling||a).focus(); }
+    if(e.key==="ArrowUp"){ e.preventDefault(); (a.previousElementSibling||$("#q")).focus(); }
+  }
+});
+// stats
+(()=>{ const c={Federal:0,CONFAZ:0,Roraima:0}; NORMAS.forEach(n=>c[n.esfera]++); const d=NORMAS.reduce((s,n)=>s+n.dispositivos.length,0);
+  $("#stats").innerHTML=`<div><b>${NORMAS.length}</b>normas</div><div><b>${d}</b>dispositivos</div><div><b>${c.Federal}/${c.CONFAZ}/${c.Roraima}</b>Fed/CONFAZ/RR</div>`; })();
+renderRecent(); run(); getSample();
+</script>
+<script src="app2.js"></script>
+<script src="app3.js"></script>
+<script src="app4.js"></script>
+<script src="app5.js"></script>
+<script src="app6.js"></script>
+<script src="app7.js"></script>
+<script src="pwa.js"></script>
+</body>
+</html>
