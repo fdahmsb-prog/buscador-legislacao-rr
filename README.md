@@ -8,7 +8,9 @@ Aplicativo web instalável (PWA) com:
 - **Guia de referência** e **Fontes oficiais** (federal, CONFAZ, Roraima, Boa Vista, 27 SEFAZ).
 
 Funciona **offline** depois do primeiro acesso e pode ser **instalado** no celular ou no computador.
-Os recursos de IA e o cadastro on-line de normas existem apenas na versão do Claude.
+Com o banco compartilhado (Supabase) configurado, auditores autorizados entram com o e-mail e podem **incluir normas, anexar PDFs e alterar links** direto no app — as mudanças aparecem para toda a equipe. Os recursos de IA existem apenas na versão do Claude.
+
+Configuração do banco: veja `supabase/setup.sql` e o arquivo `config.js` (passo a passo no guia de instalação).
 
 ---
 

@@ -149,7 +149,7 @@ async function save(){
   if(pdfPend && !f.fonte){ st.innerHTML=`<span class="bad">Informe o link de onde o PDF foi obtido.</span>`; $("#f_src").focus(); return; }
   if(f.fonte && !/^https?:\/\//i.test(f.fonte)){ st.innerHTML=`<span class="bad">O link de origem do PDF deve começar com http:// ou https://</span>`; return; }
   if(f.link && !/^https?:\/\//i.test(f.link)){ st.innerHTML=`<span class="bad">O link deve começar com http:// ou https://</span>`; return; }
-  if(!db){ st.innerHTML=`<span class="bad">Armazenamento indisponível nesta visualização. Abra o buscador no claude.ai.</span>`; return; }
+  if(!db){ st.innerHTML=`<span class="bad">Armazenamento indisponível. Entre com um e-mail autorizado (botão 👤 Entrar).</span>`; return; }
   const now=new Date().toISOString().slice(0,10);
   const uid = user ? await user.id().catch(()=>null) : null;
   const extra = {};
@@ -218,7 +218,7 @@ function mountUI(){
     try{ const r=await extrairTexto(file,(i,n)=>{ st.innerHTML=`<span class="spin"></span> Lendo página ${i} de ${n}…`; });
       pdfPend={file, texto:r.texto, paginas:r.paginas};
       if(r.texto.length<200){ st.innerHTML=`<span class="bad">PDF lido (${r.paginas} pág.), mas quase sem texto — provavelmente digitalizado (imagem). Preencha a ficha manualmente; o arquivo e o link serão guardados.</span>`; }
-      else { st.innerHTML=`<span class="ok">✔ ${esc(file.name)}</span> · ${r.paginas} pág. · ${r.texto.length.toLocaleString("pt-BR")} caracteres lidos. Preenchendo a ficha com IA…`; fillAI(); }
+      else { st.innerHTML=`<span class="ok">✔ ${esc(file.name)}</span> · ${r.paginas} pág. · ${r.texto.length.toLocaleString("pt-BR")} caracteres lidos. `+(window.APP_BACKEND?" Preencha tipo, número, ano e título; o texto do PDF será indexado para a busca por trecho.":" Preenchendo a ficha com IA…"); if(!window.APP_BACKEND) fillAI(); }
       if(!$("#f_src").value) $("#f_src").focus();
     }catch(err){ pdfPend=null; st.innerHTML=`<span class="bad">Não foi possível ler o PDF (${esc(err&&err.message||"erro")}). Verifique se não está protegido por senha.</span>`; }
   };
@@ -246,7 +246,7 @@ async function exportar(){
 }
 async function connect(){
   mountUI(); renderUpd();
-  if(window.APP_STANDALONE || !(window.claude && claude.use)){ loadStatic(); return; }
+  if(!(window.claude && claude.use) || (window.APP_STANDALONE && !window.APP_BACKEND)){ loadStatic(); return; }
   try{ user = await claude.use("user"); }catch(e){ user=null; }
   try{ db = await claude.use("db"); }catch(e){ db=null; }
   try{ assets = await claude.use("assets"); }catch(e){ assets=null; }

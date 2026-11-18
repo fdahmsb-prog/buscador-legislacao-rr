@@ -282,6 +282,7 @@ tr.hdr td{background:var(--bg);font-weight:600;color:var(--ink2);font-size:12.5p
 .pvpage canvas{display:block;max-width:100%}
 .pvnum{position:absolute;top:-2px;right:-58px;font-size:11px;color:#ddd}
 #pvback{padding:2vh 10px}
+*[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -1441,12 +1442,17 @@ document.addEventListener("keydown",e=>{
   $("#stats").innerHTML=`<div><b>${NORMAS.length}</b>normas</div><div><b>${d}</b>dispositivos</div><div><b>${c.Federal}/${c.CONFAZ}/${c.Roraima}</b>Fed/CONFAZ/RR</div>`; })();
 renderRecent(); run(); getSample();
 </script>
+<script src="config.js"></script>
+<script src="lib/supabase.min.js"></script>
+<script src="supa.js"></script>
 <script src="app2.js"></script>
 <script src="app3.js"></script>
 <script src="app4.js"></script>
 <script src="app5.js"></script>
 <script src="app6.js"></script>
 <script src="app7.js"></script>
+<script src="calc_rtc.js"></script>
+<script src="app8.js"></script>
 <script src="pwa.js"></script>
 </body>
 </html>

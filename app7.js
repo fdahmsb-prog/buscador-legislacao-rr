@@ -21,10 +21,11 @@ const css = `
 #prtModal .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:14px}
 #prtDoc{display:none}
 @media print{
-  @page{size:A4;margin:16mm 15mm 18mm}
+  @page{size:A4;margin:12mm}
   body > *:not(#prtDoc){display:none !important}
   html,body{background:#fff !important}
   #prtDoc{display:block !important}
+  #prtDoc.pdfprint img:last-child{page-break-after:auto;break-after:auto}
 }
 #prtDoc, .prt{font-family:Georgia,"Times New Roman",serif;color:#111;font-size:11.5pt;line-height:1.45}
 .prt .top{display:flex;justify-content:space-between;gap:12px;border-bottom:2px solid #1b2333;padding-bottom:6px;margin-bottom:12px;font-family:Arial,Helvetica,sans-serif;font-size:8.5pt;color:#444}
@@ -52,7 +53,7 @@ document.body.insertAdjacentHTML("beforeend",`<div id="prtDoc"></div>
   <div id="prtOpts"></div>
   <div class="acts">
     <button class="btn" id="prtCancel">Cancelar</button>
-    <button class="btn" id="prtTab" title="Abre a versão de impressão em outra aba">Abrir em nova aba</button>
+    <button class="btn" id="prtTab" title="Baixa a versão de impressão (abre em qualquer navegador)">⬇ Baixar (.html)</button>
     <button class="btn primary" id="prtGo">Imprimir / Salvar PDF</button>
   </div>
 </div></div>`);
@@ -134,8 +135,8 @@ body{max-width:190mm;margin:14px auto;padding:0 12px}</style></head><body>
 <div class="noprint" style="font-family:Arial;margin:0 0 12px;text-align:right"><button onclick="print()" style="padding:8px 14px;font-size:14px;cursor:pointer">🖨️ Imprimir / Salvar PDF</button></div>
 ${montar(atual)}</body></html>`;
   const url=URL.createObjectURL(new Blob([html],{type:"text/html"}));
-  const w=window.open(url,"_blank");
-  if(!w){ const a=document.createElement("a"); a.href=url; a.download=(atual.titulo||"normativo").replace(/[\\/:*?"<>|]+/g," ").slice(0,80)+".html"; document.body.appendChild(a); a.click(); a.remove(); try{toast("Pop-up bloqueado: baixei a versão de impressão em HTML");}catch(e){} }
+  const a=document.createElement("a"); a.href=url; a.download=(atual.titulo||"normativo").replace(/[\\/:*?"<>|]+/g," ").slice(0,80)+".html"; document.body.appendChild(a); a.click(); a.remove();
+  try{ toast("Arquivo baixado: abra-o e use o botão Imprimir"); }catch(e){}
   setTimeout(()=>URL.revokeObjectURL(url),60000);
   fechar();
 }

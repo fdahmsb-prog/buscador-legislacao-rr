@@ -145,7 +145,9 @@ function montarViewer(){
     <div class="mhead"><h2 id="pvttl" style="font-size:16px">PDF</h2>
       <div style="display:flex;gap:6px;align-items:center"><button class="btn" id="pvminus" title="Diminuir">−</button><span id="pvzoom" class="note" style="margin:0;min-width:42px;text-align:center">125%</span><button class="btn" id="pvplus" title="Aumentar">+</button>
       <input id="pvfind" placeholder="Localizar no PDF…" style="border:1px solid var(--line2);border-radius:7px;padding:6px 9px;font:inherit;font-size:13px;width:170px;background:var(--bg);color:var(--ink)">
-      <a class="btn" id="pvopen" target="_blank" rel="noopener" title="Abrir no visualizador do navegador">Abrir em nova aba ↗</a>
+      <a class="btn" id="pvdown" title="Salvar o PDF no computador">⬇ Baixar</a>
+      <span style="display:inline-flex;gap:4px;align-items:center"><input id="pvrange" placeholder="págs. ex.: 1-10" title="Páginas a imprimir (vazio = todas)" style="border:1px solid var(--line2);border-radius:7px;padding:6px 8px;font:inherit;font-size:13px;width:118px;background:var(--bg);color:var(--ink)"><button class="btn" id="pvprint" title="Imprimir as páginas do PDF">🖨️ Imprimir</button></span>
+      <a class="btn" id="pvsrc" target="_blank" rel="noopener" title="Abrir o PDF no site de onde foi obtido" hidden>Site de origem ↗</a>
       <button class="mx" id="pvx" aria-label="Fechar">×</button></div></div>
     <div id="pvst" class="note" style="margin:6px 16px"></div>
     <div id="pvpages" class="pvpages"></div></div></div>`);
@@ -154,16 +156,20 @@ function montarViewer(){
   document.addEventListener("keydown",e=>{ if(e.key==="Escape" && !$("#pvback").hidden) fechar(); });
   $("#pvplus").onclick=()=>{ pdfZoom=Math.min(3,pdfZoom+0.25); renderPdf(); };
   $("#pvminus").onclick=()=>{ pdfZoom=Math.max(0.5,pdfZoom-0.25); renderPdf(); };
+  $("#pvprint").onclick=imprimirPdf;
+  $("#pvdown").onclick=e=>{ if(!pdfObjUrl){ e.preventDefault(); toast("Aguarde o PDF carregar"); } };
   let t; $("#pvfind").oninput=e=>{ clearTimeout(t); t=setTimeout(()=>localizar(e.target.value),300); };
 }
 async function verPdf(id, nome){
   if(!$("#pvback")) montarViewer();
-  pdfNome=nome||"documento.pdf"; $("#pvttl").textContent="📄 "+pdfNome; $("#pvback").hidden=false; $("#pvpages").innerHTML=""; $("#pvfind").value="";
+  pdfNome=nome||"documento.pdf"; $("#pvrange").value=""; $("#pvttl").textContent="📄 "+pdfNome; $("#pvback").hidden=false; $("#pvpages").innerHTML=""; $("#pvfind").value="";
   const st=$("#pvst"); st.innerHTML=`<span class="spin"></span> Carregando o PDF…`;
   try{
-    const r=await fetch("/_blob/"+id); if(!r.ok) throw new Error(r.status===404?"arquivo não encontrado":"HTTP "+r.status);
+    const r=await fetch(window.__blobUrl ? window.__blobUrl(id) : "/_blob/"+id); if(!r.ok) throw new Error(r.status===404?"arquivo não encontrado":"HTTP "+r.status);
     const blob=await r.blob(); if(pdfObjUrl) URL.revokeObjectURL(pdfObjUrl); pdfObjUrl=URL.createObjectURL(new Blob([blob],{type:"application/pdf"}));
-    $("#pvopen").href=pdfObjUrl;
+    const dn=$("#pvdown"); dn.href=pdfObjUrl; dn.setAttribute("download", /\.pdf$/i.test(pdfNome)?pdfNome:pdfNome+".pdf");
+    const nn=NORMAS.find(x=>(x._aj&&x._aj.pdfId===id)||x._pdfId===id); const src=nn?(nn._user?nn._fonte:(nn._aj&&nn._aj.fonte)):"";
+    const sa=$("#pvsrc"); sa.hidden=!src; if(src) sa.href=src;
     if(!window.pdfjsLib){ await new Promise((ok,err)=>{ const s=document.createElement("script"); s.src="lib/pdf.min.js"; s.onload=ok; s.onerror=()=>err(new Error("leitor de PDF não carregou")); document.head.appendChild(s); }); window.pdfjsLib.GlobalWorkerOptions.workerSrc="lib/pdf.worker.min.js"; }
     pdfDoc=await window.pdfjsLib.getDocument({data:await blob.arrayBuffer()}).promise;
     renderPdf();
@@ -189,6 +195,35 @@ async function localizar(q){
   st.querySelectorAll("[data-pg]").forEach(b=>b.onclick=()=>{ const el=$("#pvpages").children[+b.dataset.pg-1]; if(el) el.scrollIntoView({behavior:"smooth"}); });
   const el=$("#pvpages").children[achou[0]-1]; if(el) el.scrollIntoView({behavior:"smooth"});
 }
+function faixa(txt,max){
+  txt=(txt||"").replace(/\s/g,""); if(!txt) return Array.from({length:max},(_,i)=>i+1);
+  const set=new Set(); txt.split(/[,;]/).forEach(p=>{ const m=p.match(/^(\d+)(?:-(\d+))?$/); if(!m) return; let a=+m[1], b=m[2]?+m[2]:a; if(a>b)[a,b]=[b,a]; for(let i=Math.max(1,a);i<=Math.min(max,b);i++) set.add(i); });
+  return [...set].sort((a,b)=>a-b);
+}
+async function imprimirPdf(){
+  if(!pdfDoc){ toast("Aguarde o PDF carregar"); return; }
+  const pgs=faixa($("#pvrange").value,pdfDoc.numPages), st=$("#pvst");
+  if(!pgs.length){ st.innerHTML=`<span class="bad">Faixa de páginas inválida. Use, por exemplo, 1-10 ou 3,5,8-12.</span>`; return; }
+  if(pgs.length>60 && !confirmar(`Imprimir ${pgs.length} páginas pode demorar alguns minutos. Continuar?`)) return;
+  const doc=document.getElementById("prtDoc"); if(!doc){ toast("Recurso de impressão indisponível"); return; }
+  doc.innerHTML=""; const b=$("#pvprint"); b.disabled=true;
+  try{
+    for(let k=0;k<pgs.length;k++){
+      st.innerHTML=`<span class="spin"></span> Preparando página ${k+1} de ${pgs.length} para impressão…`;
+      const pg=await pdfDoc.getPage(pgs[k]); const vp=pg.getViewport({scale:2});
+      const c=document.createElement("canvas"); c.width=vp.width; c.height=vp.height;
+      await pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise;
+      const im=new Image(); im.src=c.toDataURL("image/jpeg",0.9); im.style.cssText="display:block;width:100%;height:auto;page-break-after:always;break-after:page";
+      doc.appendChild(im);
+    }
+    doc.classList.add("pdfprint");
+    st.textContent=`${pdfDoc.numPages} página(s) · ${pgs.length} enviada(s) para impressão`;
+    const t0=document.title; document.title=pdfNome.replace(/\.pdf$/i,"");
+    setTimeout(()=>{ try{ window.print(); }catch(e){ toast("O navegador bloqueou a impressão; use ⬇ Baixar e imprima o arquivo"); } setTimeout(()=>{ document.title=t0; doc.classList.remove("pdfprint"); },800); },80);
+  }catch(e){ st.innerHTML=`<span class="bad">Falha ao preparar a impressão (${esc(e.message||"erro")}).</span>`; }
+  finally{ b.disabled=false; }
+}
+function confirmar(m){ try{ return window.confirm(m); }catch(e){ return true; } }
 window.__verPdf=verPdf;
 /* Intercepta qualquer link para PDF arquivado e abre no visualizador */
 document.addEventListener("click",e=>{
@@ -200,7 +235,7 @@ document.addEventListener("click",e=>{
 /* --------- Conexão --------- */
 async function init(){
   montar();
-  if(window.APP_STANDALONE || !(window.claude && claude.use)){
+  if(!(window.claude && claude.use) || (window.APP_STANDALONE && !window.APP_BACKEND)){
     try{ const r=await fetch("data/ajustes_normas.json",{cache:"no-cache"}); const arr=await r.json(); (Array.isArray(arr)?arr:[]).forEach(a=>{ if(a&&a.id) AJ[a.id]=a; }); aplicar(); }catch(e){}
     return;
   }
