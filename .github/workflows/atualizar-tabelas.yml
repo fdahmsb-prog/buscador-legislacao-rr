@@ -1,0 +1,59 @@
+name: Atualizar tabelas fiscais
+
+on:
+  schedule:
+    - cron: "17 10 1 * *"   # todo dia 1º, 07h17 (Brasília)
+  workflow_dispatch: {}      # permite rodar manualmente pela aba Actions
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Baixar fontes (OCA l10n-brazil e tabela CEST)
+        run: |
+          mkdir -p /tmp/src && cd /tmp/src
+          git clone -q --depth 1 --filter=blob:none --sparse https://github.com/OCA/l10n-brazil.git oca
+          (cd oca && git sparse-checkout set l10n_br_fiscal/data)
+          git clone -q --depth 1 https://github.com/thiagovalim/sis-referencias.git thiago
+          echo "C=$(git -C oca log -1 --format=%H)" >> $GITHUB_ENV
+          echo "CD=$(git -C oca log -1 --format=%cI)" >> $GITHUB_ENV
+
+      - name: Gerar tabelas
+        run: |
+          cp data/meta.json /tmp/prev_meta.json
+          mkdir -p /tmp/out
+          python3 -I tools/build_data.py /tmp/src/oca/l10n_br_fiscal/data /tmp/out /tmp/src/thiago/dados/cest.csv \
+            --commit "$C" --commit-date "$CD" --prev-meta /tmp/prev_meta.json | tee /tmp/log.txt
+
+      - name: Validar (não publica se a fonte parecer quebrada)
+        run: |
+          python3 -I - <<'PY'
+          import json, sys
+          T=json.load(open("/tmp/out/tabelas.json")); N=json.load(open("/tmp/out/ncm.json"))
+          P=json.load(open("/tmp/prev_meta.json")); M=json.load(open("/tmp/out/meta.json"))
+          ok = any(x["c"]=="5.405" for x in T["cfop"]) and any(x["c"]=="6.109" for x in T["cfop"]) \
+               and any(x["c"]=="60" for x in T["cst_icms"]) and any(x["c"]=="20.009.00" for x in T["cest"]) \
+               and any(x["c"]=="000001" for x in T["cclasstrib"]) and len(N) > 10000
+          for k,v in P.get("contagens",{}).items():
+              if v and M["contagens"].get(k,0) < 0.9*v: print("Queda >10% em", k); ok=False
+          print("validação:", "OK" if ok else "FALHOU"); sys.exit(0 if ok else 1)
+          PY
+
+      - name: Publicar no repositório
+        run: |
+          cp /tmp/out/tabelas.json /tmp/out/ncm.json /tmp/out/meta.json data/
+          git config user.name  "atualizador-tabelas"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then echo "Nada mudou."; exit 0; fi
+          git commit -m "Tabelas fiscais: $(grep -o 'RELATORIO::.*' /tmp/log.txt | cut -c1-200)"
+          git push
