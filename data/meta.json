@@ -1,9 +1,9 @@
 {
  "tabelas_atualizadas_em": "2026-11-18",
- "verificado_em": "2026-11-18",
+ "verificado_em": "2026-11-19",
  "fonte": "OCA l10n-brazil (l10n_br_fiscal/data) + tabela CEST CONFAZ (thiagovalim/sis-referencias)",
- "fonte_commit": "024d538916a955540987551c6acade78739d72a8",
- "fonte_commit_data": "2026-11-18T11:43:22+00:00",
+ "fonte_commit": "198ff09420f95b11f20dfa20e080a694ba3ceb2b",
+ "fonte_commit_data": "2026-11-18T18:24:55Z",
  "sha256": {
   "tabelas.json": "edc2628360b7efd4759eb1481fc5ddee15c3b4c5c23998d5013f8780f4ac01d5",
   "ncm.json": "2848983b6d3104a57094e1416b06d1d48a700d84d64f5a557117030d39371eaf"
