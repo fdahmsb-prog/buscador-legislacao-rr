@@ -8,6 +8,7 @@ const $ = s => document.querySelector(s);
 const esc = s => (s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let E = null, carregando = null;
 const REPO = "https://github.com/ReceitaFederal/calculadora-rtc-regime-regular";
+const ONLINE = "https://piloto-cbs.tributos.gov.br/servico/calculadora-consumo/calculadora";
 const fR = v => window.CalcRTC.fmtR(v), fP = v => window.CalcRTC.fmtP(v);
 const num = id => { const v = ($("#"+id)||{}).value; if(v==null) return null; let t = String(v).trim().replace(/\s|R\$/g,""); if(!t) return null;
   if(/,/.test(t)) t = t.replace(/\./g,"").replace(",", "."); else if(/^\d{1,3}(\.\d{3})+$/.test(t)) t = t.replace(/\./g,"");
@@ -25,7 +26,7 @@ function montar(){
   const tools = document.querySelector("#view-ferramentas .tools"); if(!tools || $("#rtcTool")) return;
   tools.insertAdjacentHTML("afterbegin", `<div class="card tool" id="rtcTool" style="grid-column:1/-1">
     <h3>Calculadora da Reforma Tributária – CBS, IBS e Imposto Seletivo</h3>
-    <p class="sub">Mesmas tabelas e fórmulas da <a href="${REPO}" target="_blank" rel="noopener">Calculadora de Tributos da Receita Federal</a> (código aberto, LC 214/2025, regime regular) · <span id="rtcVer">carregando base…</span></p>
+    <p class="sub">Mesmas tabelas e fórmulas da Calculadora de Tributos da Receita Federal (LC 214/2025, regime regular) · <span id="rtcVer">carregando base…</span><br><a href="${ONLINE}" target="_blank" rel="noopener">Abrir a calculadora oficial on-line ↗</a> · <a href="${REPO}" target="_blank" rel="noopener">código-fonte no GitHub ↗</a></p>
     <div class="frm">
       <label>Data do fato gerador<input id="rtc_data" type="date"></label>
       <label>UF<select id="rtc_uf"></select></label>
@@ -79,7 +80,7 @@ function calcular(){
   };
   const r = E.calcular(e);
   if(r.erro){ out.innerHTML = (r.classe ? fichaClasse(r.classe) : "") + `<p class="bad" style="margin:8px 0">${esc(r.erro)}</p>` +
-    (r.tipoErro==="nao_impl" ? `<p class="note">Fonte: <a href="${REPO}" target="_blank" rel="noopener">calculadora oficial (GitHub)</a>.</p>` : ""); return; }
+    (r.tipoErro==="nao_impl" ? `<p class="note">Confira na <a href="${ONLINE}" target="_blank" rel="noopener">calculadora oficial on-line ↗</a>.</p>` : ""); return; }
   const linhas = r.itens.map(i => `<tr><td><b>${esc(i.nome)}</b></td><td class="n">${fP(i.aliquota)}</td><td class="n">${i.reducao!=null?fP(i.reducao):"–"}</td><td class="n">${i.aliquotaEfetiva!=null?fP(i.aliquotaEfetiva):"–"}</td><td class="n">${fR(i.base)}</td><td class="n">${i.diferido!=null?fR(i.diferido)+` <small>(${fP(i.pDif)})</small>`:"–"}</td><td class="n"><b>${fR(i.devido)}</b></td></tr>`).join("");
   const tot = r.itens.reduce((s,i) => s + i.devido, 0);
   const regs = r.itens.filter(i => i.regular);
@@ -107,6 +108,8 @@ function fontes(){
   const box = $("#fbox"); if(!box || $("#rtcFontes")) return;
   box.insertAdjacentHTML("beforeend", `<div class="card" id="rtcFontes" style="margin-top:12px"><h3 style="margin-top:0">Calculadora de Tributos da Receita Federal (Reforma Tributária)</h3>
    <ul style="margin:0;padding-left:18px;line-height:1.8">
+    <li><a href="${ONLINE}" target="_blank" rel="noopener">Calculadora de Tributos on-line (Receita Federal) ↗</a></li>
+    <li><a href="${ONLINE}/calculadora-offline" target="_blank" rel="noopener">Calculadora de Tributos – versão off-line (download) ↗</a></li>
     <li><a href="${REPO}" target="_blank" rel="noopener">Código-fonte – regime regular (CBS, IBS, IS) ↗</a></li>
     <li><a href="https://github.com/ReceitaFederal/calculadora-rtc-simples-nacional" target="_blank" rel="noopener">Código-fonte – Simples Nacional ↗</a></li>
     <li><a href="https://github.com/ReceitaFederal/calculadora-rtc-gerador-danfse" target="_blank" rel="noopener">Código-fonte – gerador de DANFSe ↗</a></li>
