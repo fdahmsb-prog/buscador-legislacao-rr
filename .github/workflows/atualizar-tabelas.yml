@@ -18,12 +18,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Baixar fontes (OCA l10n-brazil e tabela CEST)
+      - name: Baixar fontes (OCA l10n-brazil, tabela CEST e calculadora da Receita)
         run: |
           mkdir -p /tmp/src && cd /tmp/src
           git clone -q --depth 1 --filter=blob:none --sparse https://github.com/OCA/l10n-brazil.git oca
           (cd oca && git sparse-checkout set l10n_br_fiscal/data)
           git clone -q --depth 1 https://github.com/thiagovalim/sis-referencias.git thiago
+          git clone -q --depth 1 https://github.com/ReceitaFederal/calculadora-rtc-regime-regular.git rfb
+          echo "RFB=$(git -C rfb log -1 --format=%H)" >> $GITHUB_ENV
           echo "C=$(git -C oca log -1 --format=%H)" >> $GITHUB_ENV
           echo "CD=$(git -C oca log -1 --format=%cI)" >> $GITHUB_ENV
 
@@ -33,6 +35,7 @@ jobs:
           mkdir -p /tmp/out
           python3 -I tools/build_data.py /tmp/src/oca/l10n_br_fiscal/data /tmp/out /tmp/src/thiago/dados/cest.csv \
             --commit "$C" --commit-date "$CD" --prev-meta /tmp/prev_meta.json | tee /tmp/log.txt
+          python3 -I tools/build_calc_rtc.py /tmp/src/rfb /tmp/out/calc_rtc.json --commit "$RFB" | tee -a /tmp/log.txt
 
       - name: Validar (não publica se a fonte parecer quebrada)
         run: |
@@ -45,12 +48,14 @@ jobs:
                and any(x["c"]=="000001" for x in T["cclasstrib"]) and len(N) > 10000
           for k,v in P.get("contagens",{}).items():
               if v and M["contagens"].get(k,0) < 0.9*v: print("Queda >10% em", k); ok=False
+          R=json.load(open("/tmp/out/calc_rtc.json"))
+          if len(R["classes"]) < 150 or len(R["tratamentos"]) < 30 or R.get("erros"): print("Calculadora RTC: base suspeita"); ok=False
           print("validação:", "OK" if ok else "FALHOU"); sys.exit(0 if ok else 1)
           PY
 
       - name: Publicar no repositório
         run: |
-          cp /tmp/out/tabelas.json /tmp/out/ncm.json /tmp/out/meta.json data/
+          cp /tmp/out/tabelas.json /tmp/out/ncm.json /tmp/out/meta.json /tmp/out/calc_rtc.json data/
           git config user.name  "atualizador-tabelas"
           git config user.email "actions@users.noreply.github.com"
           git add data/
