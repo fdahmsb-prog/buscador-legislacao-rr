@@ -339,6 +339,7 @@ tr.hdr td{background:var(--bg);font-weight:600;color:var(--ink2);font-size:12.5p
 <main>
   <aside>
     <div class="card" id="filters">
+      <div class="fgroup"><h3>Área</h3><div id="fArea"></div></div>
       <div class="fgroup"><h3>Esfera</h3><div id="fEsfera"></div></div>
       <div class="fgroup"><h3>Tipo de norma</h3><div id="fTipo"></div></div>
       <div class="fgroup"><h3>Situação</h3><div id="fSit"></div></div>
@@ -899,7 +900,7 @@ const NORMAS = [
   ["Internalização","Depende de ato de cada UF (ex.: SC, Decreto 1.524/2026, art. 263 do Anexo 3 do RICMS/SC)."]],
  temas:["Eletropostos","Energia elétrica","Veículos elétricos","Substituição tributária"],
  rel:["conv142-2018","lc194-2022","lc87-1996"],
- link:LW+"487692"},
+ link:"https://www.confaz.fazenda.gov.br/legislacao/convenios/2025/CV182_25"},
 
 {id:"conv52-1992",tipo:"Convênio ICMS",sigla:"Convênio ICMS",numero:"52",ano:1992,data:"25/06/1992",esfera:"CONFAZ",situacao:"Vigente (alterada)",
  titulo:"Convênio ICMS nº 52/1992 – Extensão às Áreas de Livre Comércio",
@@ -913,7 +914,7 @@ const NORMAS = [
   ["Exclusões","Armas e munições, perfumes, fumo, bebidas alcoólicas e automóveis de passageiros."]],
  temas:["Área de Livre Comércio","Zona Franca","Isenção","Roraima","Benefícios fiscais"],
  rel:["conv65-1988","lei8256-1991","lei11732-2008","lei25-1992-rr"],
- link:LW+"14053"},
+ link:"https://www.confaz.fazenda.gov.br/legislacao/convenios/1992/CV052_92"},
 
 {id:"prot54-2017",tipo:"Protocolo ICMS",sigla:"Protocolo ICMS",numero:"54",ano:2017,data:"29/12/2017",esfera:"CONFAZ",situacao:"Vigente (alterada)",
  titulo:"Protocolo ICMS nº 54/2017 – ST de perfumaria, higiene pessoal e cosméticos",
@@ -993,7 +994,7 @@ const NORMAS = [
   ["Art. 2º","Tratamento do ICMS incidente sobre importações pelas ALCs."]],
  temas:["Área de Livre Comércio","Roraima","Crédito presumido","Benefícios fiscais"],
  rel:["conv52-1992","lei8256-1991","ricms-rr"],
- link:LW+"161283"},
+ link:"https://sapl.al.rr.leg.br/norma/pesquisar?numero=25&ano=1992"},
 
 {id:"lei1767-2022-rr",tipo:"Lei Estadual",sigla:"Lei",numero:"1.767",ano:2022,data:"30/12/2022",esfera:"Roraima",situacao:"Vigente",
  titulo:"Lei nº 1.767/2022 – Alíquota geral do ICMS de 20% em Roraima",
@@ -1028,7 +1029,7 @@ const NORMAS = [
   ["Art. 5º","Fato gerador nas operações interestaduais destinadas a consumidor final."]],
  temas:["Roraima","DIFAL","Comércio eletrônico","Legislação estadual"],
  rel:["lc190-2022","conv236-2021","lei59-1993-rr"],
- link:LW+"425761"},
+ link:"https://sapl.al.rr.leg.br/norma/pesquisar?numero=1608&ano=2021"},
 
 {id:"dec35562-2024-rr",tipo:"Decreto Estadual",sigla:"Decreto",numero:"35.562-E",ano:2024,data:"26/02/2024",esfera:"Roraima",situacao:"Vigente",
  titulo:"Decreto nº 35.562-E/2024 – Monofásico de combustíveis no RICMS-RR",
@@ -1040,7 +1041,240 @@ const NORMAS = [
   ["RICMS-RR","Diesel, biodiesel e GLP sob monofasia a partir de 01/05/2023, nos termos do Conv. 199/22."]],
  temas:["Roraima","Combustíveis","Monofásico","Ad rem","Regulamento"],
  rel:["ricms-rr","conv199-2022","conv15-2023","lei59-1993-rr"],
- link:LW+"456135"}
+ link:"https://www.sefaz.rr.gov.br/downloads/legislacao?dir=02%20-%20LEGISLACAO%20ESTADUAL%2F03%20-%20REGULAMENTO%20DE%20ICMS%20-%20ATUALIZADO%20-%20DECRETO%204.335%202001#acervo"},
+
+/* =================== OUTRAS ÁREAS (Constitucional, Administrativo, Penal, Civil, Contabilidade, Auditoria, TI) =================== */
+{id:"cf88-adm",area:"Constitucional",tipo:"Constituição",sigla:"CF/1988",numero:"",ano:1988,data:"05/10/1988",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Constituição Federal – Administração Pública e servidores (arts. 37 a 41)",
+ ementa:"Princípios da Administração Pública, concurso, acumulação de cargos, teto remuneratório, improbidade, responsabilidade civil do Estado e estabilidade do servidor.",
+ resumo:["O art. 37 fixa os princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência (LIMPE) para toda a Administração direta e indireta.","Exige concurso público para cargos efetivos e empregos, limita a acumulação remunerada de cargos e fixa o teto remuneratório (inciso XI).","O § 4º prevê as sanções por improbidade (suspensão de direitos políticos, perda da função, indisponibilidade de bens e ressarcimento) e o § 6º a responsabilidade objetiva do Estado.","O art. 41 garante a estabilidade após três anos de efetivo exercício e avaliação especial de desempenho."],
+ dispositivos:[["Art. 37, caput","Princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência."],["Art. 37, II","Investidura em cargo ou emprego público depende de aprovação prévia em concurso público."],["Art. 37, XI","Teto remuneratório do serviço público."],["Art. 37, XVI e XVII","Vedação de acumulação remunerada de cargos, salvo as exceções constitucionais."],["Art. 37, XVIII e XXII","Precedência da administração fazendária e recursos prioritários para a administração tributária, com atuação integrada e compartilhamento de cadastros e informações fiscais."],["Art. 37, § 4º","Atos de improbidade administrativa e suas sanções."],["Art. 37, § 6º","Responsabilidade objetiva do Estado, com direito de regresso contra o agente em caso de dolo ou culpa."],["Art. 41","Estabilidade do servidor após três anos de efetivo exercício."]],
+ temas:["Administração Pública","Servidor público","Princípios","Improbidade"],
+ rel:["lei8112-1990","lei8429-1992","lei9784-1999"], link:PLANALTO+"constituicao/constituicao.htm"},
+
+{id:"cf88-trib",area:"Constitucional",tipo:"Constituição",sigla:"CF/1988",numero:"",ano:1988,data:"05/10/1988",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Constituição Federal – Sistema Tributário Nacional (arts. 145 a 162)",
+ ementa:"Princípios gerais da tributação, limitações ao poder de tributar, impostos de cada ente e repartição de receitas tributárias.",
+ resumo:["Define as espécies tributárias (impostos, taxas e contribuição de melhoria) e reserva à lei complementar as normas gerais (art. 146).","O art. 150 traz as limitações ao poder de tributar: legalidade, isonomia, irretroatividade, anterioridade anual e nonagesimal, vedação ao confisco e imunidades.","Os arts. 153 a 156 distribuem a competência dos impostos; a EC 132/2023 acrescentou o IBS (art. 156-A) e a CBS (art. 195, V).","Os arts. 157 a 162 tratam da repartição das receitas, inclusive os 25% do ICMS pertencentes aos Municípios (art. 158, IV)."],
+ dispositivos:[["Art. 145","Espécies tributárias e capacidade contributiva."],["Art. 146","Lei complementar sobre conflitos de competência, limitações e normas gerais (fato gerador, base, contribuintes, crédito, prescrição e decadência)."],["Art. 150, I a III","Legalidade, isonomia e irretroatividade/anterioridade."],["Art. 150, IV","Vedação de utilizar tributo com efeito de confisco."],["Art. 150, VI","Imunidades recíprocas, de templos, partidos, entidades e livros."],["Art. 155","Impostos estaduais: ITCMD, ICMS e IPVA."],["Art. 156-A","Imposto sobre Bens e Serviços (IBS), de competência compartilhada (EC 132/2023)."],["Art. 158, IV","Pertencem aos Municípios 25% do produto da arrecadação do ICMS."]],
+ temas:["Sistema Tributário","Imunidade","Anterioridade","Repartição de receitas"],
+ rel:["cf88-155","ec132-2023","ctn-1966"], link:PLANALTO+"constituicao/constituicao.htm"},
+
+{id:"lindb-1942",area:"Civil e Processual",tipo:"Decreto-Lei",sigla:"DL",numero:"4.657",ano:1942,data:"04/09/1942",esfera:"Federal",situacao:"Vigente (alterado)",
+ titulo:"LINDB – Lei de Introdução às Normas do Direito Brasileiro (DL 4.657/1942)",
+ ementa:"Normas sobre vigência, aplicação e interpretação das leis, conflito de leis no tempo e no espaço e segurança jurídica nas decisões públicas.",
+ resumo:["Regula a vigência das leis (vacatio legis de 45 dias quando não houver prazo), a revogação e a irretroatividade, protegendo o ato jurídico perfeito, o direito adquirido e a coisa julgada.","A Lei 13.655/2018 acrescentou os arts. 20 a 30: decisões administrativas, controladoras e judiciais não podem se basear em valores abstratos sem considerar as consequências práticas.","Exige regime de transição quando houver nova interpretação e limita a responsabilização do agente público a dolo ou erro grosseiro (art. 28)."],
+ dispositivos:[["Art. 1º","Vigência da lei 45 dias após a publicação, salvo disposição em contrário."],["Art. 3º","Ninguém se escusa de cumprir a lei alegando que não a conhece."],["Art. 6º","Respeito ao ato jurídico perfeito, ao direito adquirido e à coisa julgada."],["Art. 20","Decisão com base em valores jurídicos abstratos deve considerar as consequências práticas."],["Art. 23","Regime de transição para nova interpretação ou orientação sobre norma de conteúdo indeterminado."],["Art. 24","Revisão de ato considera as orientações gerais da época, vedada a invalidação por mudança posterior de orientação."],["Art. 28","O agente público responde pessoalmente só em caso de dolo ou erro grosseiro."],["Art. 30","Autoridades devem aumentar a segurança jurídica por regulamentos, súmulas e respostas a consultas."]],
+ temas:["Interpretação","Segurança jurídica","Vigência das leis"],
+ rel:["lei9784-1999"], link:PLANALTO+"decreto-lei/del4657compilado.htm"},
+
+{id:"lei9784-1999",area:"Administrativo",tipo:"Lei",sigla:"Lei",numero:"9.784",ano:1999,data:"29/01/1999",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 9.784/1999 – Processo administrativo federal",
+ ementa:"Regula o processo administrativo no âmbito da Administração Pública Federal; aplica-se subsidiariamente a Estados e Municípios sem lei própria, conforme o STJ (Súmula 633).",
+ resumo:["Estabelece princípios (legalidade, finalidade, motivação, razoabilidade, proporcionalidade, ampla defesa, contraditório, segurança jurídica e eficiência) e critérios do processo.","Garante direitos ao administrado: ciência da tramitação, vista dos autos, formulação de alegações e assistência por advogado.","Fixa o prazo decadencial de 5 anos para a Administração anular atos favoráveis ao destinatário, salvo má-fé (art. 54).","Disciplina impedimento, suspeição, prazos, recursos (até três instâncias) e motivação obrigatória dos atos."],
+ dispositivos:[["Art. 2º","Princípios do processo administrativo."],["Art. 3º","Direitos do administrado."],["Arts. 18 a 21","Impedimento e suspeição."],["Art. 50","Atos que devem ser motivados."],["Art. 53","Anulação de atos ilegais e revogação por conveniência e oportunidade (autotutela)."],["Art. 54","Decadência de 5 anos para anular atos favoráveis, salvo comprovada má-fé."],["Arts. 56 a 65","Recurso administrativo e revisão."]],
+ temas:["Processo administrativo","Autotutela","Decadência","Motivação"],
+ rel:["cf88-adm","lindb-1942"], link:PLANALTO+"leis/l9784.htm"},
+
+{id:"lei8112-1990",area:"Administrativo",tipo:"Lei",sigla:"Lei",numero:"8.112",ano:1990,data:"11/12/1990",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 8.112/1990 – Regime jurídico dos servidores públicos civis da União",
+ ementa:"Dispõe sobre provimento, vacância, direitos, vantagens, deveres, proibições, responsabilidades e processo administrativo disciplinar dos servidores federais.",
+ resumo:["Rege os servidores federais e serve de referência para estatutos estaduais e municipais.","Disciplina provimento, posse, estágio probatório, licenças, afastamentos e vantagens.","Arts. 116 a 132: deveres, proibições e penalidades (advertência, suspensão, demissão, cassação de aposentadoria e destituição de cargo em comissão).","Arts. 143 a 182: sindicância e processo administrativo disciplinar (PAD), com prazos de prescrição da ação disciplinar no art. 142."],
+ dispositivos:[["Art. 116","Deveres do servidor."],["Art. 117","Proibições ao servidor."],["Art. 127","Penalidades disciplinares."],["Art. 132","Hipóteses de demissão, inclusive improbidade e lesão aos cofres públicos."],["Art. 142","Prescrição da ação disciplinar: 5 anos (demissão), 2 anos (suspensão) e 180 dias (advertência)."],["Arts. 143 a 182","Sindicância e processo administrativo disciplinar."]],
+ temas:["Servidor público","Processo disciplinar","PAD"],
+ rel:["cf88-adm","lei8429-1992"], link:PLANALTO+"leis/l8112cons.htm"},
+
+{id:"lei14133-2021",area:"Administrativo",tipo:"Lei",sigla:"Lei",numero:"14.133",ano:2021,data:"01/04/2021",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 14.133/2021 – Nova Lei de Licitações e Contratos Administrativos",
+ ementa:"Estabelece normas gerais de licitação e contratação para a Administração direta, autárquica e fundacional da União, dos Estados, do DF e dos Municípios.",
+ resumo:["Substituiu a Lei 8.666/1993, a Lei do Pregão (10.520/2002) e o RDC; desde 30/12/2023 é o único regime geral aplicável.","Modalidades: pregão, concorrência, concurso, leilão e diálogo competitivo; o critério de julgamento é definido conforme o objeto.","Cria o Portal Nacional de Contratações Públicas (PNCP), o planejamento com estudo técnico preliminar e a matriz de riscos.","Traz os casos de contratação direta (dispensa e inexigibilidade) e o capítulo de crimes em licitações, inserido no Código Penal (arts. 337-E a 337-P)."],
+ dispositivos:[["Art. 5º","Princípios das licitações e contratos."],["Art. 18","Fase preparatória: planejamento e estudo técnico preliminar."],["Art. 28","Modalidades de licitação."],["Art. 74","Inexigibilidade de licitação."],["Art. 75","Dispensa de licitação."],["Art. 174","Portal Nacional de Contratações Públicas (PNCP)."],["Art. 178","Crimes em licitações e contratos inseridos no Código Penal."]],
+ temas:["Licitação","Contratos administrativos","Compras públicas"],
+ rel:["cf88-adm","lei12846-2013"], link:PLANALTO+"_ato2019-2022/2021/lei/l14133.htm"},
+
+{id:"lei8429-1992",area:"Administrativo",tipo:"Lei",sigla:"Lei",numero:"8.429",ano:1992,data:"02/06/1992",esfera:"Federal",situacao:"Vigente (alterada pela Lei 14.230/2021)",
+ titulo:"Lei nº 8.429/1992 – Improbidade administrativa",
+ ementa:"Dispõe sobre as sanções aplicáveis aos atos de improbidade administrativa, nos termos do art. 37, § 4º, da Constituição.",
+ resumo:["Três espécies de atos de improbidade: enriquecimento ilícito (art. 9º), lesão ao erário (art. 10) e violação aos princípios da Administração (art. 11).","Com a Lei 14.230/2021, só há improbidade com dolo; a modalidade culposa foi extinta e o rol do art. 11 passou a ser taxativo.","A ação pode ser proposta pelo Ministério Público ou pela pessoa jurídica lesada (STF, ADIs 7.042 e 7.043); as sanções incluem perda de bens, ressarcimento, perda da função, suspensão de direitos políticos, multa e proibição de contratar com o poder público.","Prescrição de 8 anos contados do fato, com prescrição intercorrente (art. 23)."],
+ dispositivos:[["Art. 1º, §§ 1º a 3º","Exigência de dolo específico; mero exercício da função sem dolo não é improbidade."],["Art. 9º","Atos que importam enriquecimento ilícito."],["Art. 10","Atos que causam lesão ao erário."],["Art. 11","Atos que atentam contra os princípios da Administração (rol taxativo)."],["Art. 12","Sanções aplicáveis."],["Art. 17","Ação de improbidade (legitimidade do MP e, conforme o STF, também da pessoa jurídica interessada)."],["Art. 23","Prescrição em 8 anos e prescrição intercorrente."]],
+ temas:["Improbidade","Administração Pública","Responsabilização"],
+ rel:["cf88-adm","lei12846-2013","lei8112-1990"], link:PLANALTO+"leis/l8429.htm"},
+
+{id:"lei12846-2013",area:"Administrativo",tipo:"Lei",sigla:"Lei",numero:"12.846",ano:2013,data:"01/08/2013",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei nº 12.846/2013 – Lei Anticorrupção (responsabilização de pessoas jurídicas)",
+ ementa:"Dispõe sobre a responsabilização administrativa e civil de pessoas jurídicas pela prática de atos contra a administração pública, nacional ou estrangeira.",
+ resumo:["Responsabilidade objetiva da pessoa jurídica por atos lesivos à administração pública, como corrupção, fraude em licitações e obstrução de fiscalização.","Processo administrativo de responsabilização (PAR), com multa de 0,1% a 20% do faturamento bruto e publicação extraordinária da decisão.","Prevê o acordo de leniência e considera programas de integridade (compliance) na dosimetria da sanção."],
+ dispositivos:[["Art. 5º","Atos lesivos à administração pública."],["Art. 6º","Sanções administrativas: multa e publicação extraordinária."],["Art. 7º, VIII","Programa de integridade considerado na aplicação das sanções."],["Art. 8º","Processo administrativo de responsabilização."],["Art. 16","Acordo de leniência."],["Art. 19","Sanções judiciais, inclusive dissolução compulsória."]],
+ temas:["Anticorrupção","Compliance","Responsabilização"],
+ rel:["lei8429-1992","lei14133-2021"], link:PLANALTO+"_ato2011-2014/2013/lei/l12846.htm"},
+
+{id:"lei12527-2011",area:"Administrativo",tipo:"Lei",sigla:"Lei",numero:"12.527",ano:2011,data:"18/11/2011",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei nº 12.527/2011 – Lei de Acesso à Informação (LAI)",
+ ementa:"Regula o acesso a informações previsto na Constituição, aplicável à União, Estados, DF e Municípios.",
+ resumo:["A publicidade é a regra e o sigilo a exceção; os órgãos devem divulgar informações de interesse coletivo independentemente de pedido (transparência ativa).","Qualquer interessado pode pedir informação sem justificar o motivo; prazo de resposta de 20 dias, prorrogável por mais 10.","Classificação de sigilo em ultrassecreta (25 anos), secreta (15) e reservada (5); as informações pessoais têm acesso restrito por até 100 anos.","O sigilo fiscal continua regido pelo art. 198 do CTN, que a LAI ressalva (art. 22)."],
+ dispositivos:[["Art. 3º","Diretrizes: publicidade como preceito geral e sigilo como exceção."],["Art. 8º","Transparência ativa nos sítios oficiais."],["Art. 10","Pedido de acesso sem exigência de motivação."],["Art. 11","Prazo de resposta de 20 dias, prorrogável por 10."],["Art. 22","Ressalva das hipóteses legais de sigilo, como o fiscal e o bancário."],["Art. 24","Classificação da informação sigilosa e prazos."],["Art. 31","Tratamento das informações pessoais."]],
+ temas:["Transparência","Acesso à informação","Sigilo"],
+ rel:["lei13709-2018","ctn-1966"], link:PLANALTO+"_ato2011-2014/2011/lei/l12527.htm"},
+
+{id:"lei13869-2019",area:"Penal",tipo:"Lei",sigla:"Lei",numero:"13.869",ano:2019,data:"05/09/2019",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei nº 13.869/2019 – Abuso de autoridade",
+ ementa:"Dispõe sobre os crimes de abuso de autoridade cometidos por agente público, servidor ou não, no exercício de suas funções ou a pretexto de exercê-las.",
+ resumo:["Só há crime se o agente agir com a finalidade específica de prejudicar alguém, beneficiar a si ou a terceiro, ou por capricho ou satisfação pessoal.","A divergência na interpretação da lei ou na avaliação de fatos e provas não configura abuso (art. 1º, § 2º).","Tipifica condutas relevantes para a fiscalização, como obter prova por meio ilícito e exigir informação ou cumprimento de obrigação sem amparo legal."],
+ dispositivos:[["Art. 1º, § 1º","Dolo específico exigido para o crime."],["Art. 1º, § 2º","Divergência de interpretação não configura abuso."],["Art. 25","Obter ou usar prova por meio manifestamente ilícito."],["Art. 33","Exigir informação ou cumprimento de obrigação sem expresso amparo legal."]],
+ temas:["Abuso de autoridade","Agente público","Fiscalização"],
+ rel:["dl2848-1940"], link:PLANALTO+"_ato2019-2022/2019/lei/l13869.htm"},
+
+{id:"dl2848-1940",area:"Penal",tipo:"Decreto-Lei",sigla:"DL",numero:"2.848",ano:1940,data:"07/12/1940",esfera:"Federal",situacao:"Vigente (alterado)",
+ titulo:"Código Penal (DL 2.848/1940) – crimes contra a Administração Pública e contra a fé pública",
+ ementa:"Código Penal brasileiro; os arts. 312 a 359-H tratam dos crimes contra a Administração Pública, inclusive os praticados por funcionário público.",
+ resumo:["Arts. 312 a 327: crimes praticados por funcionário público, como peculato, concussão, corrupção passiva, prevaricação e excesso de exação (art. 316, § 1º).","O art. 327 define funcionário público para fins penais de forma ampla, incluindo quem exerce função pública transitoriamente ou sem remuneração.","Arts. 328 a 337-A: crimes de particular contra a Administração, como corrupção ativa, contrabando, descaminho e sonegação de contribuição previdenciária.","Arts. 337-E a 337-P: crimes em licitações, incluídos pela Lei 14.133/2021; os crimes de falsidade documental estão nos arts. 297 a 305."],
+ dispositivos:[["Art. 312","Peculato."],["Art. 316","Concussão; § 1º excesso de exação (cobrança de tributo indevido ou por meio vexatório)."],["Art. 317","Corrupção passiva."],["Art. 319","Prevaricação."],["Art. 325","Violação de sigilo funcional."],["Art. 327","Conceito de funcionário público para fins penais."],["Art. 333","Corrupção ativa."],["Art. 334","Descaminho; art. 334-A, contrabando."],["Arts. 337-E a 337-P","Crimes em licitações e contratos administrativos."]],
+ temas:["Crimes contra a Administração","Corrupção","Excesso de exação","Descaminho"],
+ rel:["lei8137-1990","lei13869-2019","lei9613-1998"], link:PLANALTO+"decreto-lei/del2848compilado.htm"},
+
+{id:"dl3689-1941",area:"Penal",tipo:"Decreto-Lei",sigla:"DL",numero:"3.689",ano:1941,data:"03/10/1941",esfera:"Federal",situacao:"Vigente (alterado)",
+ titulo:"Código de Processo Penal (DL 3.689/1941)",
+ ementa:"Regula o processo penal: inquérito, ação penal, provas, prisões, medidas cautelares, procedimentos e recursos.",
+ resumo:["Disciplina o inquérito policial, a ação penal pública e privada e a representação fiscal para fins penais nos crimes tributários.","Trata das provas (perícia, documentos, testemunhas, busca e apreensão) e da inadmissibilidade das provas ilícitas (art. 157).","O acordo de não persecução penal (art. 28-A), incluído pelo Pacote Anticrime, aplica-se a crimes sem violência com pena mínima inferior a 4 anos."],
+ dispositivos:[["Art. 4º","Polícia judiciária e inquérito policial."],["Art. 28-A","Acordo de não persecução penal."],["Art. 157","Inadmissibilidade das provas ilícitas."],["Arts. 240 a 250","Busca e apreensão."],["Arts. 282 a 350","Prisão e medidas cautelares."]],
+ temas:["Processo penal","Provas","Crimes tributários"],
+ rel:["dl2848-1940","lei8137-1990"], link:PLANALTO+"decreto-lei/del3689compilado.htm"},
+
+{id:"lei9613-1998",area:"Penal",tipo:"Lei",sigla:"Lei",numero:"9.613",ano:1998,data:"03/03/1998",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 9.613/1998 – Lavagem de dinheiro",
+ ementa:"Dispõe sobre os crimes de lavagem ou ocultação de bens, direitos e valores, a prevenção da utilização do sistema financeiro para esses ilícitos e cria o COAF.",
+ resumo:["Crime de ocultar ou dissimular a natureza, origem, localização ou propriedade de bens provenientes de infração penal; desde a Lei 12.683/2012 qualquer infração penal pode ser antecedente.","Impõe a setores obrigados (bancos, corretoras, joalherias, factorings e outros) a identificação de clientes e a comunicação de operações suspeitas.","Cria o Conselho de Controle de Atividades Financeiras (COAF), unidade de inteligência financeira."],
+ dispositivos:[["Art. 1º","Crime de lavagem de dinheiro: reclusão de 3 a 10 anos e multa."],["Art. 9º","Pessoas sujeitas aos mecanismos de controle."],["Art. 11","Comunicação de operações suspeitas ao COAF."],["Art. 14","Criação do COAF."]],
+ temas:["Lavagem de dinheiro","COAF","Inteligência financeira"],
+ rel:["dl2848-1940","lei8137-1990"], link:PLANALTO+"leis/l9613.htm"},
+
+{id:"lei10406-2002",area:"Civil e Processual",tipo:"Lei",sigla:"Lei",numero:"10.406",ano:2002,data:"10/01/2002",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Código Civil (Lei nº 10.406/2002)",
+ ementa:"Institui o Código Civil: pessoas, bens, fatos e negócios jurídicos, obrigações, contratos, empresa, sociedades, coisas, família e sucessões.",
+ resumo:["Parte Geral: pessoas naturais e jurídicas, domicílio, bens, negócio jurídico, defeitos (simulação, fraude contra credores), prescrição e decadência.","O art. 50 regula a desconsideração da personalidade jurídica por desvio de finalidade ou confusão patrimonial (redação da Lei 13.874/2019).","O Livro II (Direito de Empresa) trata do empresário, das sociedades, do estabelecimento e da escrituração, com reflexos na responsabilidade tributária de sócios e sucessores.","O art. 1.003 e o art. 1.032 tratam da responsabilidade do sócio que se retira; o art. 1.146, das dívidas do estabelecimento adquirido."],
+ dispositivos:[["Art. 50","Desconsideração da personalidade jurídica."],["Art. 167","Nulidade do negócio jurídico simulado."],["Arts. 158 a 165","Fraude contra credores."],["Art. 205","Prescrição geral de 10 anos."],["Art. 966","Conceito de empresário."],["Art. 1.146","Responsabilidade do adquirente do estabelecimento pelos débitos contabilizados."],["Arts. 1.179 a 1.195","Escrituração e livros empresariais."]],
+ temas:["Direito civil","Direito empresarial","Desconsideração da personalidade"],
+ rel:["ctn-1966","lei13105-2015","lei6404-1976"], link:PLANALTO+"leis/2002/l10406compilada.htm"},
+
+{id:"lei13105-2015",area:"Civil e Processual",tipo:"Lei",sigla:"Lei",numero:"13.105",ano:2015,data:"16/03/2015",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Código de Processo Civil (Lei nº 13.105/2015)",
+ ementa:"Institui o Código de Processo Civil; aplica-se subsidiariamente à execução fiscal e, supletivamente, aos processos administrativos (art. 15).",
+ resumo:["Normas fundamentais: contraditório efetivo, vedação de decisão surpresa e dever de fundamentação (arts. 9º, 10 e 489).","Sistema de precedentes: juízes e tribunais devem observar decisões do STF em controle concentrado, súmulas vinculantes e julgamentos de recursos repetitivos (art. 927).","O incidente de desconsideração da personalidade jurídica (arts. 133 a 137) e a execução são aplicados subsidiariamente à Lei 6.830/1980.","O art. 15 manda aplicar o CPC supletiva e subsidiariamente aos processos eleitorais, trabalhistas e administrativos."],
+ dispositivos:[["Art. 15","Aplicação supletiva e subsidiária aos processos administrativos."],["Art. 10","Vedação de decisão surpresa."],["Arts. 133 a 137","Incidente de desconsideração da personalidade jurídica."],["Art. 489, § 1º","Requisitos de fundamentação da decisão."],["Art. 927","Observância dos precedentes."],["Arts. 1.036 a 1.041","Julgamento de recursos extraordinário e especial repetitivos."]],
+ temas:["Processo civil","Precedentes","Execução"],
+ rel:["lei6830-1980","lei10406-2002"], link:PLANALTO+"_ato2015-2018/2015/lei/l13105.htm"},
+
+{id:"lei6404-1976",area:"Contabilidade",tipo:"Lei",sigla:"Lei",numero:"6.404",ano:1976,data:"15/12/1976",esfera:"Federal",situacao:"Vigente (alterada pelas Leis 11.638/2007 e 11.941/2009)",
+ titulo:"Lei nº 6.404/1976 – Lei das Sociedades por Ações (escrituração e demonstrações contábeis)",
+ ementa:"Dispõe sobre as sociedades por ações; o Capítulo XV disciplina o exercício social, a escrituração e as demonstrações financeiras.",
+ resumo:["Os arts. 175 a 188 regulam as demonstrações financeiras: balanço patrimonial, DRE, DLPA/DMPL, DFC e, para companhias abertas, DVA.","As Leis 11.638/2007 e 11.941/2009 alinharam a contabilidade brasileira às normas internacionais (IFRS), com pronunciamentos do CPC aprovados pelo CFC e pela CVM.","As regras de escrituração e de demonstrações são referência para a análise contábil em auditorias fiscais, inclusive de sociedades limitadas de grande porte (Lei 11.638/2007, art. 3º)."],
+ dispositivos:[["Art. 176","Demonstrações financeiras obrigatórias."],["Art. 177","Escrituração conforme a legislação comercial e os princípios contábeis; separação da escrituração fiscal."],["Art. 178","Classificação das contas do balanço patrimonial."],["Art. 183","Critérios de avaliação do ativo."],["Art. 187","Demonstração do resultado do exercício."]],
+ temas:["Contabilidade societária","Demonstrações contábeis","Escrituração"],
+ rel:["lei10406-2002","nbc-tg-ec","nbc-ta"], link:PLANALTO+"leis/l6404consol.htm"},
+
+{id:"lei4320-1964",area:"Contabilidade",tipo:"Lei",sigla:"Lei",numero:"4.320",ano:1964,data:"17/03/1964",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei nº 4.320/1964 – Normas gerais de direito financeiro e orçamento público",
+ ementa:"Estatui normas gerais de direito financeiro para elaboração e controle dos orçamentos e balanços da União, dos Estados, dos Municípios e do DF.",
+ resumo:["Define a receita e a despesa orçamentárias, suas categorias econômicas e os estágios da despesa: empenho, liquidação e pagamento.","Regula a dívida ativa tributária e não tributária (art. 39) e os restos a pagar (art. 36).","Estabelece os balanços públicos (orçamentário, financeiro, patrimonial e demonstração das variações patrimoniais), hoje detalhados pelo MCASP."],
+ dispositivos:[["Art. 11","Classificação da receita por categorias econômicas."],["Art. 35","Regime orçamentário: receita arrecadada e despesa empenhada no exercício."],["Art. 36","Restos a pagar."],["Art. 39","Dívida ativa tributária e não tributária."],["Arts. 58 a 65","Empenho, liquidação e pagamento da despesa."],["Arts. 101 a 106","Balanços públicos."]],
+ temas:["Orçamento público","Contabilidade pública","Dívida ativa"],
+ rel:["lc101-2000","mcasp","nbc-tsp"], link:PLANALTO+"leis/l4320.htm"},
+
+{id:"lc101-2000",area:"Contabilidade",tipo:"Lei Complementar",sigla:"LC",numero:"101",ano:2000,data:"04/05/2000",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei Complementar nº 101/2000 – Lei de Responsabilidade Fiscal (LRF)",
+ ementa:"Estabelece normas de finanças públicas voltadas para a responsabilidade na gestão fiscal.",
+ resumo:["Exige ação planejada e transparente, com metas de resultado e limites para despesa com pessoal e endividamento.","O art. 14 condiciona a concessão de benefícios tributários (renúncia de receita) à estimativa de impacto e a medidas de compensação, regra central na análise de incentivos de ICMS.","Limites de despesa com pessoal por Poder (arts. 19 e 20); para os Estados, 60% da receita corrente líquida.","Relatórios de transparência: RREO, RGF e prestação de contas, com divulgação na internet."],
+ dispositivos:[["Art. 11","Instituição, previsão e efetiva arrecadação de todos os tributos da competência do ente."],["Art. 14","Requisitos para a concessão de renúncia de receita."],["Arts. 19 e 20","Limites de despesa com pessoal."],["Art. 42","Vedação de contrair despesa nos dois últimos quadrimestres do mandato sem disponibilidade de caixa."],["Art. 48","Instrumentos de transparência da gestão fiscal."]],
+ temas:["Responsabilidade fiscal","Renúncia de receita","Benefício fiscal","Transparência"],
+ rel:["lei4320-1964","lc24-1975","lc160-2017"], link:PLANALTO+"leis/lcp/lcp101.htm"},
+
+{id:"nbc-tsp",area:"Contabilidade",tipo:"Norma técnica",sigla:"NBC TSP",numero:"",ano:2016,data:"",esfera:"Federal",situacao:"Vigente",
+ titulo:"NBC TSP – Normas Brasileiras de Contabilidade Aplicadas ao Setor Público (CFC)",
+ ementa:"Conjunto de normas do Conselho Federal de Contabilidade convergidas às IPSAS, aplicáveis às entidades do setor público.",
+ resumo:["Editadas pelo CFC desde 2016, a partir da Estrutura Conceitual, em convergência com as normas internacionais do setor público (IPSAS).","Tratam, entre outros temas, de receitas com e sem contraprestação, provisões, estoques, imobilizado, intangível, apresentação das demonstrações e consolidação.","São incorporadas ao Manual de Contabilidade Aplicada ao Setor Público (MCASP), editado pela STN.","A receita tributária é tratada na NBC TSP de receita sem contraprestação, inclusive o reconhecimento por competência."],
+ dispositivos:[["NBC TSP Estrutura Conceitual","Objetivos, usuários, características qualitativas e elementos das demonstrações do setor público."],["NBC TSP 01","Receita de transação sem contraprestação (inclui tributos)."],["NBC TSP 02","Receita de transação com contraprestação."],["NBC TSP 03","Provisões, passivos e ativos contingentes."],["NBC TSP 07 e 08","Ativo imobilizado e ativo intangível."],["NBC TSP 11","Apresentação das demonstrações contábeis."]],
+ temas:["Contabilidade pública","IPSAS","Normas do CFC"],
+ rel:["mcasp","lei4320-1964"], link:"https://cfc.org.br/tecnica/normas-brasileiras-de-contabilidade/"},
+
+{id:"mcasp",area:"Contabilidade",tipo:"Norma técnica",sigla:"MCASP",numero:"",ano:2025,data:"",esfera:"Federal",situacao:"Vigente (edição atualizada anualmente)",
+ titulo:"MCASP – Manual de Contabilidade Aplicada ao Setor Público (STN)",
+ ementa:"Manual editado pela Secretaria do Tesouro Nacional, de observância obrigatória por todos os entes da Federação, com procedimentos contábeis orçamentários e patrimoniais, o PCASP e as DCASP.",
+ resumo:["Parte I: procedimentos contábeis orçamentários (receita e despesa orçamentárias); Parte II: procedimentos patrimoniais; Parte III: procedimentos específicos, como dívida ativa, precatórios e RPPS.","Parte IV: Plano de Contas Aplicado ao Setor Público (PCASP); Parte V: Demonstrações Contábeis Aplicadas ao Setor Público (DCASP).","Incorpora as NBC TSP e orienta o reconhecimento por competência dos créditos tributários e da dívida ativa.","É atualizado periodicamente por portaria da STN; confira sempre a edição vigente para o exercício."],
+ dispositivos:[["Parte I","Procedimentos contábeis orçamentários."],["Parte II","Procedimentos contábeis patrimoniais."],["Parte III","Procedimentos contábeis específicos (dívida ativa, precatórios, RPPS, consórcios)."],["Parte IV","Plano de Contas Aplicado ao Setor Público (PCASP)."],["Parte V","Demonstrações Contábeis Aplicadas ao Setor Público (DCASP)."]],
+ temas:["Contabilidade pública","PCASP","Dívida ativa"],
+ rel:["nbc-tsp","lei4320-1964","lc101-2000"], link:"https://www.tesourotransparente.gov.br/publicacoes/manual-de-contabilidade-aplicada-ao-setor-publico-mcasp"},
+
+{id:"nbc-tg-ec",area:"Contabilidade",tipo:"Norma técnica",sigla:"NBC TG",numero:"",ano:2019,data:"",esfera:"Federal",situacao:"Vigente",
+ titulo:"NBC TG – Normas Brasileiras de Contabilidade Técnicas Gerais (setor privado, CFC/CPC)",
+ ementa:"Normas do CFC para as entidades do setor privado, correspondentes aos pronunciamentos do CPC e convergidas às IFRS, com a Estrutura Conceitual para Relatório Financeiro.",
+ resumo:["Aplicam-se à contabilidade das empresas fiscalizadas e servem de base para a leitura do SPED Contábil (ECD) e das demonstrações financeiras.","A Estrutura Conceitual define ativo, passivo, receita e despesa, o regime de competência e as características qualitativas da informação contábil.","Normas relevantes para auditoria fiscal: estoques (NBC TG 16), receita de contrato com cliente (NBC TG 47), imobilizado (NBC TG 27) e tributos sobre o lucro (NBC TG 32).","Pequenas e médias empresas seguem a NBC TG 1000; microempresas, a ITG 1000."],
+ dispositivos:[["NBC TG Estrutura Conceitual","Estrutura Conceitual para Relatório Financeiro."],["NBC TG 16","Estoques."],["NBC TG 27","Ativo imobilizado."],["NBC TG 32","Tributos sobre o lucro."],["NBC TG 47","Receita de contrato com cliente."],["NBC TG 1000","Contabilidade para pequenas e médias empresas."]],
+ temas:["Contabilidade societária","IFRS","Normas do CFC"],
+ rel:["lei6404-1976","nbc-ta"], link:"https://cfc.org.br/tecnica/normas-brasileiras-de-contabilidade/"},
+
+{id:"nbc-ta",area:"Auditoria e Controle",tipo:"Norma técnica",sigla:"NBC TA",numero:"",ano:2016,data:"",esfera:"Federal",situacao:"Vigente",
+ titulo:"NBC TA – Normas Brasileiras de Contabilidade de Auditoria Independente (CFC)",
+ ementa:"Normas de auditoria de informação contábil histórica, convergidas às ISA da IFAC; referência metodológica para trabalhos de auditoria.",
+ resumo:["Definem objetivos do auditor, planejamento, materialidade, avaliação de riscos, evidência, amostragem, documentação e relatório.","Conceitos úteis à auditoria fiscal: risco de distorção relevante, ceticismo profissional, procedimentos analíticos e confirmação externa.","No setor público, o IRB considera aplicáveis as NBC TASP, correspondentes às NBC TA."],
+ dispositivos:[["NBC TA 200","Objetivos gerais do auditor e ceticismo profissional."],["NBC TA 230","Documentação de auditoria."],["NBC TA 240","Responsabilidade do auditor em relação a fraude."],["NBC TA 315","Identificação e avaliação dos riscos de distorção relevante."],["NBC TA 320","Materialidade."],["NBC TA 500","Evidência de auditoria."],["NBC TA 530","Amostragem em auditoria."],["NBC TA 700","Formação da opinião e emissão do relatório."]],
+ temas:["Auditoria","Evidência","Amostragem","Normas do CFC"],
+ rel:["nbasp","nbc-tg-ec"], link:"https://cfc.org.br/tecnica/normas-brasileiras-de-contabilidade/"},
+
+{id:"nbasp",area:"Auditoria e Controle",tipo:"Norma técnica",sigla:"NBASP",numero:"",ano:2015,data:"",esfera:"Federal",situacao:"Vigente",
+ titulo:"NBASP – Normas Brasileiras de Auditoria do Setor Público (IRB/INTOSAI)",
+ ementa:"Normas editadas pelo Instituto Rui Barbosa, baseadas nos pronunciamentos da INTOSAI (ISSAI), para as auditorias dos Tribunais de Contas e demais órgãos de controle.",
+ resumo:["Traduzem e adaptam as ISSAI da INTOSAI, com apoio do TCU, para padronizar a metodologia de fiscalização no setor público.","A NBASP 100 traz os princípios fundamentais e os três tipos de auditoria: financeira, operacional e de conformidade.","As NBASP 200, 300 e 400 detalham cada tipo; as normas de nível 3 e as orientações (como a NBASP 4900) tratam de critérios, evidências e relatório.","Referência útil para auditorias de conformidade e para a avaliação de controles internos da administração tributária."],
+ dispositivos:[["NBASP 100","Princípios fundamentais de auditoria do setor público."],["NBASP 200","Princípios de auditoria financeira."],["NBASP 300","Princípios de auditoria operacional."],["NBASP 400","Princípios de auditoria de conformidade."],["NBASP 4000","Norma para auditoria de conformidade."],["NBASP 4900","Critérios de regularidade e legitimidade na auditoria de conformidade."]],
+ temas:["Auditoria","Controle externo","INTOSAI","Auditoria de conformidade"],
+ rel:["nbc-ta","lc101-2000"], link:"https://nbasp.irbcontas.org.br/"},
+
+{id:"lei13709-2018",area:"Tecnologia da Informação",tipo:"Lei",sigla:"Lei",numero:"13.709",ano:2018,data:"14/08/2018",esfera:"Federal",situacao:"Vigente (alterada)",
+ titulo:"Lei nº 13.709/2018 – Lei Geral de Proteção de Dados Pessoais (LGPD)",
+ ementa:"Dispõe sobre o tratamento de dados pessoais, inclusive nos meios digitais, por pessoa natural ou jurídica de direito público ou privado.",
+ resumo:["Princípios de finalidade, adequação, necessidade, transparência, segurança e prevenção; bases legais para o tratamento (art. 7º).","O poder público pode tratar dados para executar políticas públicas e cumprir atribuições legais (arts. 23 a 32), sem afastar o sigilo fiscal.","Direitos do titular, encarregado de dados (DPO), relatório de impacto, comunicação de incidentes e sanções aplicadas pela ANPD.","A atuação fiscal se apoia nas bases de cumprimento de obrigação legal e execução de políticas públicas."],
+ dispositivos:[["Art. 6º","Princípios do tratamento de dados."],["Art. 7º","Bases legais para o tratamento."],["Art. 18","Direitos do titular."],["Art. 23","Tratamento de dados pelo poder público."],["Art. 41","Encarregado pelo tratamento de dados."],["Art. 46","Medidas de segurança da informação."],["Art. 48","Comunicação de incidente de segurança à ANPD e ao titular."],["Art. 52","Sanções administrativas."]],
+ temas:["Proteção de dados","LGPD","Segurança da informação"],
+ rel:["lei12527-2011","lei12965-2014","lei14129-2021"], link:PLANALTO+"_ato2015-2018/2018/lei/l13709.htm"},
+
+{id:"lei12965-2014",area:"Tecnologia da Informação",tipo:"Lei",sigla:"Lei",numero:"12.965",ano:2014,data:"23/04/2014",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei nº 12.965/2014 – Marco Civil da Internet",
+ ementa:"Estabelece princípios, garantias, direitos e deveres para o uso da Internet no Brasil.",
+ resumo:["Garante neutralidade de rede, liberdade de expressão, privacidade e proteção de dados.","Provedores de conexão guardam registros por 1 ano e provedores de aplicação por 6 meses; o acesso depende de ordem judicial.","Disciplina a responsabilidade dos provedores por conteúdo gerado por terceiros (art. 19)."],
+ dispositivos:[["Art. 3º","Princípios do uso da Internet."],["Art. 7º","Direitos do usuário."],["Art. 9º","Neutralidade de rede."],["Art. 13","Guarda de registros de conexão por 1 ano."],["Art. 15","Guarda de registros de acesso a aplicações por 6 meses."],["Art. 19","Responsabilidade do provedor por conteúdo de terceiros."]],
+ temas:["Internet","Privacidade","Provedores"],
+ rel:["lei13709-2018","lei12737-2012"], link:PLANALTO+"_ato2011-2014/2014/lei/l12965.htm"},
+
+{id:"lei14129-2021",area:"Tecnologia da Informação",tipo:"Lei",sigla:"Lei",numero:"14.129",ano:2021,data:"29/03/2021",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei nº 14.129/2021 – Lei do Governo Digital",
+ ementa:"Dispõe sobre princípios, regras e instrumentos para o Governo Digital e para o aumento da eficiência pública.",
+ resumo:["Prevê a prestação digital de serviços públicos, a desburocratização e o uso de plataformas e dados abertos.","Determina a interoperabilidade de dados entre órgãos e a dispensa de exigir do cidadão informações que o poder público já possui.","Aplica-se à União e, mediante adesão por ato normativo próprio, aos Estados, DF e Municípios."],
+ dispositivos:[["Art. 3º","Princípios e diretrizes do Governo Digital."],["Prestação digital","Serviços públicos prestados preferencialmente por meio digital."],["Governo como plataforma","Dados abertos e reuso de dados públicos."],["Interoperabilidade","Compartilhamento de dados entre órgãos e dispensa de exigir do cidadão dados já disponíveis."],["Art. 2º, III","Aplicação aos demais entes que adotarem os comandos da lei por ato próprio."]],
+ temas:["Governo digital","Dados abertos","Interoperabilidade"],
+ rel:["lei13709-2018","lei14063-2020"], link:PLANALTO+"_ato2019-2022/2021/lei/l14129.htm"},
+
+{id:"lei14063-2020",area:"Tecnologia da Informação",tipo:"Lei",sigla:"Lei",numero:"14.063",ano:2020,data:"23/09/2020",esfera:"Federal",situacao:"Vigente",
+ titulo:"Lei nº 14.063/2020 – Assinaturas eletrônicas em interações com entes públicos",
+ ementa:"Dispõe sobre o uso de assinaturas eletrônicas em interações com entes públicos, em atos de pessoas jurídicas e em questões de saúde.",
+ resumo:["Classifica as assinaturas eletrônicas em simples, avançada e qualificada; a qualificada usa certificado ICP-Brasil.","Cada ente define o nível mínimo exigido conforme o risco do ato; a assinatura qualificada é aceita em qualquer interação.","Complementa a MP 2.200-2/2001, que instituiu a ICP-Brasil e a validade jurídica dos documentos eletrônicos."],
+ dispositivos:[["Art. 4º","Tipos de assinatura eletrônica: simples, avançada e qualificada."],["Art. 5º","Níveis mínimos exigidos nas interações com entes públicos."],["Art. 5º, § 2º","Casos em que se exige assinatura qualificada."]],
+ temas:["Assinatura eletrônica","ICP-Brasil","Documento eletrônico"],
+ rel:["mp2200-2001","lei14129-2021"], link:PLANALTO+"_ato2019-2022/2020/lei/l14063.htm"},
+
+{id:"mp2200-2001",area:"Tecnologia da Informação",tipo:"Medida Provisória",sigla:"MP",numero:"2.200-2",ano:2001,data:"24/08/2001",esfera:"Federal",situacao:"Vigente (EC 32/2001)",
+ titulo:"MP nº 2.200-2/2001 – ICP-Brasil e validade jurídica do documento eletrônico",
+ ementa:"Institui a Infraestrutura de Chaves Públicas Brasileira (ICP-Brasil) e garante autenticidade, integridade e validade jurídica de documentos eletrônicos.",
+ resumo:["Documentos assinados com certificado ICP-Brasil presumem-se verdadeiros em relação aos signatários (art. 10, § 1º).","Admite outros meios de comprovação de autoria e integridade, se aceitos pelas partes (art. 10, § 2º).","Base do certificado digital usado na NF-e, no SPED, no e-CNPJ e nos sistemas das administrações tributárias.","Continua em vigor por força do art. 2º da EC 32/2001, que manteve as MPs editadas antes dela."],
+ dispositivos:[["Art. 1º","Instituição da ICP-Brasil."],["Art. 10, § 1º","Presunção de veracidade dos documentos assinados com certificado ICP-Brasil."],["Art. 10, § 2º","Outros meios de comprovação de autoria e integridade."]],
+ temas:["Certificado digital","ICP-Brasil","Documento eletrônico","NF-e"],
+ rel:["lei14063-2020","ajsinief07-2005"], link:PLANALTO+"mpv/antigas_2001/2200-2.htm"},
+
+{id:"lei12737-2012",area:"Tecnologia da Informação",tipo:"Lei",sigla:"Lei",numero:"12.737",ano:2012,data:"30/11/2012",esfera:"Federal",situacao:"Vigente (alterada pela Lei 14.155/2021)",
+ titulo:"Lei nº 12.737/2012 – Crimes informáticos (Lei Carolina Dieckmann)",
+ ementa:"Dispõe sobre a tipificação criminal de delitos informáticos, incluindo no Código Penal o crime de invasão de dispositivo informático.",
+ resumo:["Incluiu o art. 154-A no Código Penal: invadir dispositivo informático para obter, adulterar ou destruir dados sem autorização.","A Lei 14.155/2021 aumentou as penas e criou formas qualificadas de furto e estelionato praticados por meio eletrônico.","Relevante para a segurança dos sistemas fazendários e para fraudes com documentos fiscais eletrônicos."],
+ dispositivos:[["CP, art. 154-A","Invasão de dispositivo informático."],["CP, art. 154-B","Ação penal mediante representação, salvo contra a Administração Pública."],["CP, art. 266, § 1º","Interrupção de serviço telemático ou de informação de utilidade pública."]],
+ temas:["Crimes cibernéticos","Segurança da informação"],
+ rel:["dl2848-1940","lei12965-2014"], link:PLANALTO+"_ato2011-2014/2012/lei/l12737.htm"}
 ];
 
 /* ======================= UTIL ======================= */
@@ -1060,12 +1294,13 @@ const SYN = {
 const TIPO_ALIAS = [
   [/\b(lc|lcp|lei complementar)\b/,"Lei Complementar"],[/\b(ec|emenda)\b/,"Emenda Constitucional"],
   [/\b(conv|convenio|cv)\b/,"Convênio"],[/\b(prot|protocolo)\b/,"Protocolo ICMS"],
-  [/\b(ajuste|aj)\b/,"Ajuste SINIEF"],[/\b(decreto|dec)\b/,"Decreto"],[/\b(ricms)\b/,"RICMS"],[/\b(cf|constituicao)\b/,"Constituição"],[/\b(lei)\b/,"Lei"]
+  [/\b(ajuste|aj)\b/,"Ajuste SINIEF"],[/\b(decreto-lei|dl)\b/,"Decreto-Lei"],[/\b(mp|medida provisoria)\b/,"Medida Provisória"],[/\b(nbc|nbasp|mcasp|norma tecnica)\b/,"Norma técnica"],[/\b(decreto|dec)\b/,"Decreto"],[/\b(ricms)\b/,"RICMS"],[/\b(cf|constituicao)\b/,"Constituição"],[/\b(lei)\b/,"Lei"]
 ];
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),1800)}
 function y2(yy){yy=+yy;return yy<100?(yy>30?1900+yy:2000+yy):yy}
 function numKey(n){return norm(n).replace(/[.\s]/g,"").replace(/^0+/,"")}
 
+NORMAS.forEach(n=>{ if(!n.area) n.area="Tributário"; });
 /* Pré-processamento */
 NORMAS.forEach(n=>{
   n._num = numKey(n.numero);
@@ -1078,6 +1313,7 @@ NORMAS.forEach(n=>{
   };
 });
 const BYID = Object.fromEntries(NORMAS.map(n=>[n.id,n]));
+NORMAS.forEach(n=>{ n._idx.temas += " | "+norm(n.area); });
 
 /* ======================= PARSER ======================= */
 function parseQuery(raw){
@@ -1096,7 +1332,7 @@ function parseQuery(raw){
   const na = rest.match(/\b(\d{1,2}\.?\d{0,3}(?:-e)?)\s*\/\s*(\d{2,4})\b/);
   if(na){ out.numero=numKey(na[1]); out.ano=y2(na[2]); rest=rest.replace(na[0]," "); }
   else {
-    const n1 = rest.match(/\b(?:n[º°o.]?\s*)?(\d{1,2}\.\d{3}(?:-e)?|\d{1,4}(?:-e)?)\b/);
+    const n1 = rest.match(/\b(?:n[º°o.]?\s*)?(\d{1,2}\.\d{3}(?:-e)?|\d{1,5}(?:-e)?)\b/);
     if(n1 && (out.tipo || /^\s*\d/.test(rest) || /^n/.test(n1[0]))){
       const v = n1[1];
       if(!(+v>=1960 && +v<=2035 && !out.tipo)){ out.numero=numKey(v); rest=rest.replace(n1[0]," "); }
@@ -1109,7 +1345,7 @@ function parseQuery(raw){
 }
 
 /* ======================= BUSCA ======================= */
-let state = {mode:"auto", sort:"rel", esfera:new Set(), tipo:new Set(), sit:new Set(), temas:new Set(), sel:null, list:[]};
+let state = {mode:"auto", sort:"rel", area:new Set(), esfera:new Set(), tipo:new Set(), sit:new Set(), temas:new Set(), sel:null, list:[]};
 
 const _reC={};
 function has(text,t){ if(t.length>5) return text.includes(t); const re=_reC[t]||(_reC[t]=new RegExp("(^|[^a-z0-9])"+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+(t.length<=4?"(?![a-z0-9])":""))); return re.test(text); }
@@ -1171,6 +1407,7 @@ function scoreNorma(n, P){
   return {n, s:Math.round(s), hits};
 }
 function passFilters(n){
+  if(state.area.size && !state.area.has(n.area||"Tributário")) return false;
   if(state.esfera.size && !state.esfera.has(n.esfera)) return false;
   if(state.tipo.size && !state.tipo.has(groupTipo(n))) return false;
   if(state.sit.size && !state.sit.has(groupSit(n))) return false;
@@ -1257,8 +1494,9 @@ function renderFacets(){
     const cnt={}; base.forEach(n=>{const v=fn(n);cnt[v]=(cnt[v]||0)+1});
     $(el).innerHTML = values.map(v=>`<label class="fopt"><input type="checkbox" data-k="${key}" value="${esc(v)}" ${state[key].has(v)?"checked":""}>${esc(v)}<span class="n">${cnt[v]||0}</span></label>`).join("");
   };
+  mk("#fArea","area",n=>n.area||"Tributário",["Tributário","Constitucional","Administrativo","Penal","Civil e Processual","Contabilidade","Auditoria e Controle","Tecnologia da Informação"]);
   mk("#fEsfera","esfera",n=>n.esfera,["Federal","CONFAZ","Roraima"]);
-  mk("#fTipo","tipo",groupTipo,["Constituição","Emenda Constitucional","Lei Complementar","Lei","Convênios/Ajustes/Protocolos","Decreto"]);
+  mk("#fTipo","tipo",groupTipo,["Constituição","Emenda Constitucional","Lei Complementar","Lei","Decreto-Lei","Medida Provisória","Convênios/Ajustes/Protocolos","Decreto","Norma técnica"]);
   mk("#fSit","sit",groupSit,["Vigente","Revogada / inválida"]);
   $("#fTemas").innerHTML = TEMAS_TOP.map(t=>`<button class="chip" data-t="${esc(t)}" aria-pressed="${state.temas.has(t)}">${esc(t)}</button>`).join("");
   document.querySelectorAll("#filters input").forEach(i=>i.onchange=()=>{ const s=state[i.dataset.k]; i.checked?s.add(i.value):s.delete(i.value); run(); });
@@ -1276,7 +1514,7 @@ function select(id, silent){
   const gq = encodeURIComponent(`${n.sigla} ${n.numero} ${n.ano} ${n.esfera==="Roraima"?"Roraima":""} texto integral`);
   $("#dcard").innerHTML = `
   <div class="dhead">
-    <div class="kicker">${esc(n.tipo)} · ${esc(n.esfera==="CONFAZ"?"CONFAZ (nacional)":n.esfera)}</div>
+    <div class="kicker">${esc(n.area||"Tributário")} · ${esc(n.tipo)} · ${esc(n.esfera==="CONFAZ"?"CONFAZ (nacional)":n.esfera)}</div>
     <h2>${esc(n.titulo)}</h2>
     <p class="ementa">${esc(n.ementa)}</p>
     <div class="actions">
@@ -1426,7 +1664,7 @@ document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{ document.querySele
   $("#q").placeholder = {auto:"Ex.: 142/18 · LC 87 art. 8 · substituição tributária combustíveis · decadência",numero:"Ex.: 87/96 · LC 190 · Convênio 142/2018 · Ajuste SINIEF 07/05",assunto:"Ex.: DIFAL · monofásico · Simples Nacional · zona franca",trecho:"Ex.: art. 150 § 4º · ressarcimento · CEST · carta de correção"}[state.mode];
   run(); $("#q").focus(); });
 $("#sort").onchange=e=>{ state.sort=e.target.value; run(); };
-$("#resetF").onclick=()=>{ ["esfera","tipo","sit","temas"].forEach(k=>state[k].clear()); run(); };
+$("#resetF").onclick=()=>{ ["area","esfera","tipo","sit","temas"].forEach(k=>state[k].clear()); run(); };
 $("#aiLookupBtn").onclick=()=>{ pushRecent($("#q").value.trim()); aiLookup(); };
 document.querySelectorAll(".hint code").forEach(c=>c.onclick=()=>{ $("#q").value=c.textContent; run(); pushRecent(c.textContent); });
 document.addEventListener("keydown",e=>{

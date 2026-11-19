@@ -49,6 +49,20 @@ const FONTES = [
   ["Supremo Tribunal Federal","https://portal.stf.jus.br/","Jurisprudência, repercussão geral e súmulas vinculantes.",["stf.jus.br"]],
   ["Superior Tribunal de Justiça","https://www.stj.jus.br/","Súmulas, recursos repetitivos e pesquisa de jurisprudência.",["stj.jus.br"]],
   ["Tribunal de Justiça de Roraima","https://www.tjrr.jus.br/","Jurisprudência estadual (execuções fiscais, mandados de segurança tributários).",["tjrr.jus.br"]]]},
+ {g:"Administração pública e controle", items:[
+  ["Tribunal de Contas da União (TCU)","https://portal.tcu.gov.br/","Acórdãos, súmulas, referenciais de auditoria e normas de fiscalização.",["portal.tcu.gov.br","pesquisa.apps.tcu.gov.br"]],
+  ["Controladoria-Geral da União (CGU)","https://www.gov.br/cgu/","Integridade, correição, Lei Anticorrupção, acesso à informação e manuais de PAD.",["gov.br/cgu"]],
+  ["NBASP – Normas de Auditoria do Setor Público (IRB)","https://nbasp.irbcontas.org.br/","Normas brasileiras de auditoria do setor público baseadas nas ISSAI da INTOSAI.",["nbasp.irbcontas.org.br","irbcontas.org.br"]],
+  ["ALE-RR – SAPL (legislação estadual de Roraima)","https://sapl.al.rr.leg.br/","Leis estaduais de Roraima, Constituição Estadual e tramitação de projetos.",["sapl.al.rr.leg.br"]]]},
+ {g:"Contabilidade e auditoria", items:[
+  ["CFC – Normas Brasileiras de Contabilidade","https://cfc.org.br/tecnica/normas-brasileiras-de-contabilidade/","NBC TG, NBC TSP, NBC TA e demais normas técnicas e profissionais do CFC.",["cfc.org.br"]],
+  ["Comitê de Pronunciamentos Contábeis (CPC)","https://www.cpc.org.br/","Pronunciamentos, interpretações e orientações convergidos às IFRS.",["cpc.org.br"]],
+  ["Tesouro Transparente – MCASP e PCASP","https://www.tesourotransparente.gov.br/publicacoes/manual-de-contabilidade-aplicada-ao-setor-publico-mcasp","Manual de Contabilidade Aplicada ao Setor Público e plano de contas, editados pela STN.",["tesourotransparente.gov.br"]]]},
+ {g:"Tecnologia da informação e proteção de dados", items:[
+  ["ANPD – Autoridade Nacional de Proteção de Dados","https://www.gov.br/anpd/","Regulamentos, guias e orientações sobre a LGPD, inclusive para o poder público.",["gov.br/anpd"]],
+  ["Governo Digital","https://www.gov.br/governodigital/","Normas e guias de transformação digital, interoperabilidade e segurança da informação no governo.",["gov.br/governodigital"]],
+  ["ITI – ICP-Brasil","https://www.gov.br/iti/","Certificação digital, assinatura eletrônica e normas da ICP-Brasil.",["gov.br/iti"]],
+  ["GSI – Segurança da Informação","https://www.gov.br/gsi/","Política Nacional de Segurança da Informação e normas complementares.",["gov.br/gsi"]]]},
  {g:"Secretarias de Fazenda de outros Estados", items:[
   ["AC – SEFAZ Acre","https://sefaz.ac.gov.br/","",["sefaz.ac.gov.br"]],["AL – SEFAZ Alagoas","https://www.sefaz.al.gov.br/","",["sefaz.al.gov.br"]],["AM – SEFAZ Amazonas","https://www.sefaz.am.gov.br/","",["sefaz.am.gov.br"]],
   ["AP – SEFAZ Amapá","https://www.sefaz.ap.gov.br/","",["sefaz.ap.gov.br"]],["BA – SEFAZ Bahia","https://www.sefaz.ba.gov.br/","",["sefaz.ba.gov.br"]],["CE – SEFAZ Ceará","https://www.sefaz.ce.gov.br/","",["sefaz.ce.gov.br"]],

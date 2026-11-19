@@ -1,6 +1,6 @@
 /* Service worker – Buscador de Legislação Tributária (SEFAZ-RR)
    Altere VERSAO a cada publicação para os usuários receberem a atualização. */
-const VERSAO = "2026-11-18-7";
+const VERSAO = "2026-11-19-1";
 const CACHE = "buscador-" + VERSAO;
 const SHELL = ["./","./index.html","./app2.js","./app3.js","./app4.js","./app5.js","./app6.js","./app7.js","./calc_rtc.js","./app8.js","./pwa.js","./supa.js","./config.js","./lib/supabase.min.js","./lib/pdf.min.js","./lib/pdf.worker.min.js","./manifest.webmanifest",
   "./icons/icon-192.png","./icons/icon-512.png","./icons/favicon-32.png",
